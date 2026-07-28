@@ -1,0 +1,58 @@
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.acc-item {
+  background: #fff;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+
+.acc-item.open {
+  border-color: var(--pink);
+}
+
+.acc-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: none;
+  border: none;
+  padding: 18px 20px;
+  text-align: left;
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 0.96rem;
+  color: var(--navy);
+}
+
+.acc-icon {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--surface-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--dur-fast) var(--ease), background var(--dur-fast);
+}
+
+.acc-item.open .acc-icon {
+  background: var(--grad-cta);
+  color: #fff;
+  transform: rotate(90deg);
+}
+
+.acc-panel {
+  padding: 0 20px 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  animation: fadeUp 0.2s var(--ease);
+}

@@ -1,0 +1,259 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink-soft);
+  background: var(--surface);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-head);
+  color: var(--navy);
+  line-height: 1.1;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+p {
+  margin: 0;
+}
+
+/* ---------- Layout helpers ---------- */
+.container {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding-left: var(--page-pad);
+  padding-right: var(--page-pad);
+}
+
+.section {
+  padding-top: var(--section-pad);
+  padding-bottom: var(--section-pad);
+}
+
+.section-tight {
+  padding-top: calc(var(--section-pad) * 0.6);
+  padding-bottom: calc(var(--section-pad) * 0.6);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.grad-text {
+  background: var(--grad-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-head);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--pink-deep);
+}
+
+.eyebrow.on-dark {
+  color: var(--cyan);
+}
+
+.eyebrow .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.section-head {
+  max-width: 640px;
+  margin-bottom: clamp(32px, 5vw, 56px);
+}
+
+.section-head.center {
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.section-head h2 {
+  font-size: var(--fs-4xl);
+  margin-top: 14px;
+}
+
+.section-head p {
+  margin-top: 16px;
+  font-size: var(--fs-lg);
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: var(--fs-base);
+  padding: 13px 26px;
+  border-radius: var(--r-btn);
+  border: 1px solid transparent;
+  transition: transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease),
+    background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-lg {
+  padding: 16px 32px;
+  font-size: var(--fs-lg);
+}
+
+.btn-sm {
+  padding: 9px 18px;
+  font-size: var(--fs-sm);
+}
+
+.btn-primary {
+  background: var(--grad-cta);
+  color: #fff;
+  box-shadow: 0 6px 16px -6px rgba(235, 33, 92, 0.35);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 8px 20px -6px rgba(235, 33, 92, 0.42);
+  transform: translateY(-1px);
+}
+
+.btn-dark {
+  background: var(--navy);
+  color: #fff;
+}
+
+.btn-dark:hover {
+  background: #131c5e;
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--navy);
+  border-color: var(--line);
+}
+
+.btn-outline:hover {
+  border-color: var(--navy);
+  background: var(--surface-soft);
+}
+
+.btn-ghost-light {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.btn-ghost-light:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+}
+
+/* ---------- Brand bar (signature device) ---------- */
+.brand-bar {
+  height: 5px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--blue) 0%, var(--cyan) 30%, var(--purple) 55%, var(--pink) 78%, var(--pink-deep) 100%);
+}
+
+/* ---------- Misc ---------- */
+.hide-mobile {
+  display: initial;
+}
+.show-mobile {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .hide-mobile {
+    display: none !important;
+  }
+  .show-mobile {
+    display: initial;
+  }
+}
+
+.pill-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  letter-spacing: 0.02em;
+}
+
+::selection {
+  background: var(--pink);
+  color: #fff;
+}
