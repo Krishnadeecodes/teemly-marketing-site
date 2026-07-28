@@ -23,19 +23,13 @@ const values = [
   },
 ]
 
-const team = [
-  { name: 'Deepan', role: 'CEO', color: '#0aa1e8' },
-  { name: 'Krishna', role: 'Product Manager', color: '#f52998' },
-  { name: 'Prinisha', role: 'Head of Delivery', color: '#6a2cc7' },
-]
-
 export default function About() {
   return (
     <>
       <PageHero
         eyebrow="About Teemly"
-        title="Workforce intelligence, built by Deecodes"
-        desc="We're a small product team building the visibility layer we felt was missing between spreadsheet timesheets and heavy-handed employee surveillance."
+        title="Workforce intelligence, built with intent"
+        desc="We're building the visibility layer we felt was missing between spreadsheet timesheets and heavy-handed employee surveillance."
       />
 
       <section className="section">
@@ -62,7 +56,7 @@ export default function About() {
           <div className="pv-ring" style={{ margin: '0 auto' }}>
             <div className="pv-core" style={{ background: 'var(--grad-mark)' }}>
               <Icon name="sparkle" size={26} />
-              <span>Deecodes</span>
+              <span>Teemly</span>
             </div>
           </div>
         </div>
@@ -79,23 +73,6 @@ export default function About() {
                 </span>
                 <h3>{v.title}</h3>
                 <p>{v.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container">
-          <SectionHead center eyebrow="Founding Team" title="Small team, shipping fast" />
-          <div className="team-row">
-            {team.map((m) => (
-              <div className="team-member" key={m.name}>
-                <span className="team-avatar" style={{ background: m.color }}>
-                  {m.name[0]}
-                </span>
-                <h4>{m.name}</h4>
-                <span>{m.role}</span>
               </div>
             ))}
           </div>

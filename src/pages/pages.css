@@ -478,44 +478,6 @@
   line-height: 1.6;
 }
 
-.team-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-
-.team-member {
-  text-align: center;
-  padding: 28px 20px;
-  border-radius: var(--r-lg);
-  border: 1px solid var(--line-soft);
-  background: #fff;
-}
-
-.team-avatar {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  margin: 0 auto 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-family: var(--font-head);
-  font-weight: 700;
-  font-size: 1.1rem;
-}
-
-.team-member h4 {
-  font-family: var(--font-head);
-  color: var(--navy);
-  font-size: 1rem;
-}
-
-.team-member span {
-  font-size: 0.82rem;
-  color: var(--muted);
-}
 
 /* ================= Contact page ================= */
 .contact-layout {
@@ -663,7 +625,6 @@
   .sec-grid,
   .about-story,
   .about-values,
-  .team-row,
   .contact-layout {
     grid-template-columns: 1fr;
   }

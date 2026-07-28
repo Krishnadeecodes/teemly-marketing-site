@@ -12,7 +12,7 @@ export const modules = [
     slug: 'dashboard',
     icon: 'chart',
     navLabel: 'Dashboard',
-    tag: 'Module 01 · Dashboard',
+    tag: 'Dashboard',
     title: 'Everything worth knowing, the moment you log in',
     intro:
       "The landing screen for every Client Admin and Client Manager login — a real-time snapshot of the organisation or assigned team, refreshed automatically as Teemly's agent sends events.",
@@ -38,7 +38,7 @@ export const modules = [
     slug: 'teams',
     icon: 'users',
     navLabel: 'Teams',
-    tag: 'Module 02 · Teams',
+    tag: 'Teams',
     title: "Every team, then every person inside it",
     intro:
       'Three depths in one module: an organisation-wide team summary, a team detail view with a monthly heat map, and a full employee profile down to the hour.',
@@ -61,7 +61,7 @@ export const modules = [
     slug: 'screenshots',
     icon: 'camera',
     navLabel: 'Screenshots',
-    tag: 'Module 03 · Screenshot Intelligence',
+    tag: 'Screenshot Intelligence',
     title: 'Visual proof of work, without exposing the whole screen',
     intro:
       "Screenshots are captured at a plan-defined interval, stored in Teemly's own cloud storage, and served through a gallery with productivity filters and a full-screen detail view.",
@@ -85,7 +85,7 @@ export const modules = [
     slug: 'attendance',
     icon: 'clock',
     navLabel: 'Attendance',
-    tag: 'Module 04 · Attendance',
+    tag: 'Attendance',
     title: 'Attendance derived from activity, not typed in',
     intro:
       "There is no manual check-in system. Check-in is the first EXE activity event of the working day; check-out is the last — or 'Active' if the employee is still working.",
@@ -107,7 +107,7 @@ export const modules = [
     slug: 'reports',
     icon: 'layers',
     navLabel: 'Reports',
-    tag: 'Module 05 · Intelligence Reports',
+    tag: 'Intelligence Reports',
     title: 'Six reports, each built to end in a decision',
     intro:
       'Work Pulse, Burnout & Wellbeing, Focus Score, Tool Intelligence, Attendance & Punctuality and Team Leaderboard — every report supports org-wide, by-team or by-employee scope, and closes with AI-generated, plain-language insight cards.',
@@ -133,7 +133,7 @@ export const modules = [
     slug: 'settings',
     icon: 'gear',
     navLabel: 'Settings',
-    tag: 'Module 06 · Settings & Controls',
+    tag: 'Settings & Controls',
     title: 'Every default, and every exception to it',
     intro:
       'Settings are organised into seven sections under three categories — Organisation & People, Work & Monitoring, and Access & Controls — accessible only to Client Admins.',

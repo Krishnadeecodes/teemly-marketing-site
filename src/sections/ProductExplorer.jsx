@@ -30,7 +30,7 @@ const modules = [
     key: 'teams',
     label: 'Teams',
     icon: 'users',
-    tag: 'TEAMS & ATTENDANCE',
+    tag: 'TEAMS',
     title: 'Team health at a glance, individual context on demand',
     desc: 'Roll every employee up into a team score, then drop into a single person\'s day down to the hour — without switching tools.',
     points: [

@@ -7,7 +7,7 @@ import './pages.css'
 const info = [
   { icon: 'mail', title: 'Email us', desc: 'hello@teemly.app' },
   { icon: 'clock', title: 'Response time', desc: 'Within 24 hours on business days' },
-  { icon: 'building', title: 'Built by', desc: 'Deecodes' },
+  { icon: 'cpu', title: 'Own EXE agent', desc: 'No third-party dependency, ever' },
 ]
 
 export default function Contact() {

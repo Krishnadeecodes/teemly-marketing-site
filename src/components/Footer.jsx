@@ -67,7 +67,7 @@ export default function Footer() {
       </div>
 
       <div className="container footer-bottom">
-        <p>© {new Date().getFullYear()} Teemly, by Deecodes. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} Teemly. All rights reserved.</p>
         <div className="footer-legal">
           <Link to="/security">Privacy</Link>
           <Link to="/security">Terms</Link>
