@@ -7,12 +7,29 @@
   box-shadow: var(--shadow-card);
   display: flex;
   flex-direction: column;
+  transition: transform var(--dur-med) var(--ease), box-shadow var(--dur-med) var(--ease), border-color var(--dur-med) var(--ease);
+}
+
+.price-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--line);
 }
 
 .price-card.featured {
   border-color: var(--pink);
   box-shadow: var(--shadow-lg);
   transform: translateY(-8px);
+}
+
+.price-card.featured:hover {
+  transform: translateY(-11px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .price-card {
+    transition: none;
+  }
 }
 
 .price-badge {

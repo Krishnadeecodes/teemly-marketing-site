@@ -31,6 +31,16 @@
   margin-right: 12px;
 }
 
+.header-logo-img {
+  height: 34px;
+  width: auto;
+  display: block;
+}
+
+.header-right {
+  display: contents;
+}
+
 .header-nav {
   display: flex;
   align-items: center;
@@ -41,21 +51,27 @@
 .nav-link {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   background: none;
   border: none;
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size: 0.82rem;
   color: var(--ink-soft);
-  padding: 10px 14px;
+  padding: 9px 11px;
   border-radius: var(--r-pill);
   transition: color var(--dur-fast), background var(--dur-fast);
+  white-space: nowrap;
 }
 
 .nav-link:hover {
   color: var(--navy);
   background: var(--surface-soft);
+}
+
+.nav-link.active {
+  color: var(--navy);
+  font-weight: 600;
 }
 
 .nav-item {
@@ -82,19 +98,34 @@
   top: calc(100% + 14px);
   left: 50%;
   transform: translateX(-50%);
+  display: flex;
+  align-items: stretch;
   background: #fff;
   border: 1px solid var(--line-soft);
   border-radius: var(--r-lg);
   box-shadow: var(--shadow-lg);
-  padding: 18px;
   animation: dropIn 0.18s var(--ease);
   z-index: 110;
+  overflow: hidden;
 }
 
-.mega-panel-left {
-  left: auto;
-  right: -20px;
+.mega-panel-start {
+  left: 0;
   transform: none;
+}
+
+.mega-main {
+  flex-shrink: 0;
+  padding: 18px;
+}
+
+.mega-feature {
+  flex-shrink: 0;
+  width: 248px;
+  padding: 16px;
+  background: var(--surface-soft);
+  border-left: 1px solid var(--line-soft);
+  display: flex;
 }
 
 .chev-up {
@@ -122,6 +153,18 @@
   grid-template-columns: 1fr;
 }
 
+.mega-grid-3col {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.mega-intro {
+  font-size: 0.78rem;
+  color: var(--muted-soft);
+  padding: 2px 12px 12px;
+  border-bottom: 1px solid var(--line-soft);
+  margin-bottom: 8px;
+}
+
 .mega-item {
   display: flex;
   align-items: flex-start;
@@ -143,8 +186,41 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(160deg, rgba(10, 161, 232, 0.12), rgba(245, 41, 152, 0.12));
+  transition: transform var(--dur-fast);
+}
+
+.mega-item:hover .mega-icon {
+  transform: scale(1.06);
+}
+
+.mega-icon.tone-blue {
+  background: rgba(10, 161, 232, 0.12);
+  color: var(--blue);
+}
+
+.mega-icon.tone-cyan {
+  background: rgba(4, 220, 217, 0.16);
+  color: #04989a;
+}
+
+.mega-icon.tone-purple {
+  background: rgba(106, 44, 199, 0.12);
   color: var(--purple);
+}
+
+.mega-icon.tone-pink {
+  background: rgba(245, 41, 152, 0.12);
+  color: var(--pink-deep);
+}
+
+.mega-icon.tone-green {
+  background: rgba(31, 184, 127, 0.12);
+  color: var(--status-productive);
+}
+
+.mega-icon.tone-amber {
+  background: rgba(240, 168, 60, 0.16);
+  color: #a5720f;
 }
 
 .mega-title {
@@ -174,6 +250,117 @@
   font-weight: 600;
   font-size: 0.88rem;
   color: var(--pink-deep);
+}
+
+/* ---- Mega menu featured rail ---- */
+.mega-feature-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.mega-feature-visual {
+  border-radius: var(--r-md);
+  overflow: hidden;
+  border: 1px solid var(--line-soft);
+}
+
+.mega-feature-eyebrow {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--pink-deep);
+}
+
+.mega-feature-title {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.96rem;
+  color: var(--navy);
+  line-height: 1.3;
+}
+
+.mega-feature-desc {
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.mega-feature-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: var(--navy);
+  margin-top: auto;
+}
+
+.mega-feature-cta svg {
+  color: var(--pink-deep);
+}
+
+/* ---- Compact trust/glossary visuals (no product mock available) ---- */
+.mega-trust-visual {
+  padding: 16px 14px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.mega-trust-visual .tile-icon {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(160deg, rgba(106, 44, 199, 0.12), rgba(245, 41, 152, 0.12));
+  color: var(--purple);
+}
+
+.mega-trust-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.mega-trust-chips span {
+  font-size: 0.66rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: var(--r-pill);
+  background: rgba(31, 184, 127, 0.12);
+  color: var(--status-productive);
+}
+
+.mega-glossary-visual {
+  padding: 16px;
+  background: #fff;
+}
+
+.mega-glossary-visual .term {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.86rem;
+  color: var(--navy);
+}
+
+.mega-glossary-visual .pos {
+  font-size: 0.68rem;
+  color: var(--muted-soft);
+  font-style: italic;
+  margin: 2px 0 6px;
+}
+
+.mega-glossary-visual .def {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.55;
 }
 
 /* Mobile */
@@ -214,6 +401,38 @@
   border-bottom: 1px solid var(--line-soft);
 }
 
+.mobile-link.sub {
+  padding-left: 16px;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.mobile-section-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  padding: 14px 4px;
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--navy);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.mobile-section-toggle svg {
+  color: var(--muted-soft);
+  transition: transform var(--dur-fast);
+}
+
+.mobile-submenu {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0 8px;
+}
+
 .mobile-link.strong {
   font-family: var(--font-head);
   font-weight: 600;
@@ -236,7 +455,7 @@
   display: none;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1180px) {
   .header-inner {
     height: 68px;
   }
@@ -250,4 +469,15 @@
   .mobile-menu {
     display: block;
   }
+}
+
+.nav-signin-link {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  padding: 9px 10px;
+}
+
+.nav-signin-link:hover {
+  color: var(--navy);
 }

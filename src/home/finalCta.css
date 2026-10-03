@@ -1,0 +1,59 @@
+.home-v2 .h-final {
+  padding: clamp(60px, 7vw, 108px) 0 clamp(60px, 8vw, 110px);
+  background: var(--h-bg);
+}
+.home-v2 .h-final-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 36px;
+  padding: clamp(40px, 7vw, 100px) clamp(28px, 6vw, 80px);
+  background: var(--h-surface);
+  border: 1px solid var(--h-line);
+  box-shadow: var(--h-shadow-lg);
+  text-align: center;
+}
+.home-v2 .h-final-card .h-aurora i {
+  opacity: 0.7;
+}
+.home-v2 .h-final-card .h-aurora .a1 {
+  left: -10%;
+  top: -40%;
+}
+.home-v2 .h-final-card .h-aurora .a2 {
+  right: -10%;
+  top: 10%;
+}
+.home-v2 .h-final-card .h-aurora .a3 {
+  left: 40%;
+  bottom: -60%;
+}
+.home-v2 .h-final-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 780px;
+  margin: 0 auto;
+}
+.home-v2 .h-final-card h2 {
+  font-size: clamp(36px, 5.6vw, 72px);
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+.home-v2 .h-final-card p {
+  margin: 20px auto 0;
+  font-size: 18px;
+  color: var(--h-muted);
+  max-width: 48ch;
+}
+.home-v2 .h-final-ctas {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 34px;
+  align-items: center;
+}
+.home-v2 .h-final-note {
+  margin-top: 20px;
+  font-size: 13.5px;
+  color: var(--h-muted);
+}

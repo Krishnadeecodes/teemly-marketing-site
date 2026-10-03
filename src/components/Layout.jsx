@@ -2,6 +2,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import Header from './Header.jsx'
 import Footer from './Footer.jsx'
+import ChatbotWidget from './ChatbotWidget.jsx'
 
 export default function Layout() {
   const { pathname, hash } = useLocation()
@@ -24,6 +25,7 @@ export default function Layout() {
         <Outlet />
       </main>
       <Footer />
+      <ChatbotWidget />
     </>
   )
 }

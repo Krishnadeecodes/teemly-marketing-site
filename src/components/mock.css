@@ -251,6 +251,14 @@
   gap: 4px;
 }
 
+.loc-dist {
+  margin-left: auto;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--muted-soft);
+  white-space: nowrap;
+}
+
 .status-dot {
   width: 7px;
   height: 7px;
@@ -603,6 +611,48 @@
   font-size: 0.68rem;
   color: var(--muted);
   line-height: 1.5;
+}
+
+/* Location map */
+.loc-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.loc-map-canvas {
+  position: relative;
+  height: 158px;
+  border-radius: var(--r-md);
+  background: linear-gradient(160deg, var(--surface-alt), var(--surface-soft));
+  border: 1px dashed var(--line);
+  overflow: hidden;
+}
+
+.loc-zone {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--muted-soft);
+  background: rgba(255, 255, 255, 0.8);
+  padding: 3px 8px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line-soft);
+}
+
+.loc-pin {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--status-productive);
+  box-shadow: 0 0 0 4px rgba(31, 184, 127, 0.18);
+}
+
+.loc-pin.alert {
+  background: var(--status-absent);
+  box-shadow: 0 0 0 4px rgba(230, 65, 95, 0.18);
 }
 
 /* Settings */

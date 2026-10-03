@@ -1,14 +1,17 @@
+import Reveal from '../home/Reveal.jsx'
+import SplitHeading from '../home/SplitHeading.jsx'
+
 export default function SectionHead({ eyebrow, title, desc, center = false, dark = false }) {
   return (
-    <div className={`section-head${center ? ' center' : ''}`}>
+    <Reveal as="div" className={`section-head${center ? ' center' : ''}`}>
       {eyebrow && (
         <span className={`eyebrow${dark ? ' on-dark' : ''}`}>
           <span className="dot" />
           {eyebrow}
         </span>
       )}
-      <h2 style={dark ? { color: '#fff' } : undefined}>{title}</h2>
+      <SplitHeading as="h2" text={title} className={dark ? 'on-dark-heading' : ''} />
       {desc && <p style={dark ? { color: 'var(--dark-text)' } : undefined}>{desc}</p>}
-    </div>
+    </Reveal>
   )
 }

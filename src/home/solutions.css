@@ -1,0 +1,97 @@
+.home-v2 .h-solutions {
+  background: linear-gradient(180deg, var(--h-bg), var(--h-bg-alt));
+  overflow: hidden;
+}
+.home-v2 .h-sol-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+.home-v2 .h-sol-head .h-sec-head {
+  margin-bottom: 0;
+}
+.home-v2 .h-rail-btns {
+  display: flex;
+  gap: 10px;
+}
+.home-v2 .h-rail-btns button {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1.5px solid var(--h-line-strong);
+  background: var(--h-surface);
+  color: var(--h-heading);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border-color 0.2s;
+}
+.home-v2 .h-rail-btns button:hover {
+  background: var(--h-pink);
+  border-color: var(--h-pink);
+}
+.home-v2 .h-rail-btns svg.flip {
+  transform: rotate(180deg);
+}
+.home-v2 .h-sol-rail {
+  --pad: max(var(--h-gutter), calc((100vw - var(--h-wrap)) / 2 + var(--h-gutter)));
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--pad);
+  padding: 10px var(--pad) 30px;
+  scrollbar-width: none;
+  cursor: grab;
+}
+.home-v2 .h-sol-rail::-webkit-scrollbar {
+  display: none;
+}
+.home-v2 .h-sol-rail.drag {
+  cursor: grabbing;
+  scroll-snap-type: none;
+}
+.home-v2 .h-sol-card {
+  flex: 0 0 min(340px, 82vw);
+  scroll-snap-align: start;
+  background: var(--h-surface);
+  border: 1px solid var(--h-line);
+  border-radius: var(--h-radius-xl);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: var(--h-shadow-sm);
+  transition: box-shadow 0.35s;
+  transform-style: preserve-3d;
+  min-height: 220px;
+  user-select: none;
+}
+.home-v2 .h-sol-card:hover {
+  box-shadow: var(--h-shadow-lg);
+}
+.home-v2 .h-sol-role {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font: 600 13.5px var(--h-font-body);
+  color: var(--h-muted);
+}
+.home-v2 .h-sol-role i {
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+.home-v2 .h-sol-card h3 {
+  font-size: 19px;
+  letter-spacing: -0.015em;
+  font-weight: 600;
+}

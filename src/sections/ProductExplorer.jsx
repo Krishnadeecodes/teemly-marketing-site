@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
-import SectionHead from '../components/SectionHead.jsx'
+import SplitHeading from '../home/SplitHeading.jsx'
+import Reveal from '../home/Reveal.jsx'
 import {
   DashboardMock,
   TeamsMock,
@@ -9,7 +10,10 @@ import {
   AttendanceMock,
   ReportsMock,
   SettingsMock,
+  VideoRecordingMock,
+  LocationTrackingMock,
 } from '../components/ProductMockups.jsx'
+import '../home/explorer.css'
 
 const modules = [
   {
@@ -53,6 +57,34 @@ const modules = [
       'Employees pause capture themselves via Privacy Mode, no override',
     ],
     Comp: ScreenshotsMock,
+  },
+  {
+    key: 'video-recording',
+    label: 'Video',
+    icon: 'monitor',
+    tag: 'VIDEO RECORDING',
+    title: 'Continuous visual audit, in configurable segments',
+    desc: 'Screen recording captured in 5–30 minute segments per employee, organised by session, with in-browser playback — no download required to review a day.',
+    points: [
+      'Gallery view with thumbnail preview, playable right in the browser',
+      'Privacy blur per employee — original recording never stored when on',
+      'Silent recording under stealth mode, gated behind the same legal consent as Silent Tracking',
+    ],
+    Comp: VideoRecordingMock,
+  },
+  {
+    key: 'location-tracking',
+    label: 'Location',
+    icon: 'pin',
+    tag: 'LOCATION TRACKING',
+    title: 'GPS visibility, built for remote and field teams',
+    desc: 'Location captured at a configurable interval and plotted against the working day, with geofencing to confirm presence at the office, a client site, or home.',
+    points: [
+      'Live team map plus a full daily movement log per employee',
+      'Geofence entry/exit alerts for defined work zones',
+      'Privacy Mode pauses GPS too — no separate override, ever',
+    ],
+    Comp: LocationTrackingMock,
   },
   {
     key: 'attendance',
@@ -103,50 +135,48 @@ export default function ProductExplorer() {
   const mod = modules.find((m) => m.key === active)
 
   return (
-    <section className="section explorer" id="explorer">
-      <div className="container">
-        <SectionHead
-          center
-          eyebrow="How Teemly Works"
-          title="One agent. Six views. Nothing left to guess at."
-          desc="Every module below reads from the same real-time record — not six disconnected tools stitched together after the fact."
-        />
+    <section className="h-explorer" id="explorer">
+      <div className="h-wrap">
+        <div className="h-sec-head center">
+          <span className="h-kicker">How Teemly Works</span>
+          <SplitHeading as="h2" text="Connect. Understand. Improve." className="h-split-center" />
+          <p>One agent, eight modules, all reading from the same real-time record — not disconnected tools stitched together after the fact.</p>
+        </div>
 
-        <div className="explorer-tabs">
+        <div className="h-explorer-tabs">
           {modules.map((m) => (
             <button
               key={m.key}
-              className={`explorer-tab${active === m.key ? ' active' : ''}`}
+              className={`h-explorer-tab${active === m.key ? ' active' : ''}`}
               onClick={() => setActive(m.key)}
             >
-              <Icon name={m.icon} size={16} />
-              {m.label}
+              <Icon name={m.icon} size={15} />
+              <span>{m.label}</span>
             </button>
           ))}
         </div>
 
-        <div className="explorer-card">
-          <div className="explorer-copy">
-            <span className="explorer-tag">{mod.tag}</span>
+        <Reveal as="div" className="h-explorer-card" key={mod.key}>
+          <div className="h-explorer-copy">
+            <span className="h-explorer-tag">{mod.tag}</span>
             <h3>{mod.title}</h3>
             <p>{mod.desc}</p>
             <ul>
               {mod.points.map((p) => (
                 <li key={p}>
-                  <Icon name="check" size={15} />
+                  <Icon name="check" size={14} />
                   {p}
                 </li>
               ))}
             </ul>
-            <Link to={`/product/${mod.key}`} className="tour-link">
+            <Link to={`/product/${mod.key}`} className="h-textlink">
               Explore {mod.label}
-              <Icon name="arrowRight" size={15} />
             </Link>
           </div>
-          <div className="explorer-visual">
+          <div className="h-explorer-visual">
             <mod.Comp />
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   )

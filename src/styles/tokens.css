@@ -41,9 +41,9 @@
   --status-privacy: #f0a83c;
   --status-absent: #e6415f;
 
-  /* ---- Typography ---- */
-  --font-head: 'Space Grotesk', 'Inter', sans-serif;
-  --font-body: 'Inter', sans-serif;
+  /* ---- Typography (matches the homepage's type system) ---- */
+  --font-head: 'Bricolage Grotesque', 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Hanken Grotesk', 'Inter', system-ui, sans-serif;
 
   --fs-xs: 0.75rem;
   --fs-sm: 0.875rem;

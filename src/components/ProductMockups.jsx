@@ -332,7 +332,125 @@ export function ReportsMock() {
   )
 }
 
-/* ================= 6. Settings ================= */
+/* ================= 6. Video Recording ================= */
+export function VideoRecordingMock() {
+  const stats = [
+    { l: 'Recordings Today', v: '342', t: null },
+    { l: 'Avg Session Length', v: '12 min', t: null },
+    { l: 'Employees Recording', v: '89', t: null },
+    { l: 'Storage Used', v: '4.8 GB', t: null },
+  ]
+  const sessions = [
+    { app: 'Figma', time: '10:30–10:45 AM', badge: 'productive', blur: false, g: 'linear-gradient(135deg,#0aa1e8,#04dcd9)' },
+    { app: 'VS Code', time: '10:15–10:30 AM', badge: 'productive', blur: false, g: 'linear-gradient(135deg,#0b1f8a,#0aa1e8)' },
+    { app: 'Private', time: '10:00–10:15 AM', badge: 'neutral', blur: true, g: 'linear-gradient(135deg,#9aa1b8,#c8cce0)' },
+    { app: 'Slack', time: '9:45–10:00 AM', badge: 'productive', blur: false, g: 'linear-gradient(135deg,#1fb87f,#0aa1e8)' },
+    { app: 'Notion', time: '9:30–9:45 AM', badge: 'productive', blur: false, g: 'linear-gradient(135deg,#6a2cc7,#f52998)' },
+    { app: 'YouTube', time: '9:15–9:30 AM', badge: 'unproductive', blur: false, g: 'linear-gradient(135deg,#171b2f,#3d4266)' },
+  ]
+  const emps = [
+    { n: 'Ananya R.', dot: 'productive', active: true },
+    { n: 'Karthik S.', dot: 'privacy', active: false },
+    { n: 'Meera J.', dot: 'unproductive', active: false },
+  ]
+  return (
+    <MockFrame title="teemly.app/video-recordings">
+      <div className="mstat-row">
+        {stats.map((s) => (
+          <div className="mstat-card" key={s.l}>
+            <div className="mstat-label">{s.l}</div>
+            <div className="mstat-value">{s.v}</div>
+          </div>
+        ))}
+      </div>
+      <div className="shot-layout">
+        <div className="shot-side">
+          <div className="shot-side-group">Engineering · 34</div>
+          {emps.map((e) => (
+            <div className={`shot-emp-row ${e.active ? 'active' : ''}`} key={e.n}>
+              <span className={`status-dot ${e.dot}`} /> {e.n}
+            </div>
+          ))}
+        </div>
+        <div>
+          <div className="shot-grid">
+            {sessions.map((s, i) => (
+              <div className="shot-card" key={i}>
+                <div className={`shot-thumb ${s.blur ? 'blurred' : ''}`} style={{ background: s.g }} />
+                <div className="shot-lock">
+                  <Icon name="play" size={20} />
+                </div>
+                <span className={`status-badge ${s.badge} shot-badge`}>{s.badge}</span>
+                <div className="shot-foot">
+                  <span>{s.app}</span>
+                  <span>{s.time}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </MockFrame>
+  )
+}
+
+/* ================= 7. Location Tracking ================= */
+export function LocationTrackingMock() {
+  const stats = [
+    { l: 'In Office', v: '61', t: null },
+    { l: 'Remote', v: '24', t: null },
+    { l: 'Client Site', v: '9', t: null },
+    { l: 'Off-Site Alert', v: '2', t: null },
+  ]
+  const people = [
+    { n: 'Ananya R.', status: 'In Office', dist: '0.0 km', dot: 'productive' },
+    { n: 'Karthik S.', status: 'Client Site', dist: '14.2 km', dot: 'privacy' },
+    { n: 'Meera J.', status: 'Remote', dist: '—', dot: 'neutral' },
+    { n: 'Rohit V.', status: 'In Office', dist: '0.0 km', dot: 'productive' },
+    { n: 'Diya K.', status: 'Off-Site', dist: '32.6 km', dot: 'absent' },
+  ]
+  return (
+    <MockFrame title="teemly.app/location">
+      <div className="mstat-row">
+        {stats.map((s) => (
+          <div className="mstat-card" key={s.l}>
+            <div className="mstat-label">{s.l}</div>
+            <div className="mstat-value">{s.v}</div>
+          </div>
+        ))}
+      </div>
+      <div className="mock-main-grid loc-grid">
+        <div className="mock-panel loc-map">
+          <div className="mock-panel-title">Team Location View</div>
+          <div className="loc-map-canvas">
+            <span className="loc-zone loc-zone-office">Office</span>
+            <span className="loc-pin" style={{ top: '38%', left: '46%' }} />
+            <span className="loc-pin" style={{ top: '34%', left: '52%' }} />
+            <span className="loc-pin alert" style={{ top: '70%', left: '80%' }} />
+            <span className="loc-pin" style={{ top: '60%', left: '20%' }} />
+          </div>
+        </div>
+        <div className="mock-panel">
+          <div className="mock-panel-title">Live Location · 89/128</div>
+          {people.map((p, i) => (
+            <div className="live-row" key={p.n}>
+              <Avatar initials={p.n[0]} i={i} />
+              <span>
+                <span className="live-name">{p.n}</span>
+                <span className="live-status">
+                  <span className={`status-dot ${p.dot}`} /> {p.status}
+                </span>
+              </span>
+              <span className="loc-dist">{p.dist}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </MockFrame>
+  )
+}
+
+/* ================= 8. Settings ================= */
 export function SettingsMock() {
   const nav = [
     { g: 'Organisation & People', items: [['01', 'Teams & Structure'], ['02', 'People & Roles']] },

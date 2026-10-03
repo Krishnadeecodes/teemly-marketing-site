@@ -121,8 +121,13 @@ p {
 }
 
 .section-head h2 {
-  font-size: var(--fs-4xl);
+  font-size: clamp(32px, 4.2vw, 56px);
+  letter-spacing: -0.03em;
   margin-top: 14px;
+}
+
+.section-head h2.on-dark-heading {
+  color: #fff;
 }
 
 .section-head p {
@@ -256,4 +261,15 @@ p {
 ::selection {
   background: var(--pink);
   color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

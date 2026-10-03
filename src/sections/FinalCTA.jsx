@@ -1,27 +1,46 @@
 import { Link } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
-import GlowOrbit from '../components/GlowOrbit.jsx'
+import SplitHeading from '../home/SplitHeading.jsx'
+import Reveal from '../home/Reveal.jsx'
+import '../home/finalCta.css'
 
 export default function FinalCTA() {
   return (
-    <section className="final-cta">
-      <GlowOrbit />
-      <div className="container final-cta-inner">
-        <h2>
-          Ready to see how <span className="grad-text">your team really works?</span>
-        </h2>
-        <p>Start free, invite your team, and get your first Org Productivity Score today.</p>
-        <div className="hero-cta-row" style={{ justifyContent: 'center' }}>
-          <Link to="/pricing" className="btn btn-primary btn-lg">
-            Start Free Trial
-            <Icon name="arrowRight" size={18} />
-          </Link>
-          <Link to="/contact" className="btn btn-outline btn-lg">
-            Book a Demo
-          </Link>
+    <div className="home-v2">
+      <section className="h-final">
+        <div className="h-wrap">
+          <div className="h-final-card">
+            <div className="h-aurora" aria-hidden="true">
+              <i className="a1" />
+              <i className="a2" />
+              <i className="a3" />
+            </div>
+            <div className="h-final-inner">
+              <SplitHeading as="h2" text="Ready to see how your organization really works?" />
+              <Reveal as="div">
+                <p>Book a demo, take a self-guided tour, or start free and get your first Org Productivity Score today.</p>
+                <div className="h-final-ctas">
+                  <Link to="/book-a-demo" className="h-btn h-btn-primary">
+                    Book a Demo
+                    <span className="h-arr" aria-hidden="true">
+                      <Icon name="arrowRight" size={14} />
+                    </span>
+                  </Link>
+                  <Link to="/take-a-tour" className="h-btn h-btn-ghost">
+                    Take a Tour
+                  </Link>
+                </div>
+                <p className="h-final-note">
+                  No credit card required · Live in a day ·{' '}
+                  <Link to="/pricing" className="h-textlink">
+                    See pricing
+                  </Link>
+                </p>
+              </Reveal>
+            </div>
+          </div>
         </div>
-        <p className="hero-subnote">No credit card required · Live in a day · Cancel anytime</p>
-      </div>
-    </section>
+      </section>
+    </div>
   )
 }

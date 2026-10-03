@@ -1,0 +1,50 @@
+.home-v2 .h-quick-facts {
+  padding: 30px 0;
+  border-top: 1px solid var(--h-line);
+  border-bottom: 1px solid var(--h-line);
+  background: var(--h-bg-alt);
+}
+.home-v2 .h-quick-facts-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.home-v2 .h-quick-fact {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.home-v2 .h-quick-fact-icon {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--h-bg-tint);
+  color: var(--h-azure);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.home-v2 .h-quick-fact strong {
+  display: block;
+  font-family: var(--h-font-display);
+  font-weight: 700;
+  color: var(--h-heading);
+  font-size: 1.1rem;
+}
+.home-v2 .h-quick-fact p {
+  margin-top: 4px;
+  font-size: 0.82rem;
+  color: var(--h-muted);
+  line-height: 1.4;
+}
+@media (max-width: 900px) {
+  .home-v2 .h-quick-facts-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 560px) {
+  .home-v2 .h-quick-facts-row {
+    grid-template-columns: 1fr;
+  }
+}

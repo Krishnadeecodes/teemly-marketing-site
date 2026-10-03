@@ -1,4 +1,6 @@
 import GlowOrbit from './GlowOrbit.jsx'
+import Reveal from '../home/Reveal.jsx'
+import SplitHeading from '../home/SplitHeading.jsx'
 
 export default function PageHero({ eyebrow, title, desc, children }) {
   return (
@@ -11,8 +13,12 @@ export default function PageHero({ eyebrow, title, desc, children }) {
             {eyebrow}
           </span>
         )}
-        <h1>{title}</h1>
-        {desc && <p>{desc}</p>}
+        <SplitHeading as="h1" text={title} />
+        {desc && (
+          <Reveal as="p" delay={0.15}>
+            {desc}
+          </Reveal>
+        )}
         {children}
       </div>
     </section>

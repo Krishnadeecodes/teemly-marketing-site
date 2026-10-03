@@ -1,5 +1,7 @@
-import SectionHead from '../components/SectionHead.jsx'
 import Icon from '../components/Icon.jsx'
+import SplitHeading from '../home/SplitHeading.jsx'
+import Reveal from '../home/Reveal.jsx'
+import '../home/segment.css'
 
 const cards = [
   { icon: 'download', title: 'Nothing for IT to configure', desc: 'One installer, under 2MB, for Windows and macOS. Your team is reporting data within minutes of the invite.' },
@@ -9,18 +11,22 @@ const cards = [
 
 export default function Segment() {
   return (
-    <section className="section segment">
-      <div className="container">
-        <SectionHead center eyebrow="Who It's Built For" title="Enterprise-grade visibility, without an enterprise rollout" />
-        <div className="segment-grid">
-          {cards.map((c) => (
-            <div className="segment-card" key={c.title}>
-              <span className="segment-icon">
-                <Icon name={c.icon} size={22} />
+    <section className="h-segment">
+      <div className="h-wrap">
+        <div className="h-sec-head center">
+          <span className="h-kicker">Who It's Built For</span>
+          <SplitHeading as="h2" text="Enterprise-grade visibility, without an enterprise rollout" />
+          <p>No IT project and no months-long onboarding — teams are live with their first scores the same day they install.</p>
+        </div>
+        <div className="h-pr-grid">
+          {cards.map((c, i) => (
+            <Reveal as="div" className="h-pr" delay={i * 0.08} key={c.title}>
+              <span className="h-pr-ic">
+                <Icon name={c.icon} size={20} />
               </span>
               <h3>{c.title}</h3>
               <p>{c.desc}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>

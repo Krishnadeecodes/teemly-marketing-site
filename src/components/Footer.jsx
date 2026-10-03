@@ -1,37 +1,8 @@
 import { Link } from 'react-router-dom'
 import Logo from './Logo.jsx'
+import Reveal from '../home/Reveal.jsx'
+import { footerColumns, legalLinks } from '../data/navigation.js'
 import './footer.css'
-
-const columns = [
-  {
-    title: 'Product',
-    links: [
-      { label: 'Dashboard & Insights', to: '/product/dashboard' },
-      { label: 'Teams', to: '/product/teams' },
-      { label: 'Screenshot Intelligence', to: '/product/screenshots' },
-      { label: 'Attendance', to: '/product/attendance' },
-      { label: 'Intelligence Reports', to: '/product/reports' },
-      { label: 'Settings & Controls', to: '/product/settings' },
-    ],
-  },
-  {
-    title: 'Company',
-    links: [
-      { label: 'About Teemly', to: '/about' },
-      { label: 'Security & Privacy', to: '/security' },
-      { label: 'Pricing', to: '/pricing' },
-      { label: 'Contact', to: '/contact' },
-    ],
-  },
-  {
-    title: 'Get Started',
-    links: [
-      { label: 'Start Free Trial', to: '/pricing' },
-      { label: 'Book a Demo', to: '/contact' },
-      { label: 'Sign in', to: '/contact' },
-    ],
-  },
-]
 
 export default function Footer() {
   return (
@@ -41,17 +12,17 @@ export default function Footer() {
         <div className="footer-brand">
           <Logo variant="light" size={30} />
           <p>
-            Workforce Intelligence Platform. Real-time visibility into productivity, attendance and work
-            patterns — powered by Teemly's own lightweight desktop agent.
+            Organizational Intelligence Platform. Teemly connects signals from people, work and technology into
+            one real-time record — captured by an agent Teemly built and owns end to end.
           </p>
           <div className="footer-badges">
             <span className="pill-tag foot-pill">Own EXE Agent</span>
-            <span className="pill-tag foot-pill">No Browser Extension</span>
+            <span className="pill-tag foot-pill">DPDP &amp; GDPR-aligned</span>
           </div>
         </div>
 
         <div className="footer-cols">
-          {columns.map((col) => (
+          {footerColumns.map((col) => (
             <div key={col.title} className="footer-col">
               <h4>{col.title}</h4>
               <ul>
@@ -66,12 +37,18 @@ export default function Footer() {
         </div>
       </div>
 
+      <Reveal as="div" className="foot-big" aria-hidden="true">
+        teemly
+      </Reveal>
+
       <div className="container footer-bottom">
         <p>© {new Date().getFullYear()} Teemly. All rights reserved.</p>
         <div className="footer-legal">
-          <Link to="/security">Privacy</Link>
-          <Link to="/security">Terms</Link>
-          <Link to="/security">DPDP &amp; GDPR</Link>
+          {legalLinks.map((l) => (
+            <Link key={l.to} to={l.to}>
+              {l.label}
+            </Link>
+          ))}
         </div>
       </div>
     </footer>

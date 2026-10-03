@@ -5,6 +5,8 @@ import {
   AttendanceMock,
   ReportsMock,
   SettingsMock,
+  VideoRecordingMock,
+  LocationTrackingMock,
 } from '../components/ProductMockups.jsx'
 
 export const modules = [
@@ -80,6 +82,54 @@ export const modules = [
     ],
     planNote:
       'Interval and retention scale with plan: 5 min / 30 days on Starter, 2 min / 90 days on Professional, 1 min / 180 days on Premium. Blur is available from Professional up.',
+  },
+  {
+    slug: 'video-recording',
+    icon: 'monitor',
+    navLabel: 'Video Recording',
+    tag: 'Video Recording',
+    title: 'Continuous visual audit, without the manual review',
+    intro:
+      'Screen recording is captured in configurable segments per employee and organised by session, with in-browser playback — no download required to review a day.',
+    Comp: VideoRecordingMock,
+    roleAccess: [
+      { feature: 'View recordings — all employees', admin: 'Yes', manager: 'No' },
+      { feature: 'View recordings — assigned team', admin: 'Yes', manager: 'Yes' },
+      { feature: 'Download individual recordings', admin: 'Yes', manager: 'No' },
+      { feature: 'Change blur setting', admin: 'Yes, via Settings', manager: 'No' },
+    ],
+    highlights: [
+      { title: 'Configurable segments', desc: 'Recording is captured in 5, 10, 15 or 30-minute segments and stored per employee, per day, organised by session.' },
+      { title: 'Gallery & in-browser playback', desc: 'All recordings listed chronologically with a thumbnail preview — no download needed to watch one back.' },
+      { title: 'Privacy blur, per employee', desc: 'When blur is on for a recording, the original is never written to storage — same server-side guarantee as screenshots.' },
+      { title: 'Silent recording', desc: 'When stealth mode is active there is no visible indicator — gated behind the same legal consent requirement as Silent Tracking.' },
+    ],
+    planNote:
+      'Video Recording is available from the Professional plan up (7-day retention), extending to 30 days on Premium and custom retention on Enterprise. Not available on Starter.',
+  },
+  {
+    slug: 'location-tracking',
+    icon: 'pin',
+    navLabel: 'Location Tracking',
+    tag: 'Location Tracking',
+    title: 'GPS visibility for remote, hybrid and field teams',
+    intro:
+      'Location is captured at a configurable interval and plotted against the working day, with geofencing to confirm presence at the office, a client site, or home.',
+    Comp: LocationTrackingMock,
+    roleAccess: [
+      { feature: 'Team location view', admin: 'Yes', manager: 'Assigned teams only' },
+      { feature: 'Location history per employee', admin: 'Yes', manager: 'Assigned members only' },
+      { feature: 'Geofence alerts', admin: 'Yes, via Settings', manager: 'No' },
+      { feature: 'Export CSV', admin: 'Yes', manager: 'No' },
+    ],
+    highlights: [
+      { title: 'Live & historical view', desc: 'See where each employee is right now, plus a full daily movement log, on a single team map.' },
+      { title: 'Geofencing', desc: 'Define work zones — office, client site, home — and get an alert the moment someone enters or exits one.' },
+      { title: 'Location-based attendance', desc: 'Presence can be confirmed by geofence entry, with late arrivals flagged against your configured check-in time.' },
+      { title: 'Privacy respected', desc: 'Privacy Mode pauses GPS along with everything else — there is no separate override, and coordinates are never shared with peers.' },
+    ],
+    planNote:
+      'Location Tracking is available from the Professional plan up (30-day retention), extending to 90 days on Premium and custom retention on Enterprise. Not available on Starter.',
   },
   {
     slug: 'attendance',

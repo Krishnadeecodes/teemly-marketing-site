@@ -279,6 +279,13 @@
   border-radius: var(--r-lg);
   padding: 28px 26px;
   box-shadow: var(--shadow-card);
+  transition: transform var(--dur-med) var(--ease), box-shadow var(--dur-med) var(--ease), border-color var(--dur-med) var(--ease);
+}
+
+.cap-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--line);
 }
 
 .cap-icon {
@@ -432,6 +439,13 @@
   border-radius: var(--r-lg);
   padding: 26px 24px;
   backdrop-filter: blur(6px);
+  transition: transform var(--dur-med) var(--ease), background var(--dur-med) var(--ease), border-color var(--dur-med) var(--ease);
+}
+
+.trust-card:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.22);
 }
 
 .trust-icon {
@@ -495,6 +509,12 @@
   border-radius: var(--r-lg);
   border: 1px solid var(--line-soft);
   background: #fff;
+  transition: transform var(--dur-med) var(--ease), box-shadow var(--dur-med) var(--ease);
+}
+
+.segment-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
 }
 
 .segment-icon {
@@ -535,6 +555,8 @@
 .pricing-teaser-foot {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
   margin-top: 40px;
 }
 
@@ -568,6 +590,203 @@
   font-size: 1.05rem;
 }
 
+/* ================= MODEL FLOW ================= */
+.model-flow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.model-step {
+  position: relative;
+  flex: 1;
+  min-width: 150px;
+  max-width: 190px;
+  text-align: center;
+  padding: 20px 14px;
+}
+
+.model-step-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: var(--grad-bar);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+}
+
+.model-step strong {
+  display: block;
+  font-family: var(--font-head);
+  font-size: 0.94rem;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+
+.model-step p {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.model-arrow {
+  position: absolute;
+  top: 34px;
+  right: -14px;
+  color: var(--line);
+  display: none;
+}
+
+@media (min-width: 860px) {
+  .model-arrow {
+    display: inline-flex;
+  }
+}
+
+/* ================= TILE GRID (platform / outcomes / integrations) ================= */
+.tile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.tile-grid-small {
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 16px;
+}
+
+.tile-card {
+  display: block;
+  text-align: left;
+  background: #fff;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-lg);
+  padding: 24px 22px;
+  box-shadow: var(--shadow-card);
+  transition: transform var(--dur-med) var(--ease), box-shadow var(--dur-med) var(--ease), border-color var(--dur-med) var(--ease);
+}
+
+a.tile-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--line);
+}
+
+.tile-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: var(--surface-soft);
+  color: var(--pink-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.tile-card h3 {
+  font-size: var(--fs-lg);
+  margin-bottom: 8px;
+}
+
+.tile-card p {
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.tile-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 0.84rem;
+  color: var(--pink-deep);
+}
+
+.integration-fact {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #fff;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-lg);
+  padding: 18px;
+}
+
+.integration-fact p {
+  font-size: 0.86rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+/* ================= ROI TEASER ================= */
+.roi-teaser {
+  background: var(--surface-soft);
+}
+
+.roi-teaser-inner {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.roi-input-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.roi-pill {
+  background: #fff;
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+}
+
+.roi-teaser-visual {
+  justify-self: center;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: var(--grad-mark);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ================= TEEMLY AI (homepage, full-scale insight cards) ================= */
+.teemly-ai-card {
+  padding: 22px 20px;
+  border-radius: var(--r-lg);
+}
+
+.teemly-ai-card h5 {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.teemly-ai-card p {
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+/* ================= SECTION RHYTHM (alternating backgrounds) ================= */
+.problem,
+.platform-teaser,
+.teemly-ai-section,
+.segment {
+  background: var(--surface-soft);
+}
+
 /* ================= RESPONSIVE ================= */
 @media (max-width: 1000px) {
   .trust-grid,
@@ -589,5 +808,22 @@
 @media (max-width: 620px) {
   .price-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 800px) {
+  .roi-teaser-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .roi-input-pills {
+    justify-content: center;
+  }
+  .model-step {
+    max-width: none;
+    min-width: 45%;
+  }
+  .model-arrow {
+    display: none !important;
   }
 }

@@ -1,0 +1,117 @@
+.home-v2 .h-integ {
+  background: linear-gradient(180deg, var(--h-bg-alt), var(--h-bg));
+  overflow: hidden;
+}
+.home-v2 .h-integ-grid {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: clamp(28px, 5vw, 64px);
+  align-items: center;
+}
+.home-v2 .h-integ-lede {
+  margin-top: 18px;
+  font-size: 17px;
+  color: var(--h-muted);
+  max-width: 44ch;
+}
+.home-v2 .h-orbit {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+}
+.home-v2 .h-ringline {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px dashed var(--h-line-strong);
+}
+.home-v2 .h-r1 {
+  inset: 8%;
+}
+.home-v2 .h-r2 {
+  inset: 26%;
+}
+.home-v2 .h-spin {
+  position: absolute;
+  inset: 0;
+  animation: h-spin 50s linear infinite;
+}
+.home-v2 .h-orbit:hover .h-spin,
+.home-v2 .h-orbit:hover .h-orb span {
+  animation-play-state: paused;
+}
+.home-v2 .h-orb {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max-content;
+  transform: rotate(var(--a)) translateX(var(--r)) rotate(calc(-1 * var(--a))) translate(-50%, -50%);
+}
+.home-v2 .h-orb span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--h-surface);
+  border: 1px solid var(--h-line);
+  border-radius: var(--h-radius-pill);
+  padding: 10px 15px;
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--h-heading);
+  white-space: nowrap;
+  box-shadow: var(--h-shadow-sm);
+  animation: h-spin 50s linear infinite reverse;
+}
+@keyframes h-spin {
+  to { transform: rotate(360deg); }
+}
+.home-v2 .h-hubcore {
+  position: absolute;
+  inset: 40%;
+  border-radius: 50%;
+  background: var(--h-surface-raised);
+  box-shadow: 0 0 0 14px rgba(3, 166, 221, 0.08), 0 0 0 30px rgba(3, 166, 221, 0.04), var(--h-shadow-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.home-v2 .h-hubcore svg {
+  width: 52%;
+}
+.home-v2 .h-hubcore::before,
+.home-v2 .h-hubcore::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 2px solid rgba(3, 166, 221, 0.35);
+  animation: h-ripple 3s infinite;
+}
+.home-v2 .h-hubcore::after {
+  animation-delay: 1.5s;
+  border-color: rgba(233, 30, 99, 0.3);
+}
+@keyframes h-ripple {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(1.9); opacity: 0; }
+}
+
+@media (max-width: 900px) {
+  .home-v2 .h-integ-grid {
+    grid-template-columns: 1fr;
+  }
+  .home-v2 .h-orb span {
+    font-size: 12px;
+    padding: 8px 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-v2 .h-spin,
+  .home-v2 .h-orb span,
+  .home-v2 .h-hubcore::before,
+  .home-v2 .h-hubcore::after {
+    animation: none !important;
+  }
+}

@@ -1,0 +1,11 @@
+.h-split .w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+  margin-right: 0.26em;
+}
+.h-split .w > span {
+  display: inline-block;
+}

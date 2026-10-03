@@ -1,0 +1,123 @@
+.home-v2 .h-outcomes {
+  background: var(--h-bg);
+}
+.home-v2 .h-bento {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 18px;
+}
+.home-v2 .h-oc {
+  border-radius: var(--h-radius-xl);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 240px;
+  border: 1px solid var(--h-line);
+  background: var(--h-surface);
+  overflow: hidden;
+}
+.home-v2 .h-oc-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+.home-v2 .h-oc h3 {
+  font-size: clamp(20px, 2vw, 26px);
+  letter-spacing: -0.02em;
+}
+.home-v2 .h-oc p {
+  color: var(--h-muted);
+  max-width: 44ch;
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+.home-v2 .h-oc-a {
+  grid-column: span 7;
+  background: linear-gradient(150deg, var(--h-surface) 40%, rgba(3, 166, 221, 0.08));
+}
+.home-v2 .h-oc-b {
+  grid-column: span 5;
+}
+.home-v2 .h-oc-c {
+  grid-column: span 6;
+}
+.home-v2 .h-oc-d {
+  grid-column: span 6;
+  background: linear-gradient(160deg, var(--h-surface) 30%, rgba(233, 30, 99, 0.08));
+  border-color: rgba(233, 30, 99, 0.2);
+}
+.home-v2 .h-oc-ring {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.home-v2 .h-oc-ring svg {
+  width: 84px;
+  height: 84px;
+}
+.home-v2 .h-oc-ring span {
+  font-size: 13px;
+  color: var(--h-muted);
+}
+.home-v2 .h-stackbar {
+  margin-top: auto;
+  display: grid;
+  gap: 8px;
+}
+.home-v2 .h-stackbar div {
+  height: 11px;
+  border-radius: 9px;
+  background: var(--h-bg-alt);
+  overflow: hidden;
+}
+.home-v2 .h-stackbar span {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 9px;
+  background: var(--h-grad-bar);
+}
+.home-v2 .h-flowdots {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+}
+.home-v2 .h-flowdots i {
+  flex: 1;
+  height: 2px;
+  background: var(--h-line-strong);
+}
+.home-v2 .h-flowdots b {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 3px solid var(--h-azure);
+  background: var(--h-surface);
+  flex-shrink: 0;
+}
+.home-v2 .h-flowdots b.p {
+  border-color: var(--h-pink);
+}
+.home-v2 .h-oc-icon {
+  margin-top: auto;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  background: rgba(233, 30, 99, 0.14);
+  color: var(--h-pink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 1000px) {
+  .home-v2 .h-oc-a,
+  .home-v2 .h-oc-b,
+  .home-v2 .h-oc-c,
+  .home-v2 .h-oc-d {
+    grid-column: span 12;
+  }
+}

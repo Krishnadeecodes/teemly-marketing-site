@@ -1,0 +1,39 @@
+.home-v2 .h-segment {
+  background: var(--h-bg-alt);
+}
+.home-v2 .h-pr-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.home-v2 .h-pr {
+  border: 1px solid var(--h-line);
+  border-radius: var(--h-radius-lg);
+  padding: 24px;
+  background: var(--h-surface);
+}
+.home-v2 .h-pr-ic {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--h-bg-tint);
+  color: var(--h-azure);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+.home-v2 .h-pr h3 {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+.home-v2 .h-pr p {
+  color: var(--h-muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+@media (max-width: 900px) {
+  .home-v2 .h-pr-grid {
+    grid-template-columns: 1fr;
+  }
+}

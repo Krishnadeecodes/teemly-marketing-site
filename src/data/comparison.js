@@ -25,6 +25,13 @@ export const comparisonGroups = [
     ],
   },
   {
+    group: 'Video & Location',
+    rows: [
+      { f: 'Video recording', v: ['Not included', '7-day retention', '30-day retention', 'Custom'] },
+      { f: 'Location tracking', v: ['Not included', '30-day retention', '90-day retention', 'Custom'] },
+    ],
+  },
+  {
     group: 'Attendance',
     rows: [
       { f: 'List view + CSV export', v: [true, true, true, true] },

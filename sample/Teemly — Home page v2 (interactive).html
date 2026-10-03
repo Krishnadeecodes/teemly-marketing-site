@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" style="color-scheme:light">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Teemly — Organizational Intelligence Platform</title>
+<meta name="description" content="Teemly connects signals from people, work, technology and workflows into organizational context and intelligence, so leaders can improve how work happens.">
+<link rel="canonical" href="https://teemly.co/">
+<meta property="og:title" content="Teemly — Organizational Intelligence Platform">
+<meta property="og:description" content="Understand how your organization works. Improve how work happens.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   TOKENS — sampled from the Teemly "T" mark
+   ========================================================= */
+:root{
+  --t-blue:#0187E0; --t-azure:#03A6DD; --t-cyan:#07D7D9;
+  --t-indigo:#032297; --t-magenta:#F62DA0; --t-pink:#E91E63;
+  --grad-bar:linear-gradient(90deg,#0187E0,#03A6DD 50%,#07D7D9);
+  --grad-stem:linear-gradient(180deg,#F62DA0,#E91E63);
+  --grad-brand:linear-gradient(90deg,#0187E0,#07D7D9 35%,#6A3BD8 62%,#F62DA0 82%,#E91E63);
+  --bg:#FFFFFF; --bg-soft:#F5F8FE; --bg-tint:#EAF4FD; --bg-blush:#FFF1F7;
+  --line:#E1E7F2; --line-2:#CFD8EA;
+  --ink:#0B1442; --text:#2E3658; --muted:#5E6785;
+  --blue-700:#0763B8; --pink-700:#C2185B;
+  --shadow-sm:0 1px 2px rgba(11,20,66,.06),0 4px 14px -6px rgba(11,20,66,.12);
+  --shadow-lg:0 2px 4px rgba(11,20,66,.04),0 30px 70px -30px rgba(11,20,66,.28);
+  --radius-pill:999px; --radius-xl:28px; --radius-lg:20px; --radius-md:14px;
+  --font-display:"Bricolage Grotesque","Segoe UI",system-ui,-apple-system,sans-serif;
+  --font-body:"Hanken Grotesk","Segoe UI",system-ui,-apple-system,sans-serif;
+  --wrap:1240px; --gutter:clamp(20px,4vw,44px);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(90px + env(safe-area-inset-top,0px))}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,svg{max-width:100%;display:block}
+a{color:var(--blue-700)}
+h1,h2,h3,h4{font-family:var(--font-display);color:var(--ink);line-height:1.05;margin:0;font-weight:600;letter-spacing:-.025em}
+p{margin:0}
+:focus-visible{outline:3px solid var(--t-azure);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gutter);position:relative}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:-999px;top:8px;background:var(--ink);color:#fff;padding:10px 16px;border-radius:8px;z-index:200}
+.skip:focus{left:12px}
+
+/* Scroll progress */
+#progress{position:fixed;left:0;right:0;top:0;height:3px;background:var(--grad-brand);transform-origin:0 50%;transform:scaleX(0);z-index:120}
+
+/* Buttons */
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;font:600 16px/1 var(--font-body);padding:16px 26px;border-radius:var(--radius-pill);text-decoration:none;border:1.5px solid transparent;cursor:pointer;white-space:nowrap;transition:box-shadow .3s,background .3s,border-color .3s;will-change:transform}
+.btn-primary{background:var(--t-pink);color:#fff;box-shadow:0 10px 30px -10px rgba(233,30,99,.6)}
+.btn-primary:hover{box-shadow:0 16px 40px -12px rgba(233,30,99,.75)}
+.btn-dark{background:var(--ink);color:#fff}
+.btn-ghost{border-color:var(--line-2);color:var(--ink);background:rgba(255,255,255,.7);backdrop-filter:blur(8px)}
+.btn-ghost:hover{border-color:var(--ink)}
+.btn-sm{padding:12px 18px;font-size:15px}
+.btn .arr{display:inline-block;width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.22);position:relative;transition:transform .3s}
+.btn .arr::after{content:"";position:absolute;inset:5px 6px 5px 5px;border-top:2px solid currentColor;border-right:2px solid currentColor;transform:rotate(45deg) translate(-1px,1px)}
+.btn:hover .arr{transform:translateX(3px)}
+.textlink{font-weight:600;text-decoration:none;color:var(--blue-700);background:linear-gradient(currentColor,currentColor) 0 100%/100% 1.5px no-repeat;padding-bottom:2px;transition:background-size .3s}
+.textlink:hover{background-size:0 1.5px;background-position:100% 100%}
+
+.tag-illus{display:inline-block;font:600 11.5px/1 var(--font-body);color:var(--muted);border:1px dashed var(--line-2);background:var(--bg);border-radius:var(--radius-pill);padding:5px 9px}
+.verify{outline:2px dashed #E3A008;outline-offset:4px;border-radius:8px}
+.review-bar{position:relative;z-index:110;background:#FFF7E0;color:#6B4E00;font-size:14px;text-align:center;padding:8px 16px;border-bottom:1px solid #F1D48A}
+.review-bar button{background:none;border:0;color:inherit;text-decoration:underline;cursor:pointer;font:inherit}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+.site-header{position:sticky;top:0;z-index:100;transition:background .3s,box-shadow .3s,border-color .3s;border-bottom:1px solid transparent}
+.site-header.scrolled{background:rgba(255,255,255,.82);backdrop-filter:saturate(1.6) blur(16px);-webkit-backdrop-filter:saturate(1.6) blur(16px);border-color:var(--line);box-shadow:0 10px 30px -24px rgba(11,20,66,.4)}
+.nav{display:flex;align-items:center;gap:20px;height:76px;transition:height .3s}
+.scrolled .nav{height:66px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font:700 23px/1 var(--font-display);letter-spacing:-.01em}
+.brand svg{width:32px;height:32px;flex:0 0 32px}
+.nav-main{display:flex;gap:2px;list-style:none;margin:0 0 0 12px;padding:0}
+.nav-main > li{position:relative}
+.nav-trigger{white-space:nowrap;background:none;border:0;font:500 15.5px/1 var(--font-body);color:var(--ink);padding:12px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:6px;text-decoration:none}
+.nav-trigger:hover,.nav-trigger[aria-expanded="true"]{background:rgba(11,20,66,.05)}
+.nav-trigger .chev{width:10px;height:10px;transition:transform .25s}
+.nav-trigger[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.nav-cta{margin-left:auto;display:flex;gap:10px;align-items:center}
+.nav-cta .login{white-space:nowrap;color:var(--ink);text-decoration:none;font-weight:500;padding:0 10px}
+.menu-toggle{display:none;margin-left:auto;background:#fff;border:1.5px solid var(--line);border-radius:12px;width:44px;height:44px;cursor:pointer;color:var(--ink)}
+.mega{position:absolute;left:0;top:calc(100% + 12px);background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);padding:24px;min-width:620px;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .22s,transform .22s,visibility .22s;display:grid}
+.mega.open{opacity:1;visibility:visible;transform:none}
+.mega-platform{grid-template-columns:1.35fr 1fr;gap:24px}
+.mega-cols2{grid-template-columns:1fr 1fr;gap:6px 28px}
+.mega h4{font:600 13px/1.2 var(--font-body);color:var(--muted);margin:0 0 10px;letter-spacing:0}
+.mega ul{list-style:none;margin:0;padding:0}
+.mega a{display:block;padding:8px 10px;margin:0 -10px;border-radius:10px;text-decoration:none;color:var(--ink);font-weight:500;font-size:15.5px}
+.mega a:hover{background:var(--bg-soft)}
+.mega a small{display:block;color:var(--muted);font-weight:400;font-size:13.5px;line-height:1.4}
+.mega-feature{position:relative;overflow:hidden;background:var(--bg-soft);border-radius:var(--radius-md);padding:22px;display:flex;flex-direction:column;justify-content:space-between;gap:18px}
+.mega-feature::before{content:"";position:absolute;right:-30px;top:-30px;width:140px;height:44px;border-radius:99px;background:var(--grad-bar);opacity:.9}
+.mega-feature::after{content:"";position:absolute;right:28px;top:14px;width:32px;height:90px;border-radius:0 0 99px 99px;background:var(--grad-stem)}
+.mega-feature strong{position:relative;z-index:1;font:600 20px/1.2 var(--font-display);color:var(--ink);display:block;margin:70px 0 6px}
+.mega-feature p{position:relative;z-index:1;color:var(--muted);font-size:15px}
+.mega-feature a{position:relative;z-index:1;margin:0;padding:0;font-weight:600;color:var(--blue-700)}
+.mega-feature a:hover{background:none}
+.mobile-panel{display:none}
+@media (max-width:1180px){
+  .nav-main,.nav-cta{display:none}
+  .menu-toggle{display:inline-grid;place-items:center}
+  .mobile-panel.open{display:block;background:#fff;border-top:1px solid var(--line);padding:12px var(--gutter) 24px;max-height:calc(100dvh - 66px);overflow:auto}
+  .mobile-panel details{border-bottom:1px solid var(--line)}
+  .mobile-panel summary{list-style:none;padding:16px 0;font:600 17px var(--font-body);color:var(--ink);cursor:pointer}
+  .mobile-panel summary::-webkit-details-marker{display:none}
+  .mobile-panel ul{list-style:none;margin:0 0 12px;padding:0}
+  .mobile-panel li a{display:block;padding:8px 0;color:var(--text);text-decoration:none}
+  .mobile-panel .m-ctas{display:grid;gap:10px;margin-top:20px}
+}
+
+/* =========================================================
+   SHARED SECTION STYLES
+   ========================================================= */
+section{position:relative;padding:clamp(88px,11vw,150px) 0}
+.sec-head{max-width:900px;margin-bottom:clamp(44px,5vw,72px)}
+.sec-head.center{margin-left:auto;margin-right:auto;text-align:center}
+.sec-head h2,.h2{font-size:clamp(36px,4.8vw,64px);letter-spacing:-.035em}
+.sec-head p,.lede{margin-top:20px;font-size:clamp(17px,1.5vw,20px);color:var(--muted);max-width:60ch}
+.sec-head.center p{margin-left:auto;margin-right:auto}
+.kicker{display:inline-flex;align-items:center;gap:10px;font:600 15px/1 var(--font-body);color:var(--blue-700);margin-bottom:20px}
+.kicker::before{content:"";width:24px;height:7px;border-radius:var(--radius-pill);background:var(--grad-bar)}
+.kicker.pink{color:var(--pink-700)}
+.kicker.pink::before{background:var(--grad-stem)}
+.split .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
+.split .w > span{display:inline-block}
+
+/* Dotted grid backdrop */
+.dots-bg::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(11,20,66,.13) 1px,transparent 1.2px);background-size:26px 26px;-webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 40%,#000 30%,transparent 75%);mask-image:radial-gradient(ellipse 70% 60% at 50% 40%,#000 30%,transparent 75%);pointer-events:none}
+
+/* Floating aurora blobs */
+.aurora{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.aurora i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55}
+.aurora .a1{width:520px;height:520px;background:#BFE9FB;left:52%;top:-12%;animation:float1 18s ease-in-out infinite}
+.aurora .a2{width:420px;height:420px;background:#FFD3E6;right:-8%;top:38%;animation:float2 22s ease-in-out infinite}
+.aurora .a3{width:360px;height:360px;background:#D9DEFF;left:-6%;bottom:-10%;animation:float1 26s ease-in-out infinite reverse}
+@keyframes float1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-60px,50px) scale(1.12)}}
+@keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(50px,-60px) scale(.9)}}
+
+/* Spotlight cards */
+.spot{position:relative;isolation:isolate}
+.spot::after{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(3,166,221,.14),transparent 45%);opacity:0;transition:opacity .3s;pointer-events:none;z-index:-1}
+.spot:hover::after{opacity:1}
+
+/* =========================================================
+   1. HERO — particle T
+   ========================================================= */
+.hero{padding:0;min-height:calc(100vh - 76px);min-height:calc(100svh - 76px);display:flex;align-items:center;overflow:hidden;background:linear-gradient(180deg,#fff 0%,#F7FAFF 100%)}
+.hero .wrap{width:100%;z-index:2;pointer-events:none}
+.hero .wrap a,.hero .wrap button{pointer-events:auto}
+#heroCanvas{position:absolute;inset:0;z-index:1}
+.hero-copy{max-width:600px;padding:56px 0 64px}
+.hero h1{font-size:clamp(40px,4.7vw,72px);font-weight:700;letter-spacing:-.045em;line-height:.98}
+.hero h1 .l2{display:block;margin-top:.1em;background:var(--grad-brand);-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% 100%;animation:sheen 8s ease-in-out infinite}
+@keyframes sheen{0%,100%{background-position:0 0}50%{background-position:100% 0}}
+.hero-sub{margin-top:28px;font-size:clamp(18px,1.55vw,21px);color:var(--muted);max-width:50ch}
+.hero-ctas{display:flex;gap:12px;margin-top:38px;flex-wrap:wrap}
+.hero-meta{margin-top:34px;display:flex;gap:10px;flex-wrap:wrap}
+.hero-meta span{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--ink);background:rgba(255,255,255,.8);border:1px solid var(--line);border-radius:var(--radius-pill);padding:8px 14px;backdrop-filter:blur(6px)}
+.hero-meta i{width:8px;height:8px;border-radius:50%;background:#1E8E5A;box-shadow:0 0 0 4px rgba(30,142,90,.15)}
+.hero-float{position:absolute;inset:0;z-index:3;pointer-events:none}
+.hero-chip{position:absolute;z-index:3;transform:translate(-50%,-100%);font:600 13.5px/1 var(--font-body);color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:var(--radius-pill);padding:9px 14px;box-shadow:var(--shadow-sm);opacity:0;transition:opacity .6s,transform .6s;white-space:nowrap;pointer-events:none}
+.hero-chip::after{content:"";position:absolute;left:50%;bottom:-9px;width:1px;height:8px;background:var(--line-2)}
+.hero-chip.show{opacity:1;transform:translate(-50%,calc(-100% - 6px))}
+.hero-card{position:absolute;z-index:3;width:220px;background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:var(--radius-md);padding:14px 16px;box-shadow:var(--shadow-lg);opacity:0;transition:opacity .8s;pointer-events:none;font-size:14px;line-height:1.4}
+.hero-card.show{opacity:1}
+.hero-card b{display:block;font:600 12.5px var(--font-body);color:var(--muted);margin-bottom:6px}
+.hero-card p{color:var(--ink);font-weight:600}
+.hero-card .mini{display:flex;align-items:end;gap:4px;height:34px;margin-top:10px}
+.hero-card .mini span{flex:1;border-radius:3px;background:var(--t-azure);opacity:.7}
+.hero-card .mini span.h{background:var(--t-pink);opacity:1}
+.hero-card.pink{border-color:rgba(233,30,99,.35)}
+.hero-card.pink b{color:var(--pink-700)}
+.hero .illus{position:absolute;z-index:3;right:var(--gutter);bottom:22px}
+.scroll-cue{position:absolute;left:50%;bottom:22px;z-index:3;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.scroll-cue span{width:24px;height:38px;border:2px solid var(--line-2);border-radius:14px;position:relative}
+.scroll-cue span::after{content:"";position:absolute;left:50%;top:7px;width:4px;height:8px;margin-left:-2px;border-radius:2px;background:var(--t-pink);animation:cue 1.8s infinite}
+@keyframes cue{0%{opacity:0;transform:translateY(0)}30%{opacity:1}100%{opacity:0;transform:translateY(12px)}}
+@media (max-width:900px){
+  .hero{align-items:flex-start}
+  .hero-copy{padding:40px 0 min(100vw,420px)}
+  .scroll-cue{display:none}
+  .hero .illus{bottom:14px}
+}
+@media (max-width:600px){.hero-chip{display:none}}
+
+/* =========================================================
+   2. MARQUEE
+   ========================================================= */
+.marquee{padding:26px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff;overflow:hidden}
+.marquee-track{display:flex;gap:44px;width:max-content;animation:marq 38s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee-item{display:flex;align-items:center;gap:44px;font:600 clamp(20px,2.2vw,28px)/1 var(--font-display);color:var(--ink);white-space:nowrap;letter-spacing:-.02em}
+.marquee-item .sep{width:34px;height:12px;border-radius:99px;background:var(--grad-bar);position:relative}
+.marquee-item .sep::after{content:"";position:absolute;left:12px;top:10px;width:10px;height:14px;border-radius:0 0 8px 8px;background:var(--grad-stem)}
+.marquee-item .o{color:transparent;-webkit-text-stroke:1.2px var(--ink)}
+@keyframes marq{to{transform:translateX(-50%)}}
+
+/* =========================================================
+   3. PROBLEM — pinned "connect the silos"
+   ========================================================= */
+.problem{background:#fff;padding:0}
+.problem-pin{min-height:100vh;display:flex;align-items:center;padding:110px 0 80px}
+.problem-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(32px,6vw,90px);align-items:center;width:100%}
+.caps{position:relative;margin-top:30px;min-height:130px}
+.cap{position:absolute;inset:0 auto auto 0;max-width:48ch;font-size:19px;color:var(--muted)}
+.cap strong{display:block;font:600 22px/1.3 var(--font-display);color:var(--ink);margin-bottom:8px}
+.cap.c2{opacity:0}
+.stage{position:relative;aspect-ratio:1/0.92;width:100%;max-width:600px;margin-left:auto}
+.stage svg.links{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.stage svg.links path{fill:none;stroke-width:.6;stroke-linecap:round}
+.silos{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:clamp(90px,14vw,190px) clamp(80px,12vw,170px)}
+.silo{background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);padding:18px 18px 16px;box-shadow:var(--shadow-sm);align-self:start;will-change:transform}
+.silo:nth-child(3),.silo:nth-child(4){align-self:end}
+.silo .ic{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:#fff;margin-bottom:12px}
+.silo h3{font-size:20px;margin-bottom:6px}
+.silo p{font-size:14.5px;color:var(--muted);line-height:1.45}
+.core{position:absolute;left:50%;top:50%;width:clamp(96px,13vw,138px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:#fff;box-shadow:0 0 0 10px rgba(3,166,221,.08),0 0 0 22px rgba(233,30,99,.05),var(--shadow-lg);display:grid;place-items:center}
+.core svg{width:56%}
+.core-inner{display:grid;place-items:center;width:100%;height:100%}
+@media (max-width:900px){
+  .problem-pin{min-height:0;padding:90px 0}
+  .problem-grid{grid-template-columns:1fr}
+  .stage{margin:10px auto 0}
+  .silos{gap:130px 40px}
+  .silo p{display:none}
+  .caps{min-height:170px}
+}
+
+/* =========================================================
+   4. MODEL — horizontal scroll
+   ========================================================= */
+.model{background:linear-gradient(180deg,var(--bg-soft),#fff);padding:0;overflow:hidden}
+.model-pin{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:100px 0 70px}
+.model-head{display:flex;justify-content:space-between;align-items:end;gap:30px;flex-wrap:wrap;margin-bottom:44px}
+.model-head .sec-head{margin-bottom:0;max-width:720px}
+.rail{position:relative;height:6px;border-radius:99px;background:var(--line);margin:0 var(--gutter) 40px;max-width:calc(var(--wrap) - 2*var(--gutter));overflow:hidden}
+@media (min-width:1240px){.rail{margin-left:auto;margin-right:auto}}
+.rail i{position:absolute;inset:0;background:var(--grad-brand);transform-origin:0 50%;transform:scaleX(.08)}
+.h-track{display:flex;gap:24px;padding:0 max(var(--gutter),calc((100vw - var(--wrap))/2 + var(--gutter)));width:max-content;will-change:transform}
+.panel{width:min(420px,80vw);flex:0 0 auto;background:#fff;border:1px solid var(--line);border-radius:var(--radius-xl);padding:30px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:14px;min-height:430px}
+.panel .num{font:700 15px var(--font-body);display:inline-flex;align-items:center;gap:10px;color:var(--muted)}
+.panel .num b{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:14px}
+.panel h3{font-size:34px;letter-spacing:-.03em}
+.panel p{color:var(--muted)}
+.panel .viz{margin-top:auto;height:150px;border-radius:var(--radius-md);background:var(--bg-soft);border:1px solid var(--line);position:relative;overflow:hidden;display:grid;place-items:center}
+.panel:last-child{background:linear-gradient(160deg,#fff,var(--bg-blush));border-color:rgba(233,30,99,.25)}
+/* viz: signals */
+.v-sig{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;padding:18px;width:100%}
+.v-sig i{aspect-ratio:1;border-radius:50%;background:var(--t-azure);opacity:.2;animation:tw 2.4s infinite}
+@keyframes tw{0%,100%{opacity:.18}50%{opacity:.9}}
+/* viz: rec card */
+.v-rec{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;width:82%;box-shadow:var(--shadow-sm);font-size:14px}
+.v-rec b{color:var(--ink);display:block;margin-bottom:4px}
+.v-rec small{color:var(--muted)}
+.v-rec .row{display:flex;gap:6px;margin-top:10px}
+.v-rec .row span{font-size:12px;font-weight:600;padding:5px 10px;border-radius:99px;background:var(--bg-tint);color:var(--blue-700)}
+.v-rec .row span.p{background:var(--t-pink);color:#fff}
+/* viz: checklist */
+.v-chk{display:grid;gap:9px;width:80%}
+.v-chk div{display:flex;gap:10px;align-items:center;font-size:14px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+.v-chk i{width:18px;height:18px;border-radius:50%;background:#1E8E5A;position:relative;flex:0 0 18px}
+.v-chk i::after{content:"";position:absolute;left:6px;top:3px;width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.v-chk i.o{background:none;border:2px solid var(--line-2)}
+.v-chk i.o::after{display:none}
+/* viz: before/after */
+.v-ba{display:flex;align-items:end;gap:28px;height:110px}
+.v-ba div{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12.5px;color:var(--muted)}
+.v-ba span{width:54px;border-radius:10px 10px 4px 4px;display:block}
+@media (max-width:900px){
+  .model-pin{min-height:0;padding:90px 0}
+  .rail{display:none}
+  .h-track{flex-direction:column;width:auto;padding:0 var(--gutter)}
+  .panel{width:100%;min-height:0}
+}
+
+/* =========================================================
+   5. PLATFORM — sticky scrollytelling
+   ========================================================= */
+.platform{background:#fff}
+.pl-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(28px,5vw,72px);align-items:start}
+.pl-grid > *,.ai-grid > *,.integ-grid > *,.trust-grid > *,.problem-grid > *{min-width:0}
+.pl-step{min-height:62vh;display:flex;flex-direction:column;justify-content:center;padding:30px 0;border-left:2px solid var(--line);padding-left:28px;position:relative;transition:opacity .4s}
+.pl-step::before{content:"";position:absolute;left:-2px;top:30%;height:40%;width:2px;background:var(--grad-stem);transform:scaleY(0);transition:transform .5s}
+.pl-step.active::before{transform:scaleY(1)}
+.pl-step:not(.active){opacity:.38}
+.pl-step .idx{font:600 14px var(--font-body);color:var(--muted);margin-bottom:12px}
+.pl-step h3{font-size:clamp(26px,2.6vw,36px);letter-spacing:-.03em}
+.pl-step p{margin-top:12px;color:var(--muted);font-size:18px;max-width:42ch}
+.pl-step ul{margin:18px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+.pl-step li{display:flex;gap:10px;align-items:baseline;font-size:15.5px}
+.pl-step li::before{content:"";flex:0 0 14px;height:5px;border-radius:9px;background:var(--grad-bar);transform:translateY(-3px)}
+.pl-inline{display:none}
+.pl-sticky{position:sticky;top:max(110px,calc(50vh - 280px))}
+.dash{background:linear-gradient(180deg,#fff,var(--bg-soft));border:1px solid var(--line);border-radius:var(--radius-xl);padding:clamp(14px,2vw,22px);box-shadow:var(--shadow-lg);position:relative}
+.dash::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(140deg,rgba(3,166,221,.5),transparent 35%,transparent 65%,rgba(233,30,99,.45));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.win{background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden}
+.win-top{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line);font-size:13.5px;color:var(--muted)}
+.win-top b{color:var(--ink);font-weight:600}
+.dots3{display:flex;gap:6px}.dots3 i{width:9px;height:9px;border-radius:50%;background:var(--line-2);display:block}
+.win-body{padding:18px;display:grid;gap:14px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.kpi{border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.kpi small{display:block;color:var(--muted);font-size:12.5px;line-height:1.3}
+.kpi strong{font:600 24px/1.2 var(--font-display);color:var(--ink)}
+.kpi em{font-style:normal;font-size:12.5px;color:#1E8E5A;font-weight:600;margin-left:4px}
+.kpi em.dn{color:var(--pink-700)}
+.chartbox{border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:10px}
+.chartbox small{color:var(--muted);font-size:12.5px}
+.chartbox .bars{display:flex;align-items:flex-end;gap:10px;height:130px}
+.chartbox .bars span{flex:1;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,var(--t-azure),#7FD0F2);transform-origin:bottom}
+.chartbox .bars span.h{background:var(--grad-stem)}
+.insight{display:flex;gap:12px;align-items:flex-start;background:var(--bg-tint);border-radius:12px;padding:14px;font-size:14.5px;color:var(--ink)}
+.insight .spark{flex:0 0 28px;height:28px;border-radius:9px;background:var(--grad-stem);display:grid;place-items:center;color:#fff;font-size:13px}
+.dash-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap}
+.pips{display:flex;gap:6px}.pips i{width:22px;height:5px;border-radius:9px;background:var(--line-2);transition:background .3s,width .3s}.pips i.on{background:var(--t-pink);width:36px}
+@media (max-width:900px){
+  .pl-grid{grid-template-columns:1fr}
+  .pl-sticky{display:none}
+  .pl-step{min-height:0;opacity:1!important;padding:26px 0 26px 22px}
+  .pl-step::before{transform:scaleY(1)}
+  .pl-inline{display:block;margin-top:20px}
+  .kpis{grid-template-columns:1fr 1fr}
+}
+
+/* =========================================================
+   6. SOLUTIONS — draggable rail
+   ========================================================= */
+.solutions{background:linear-gradient(180deg,#fff,var(--bg-soft));overflow:hidden}
+.sol-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:44px}
+.sol-head .sec-head{margin-bottom:0}
+.rail-btns{display:flex;gap:10px}
+.rail-btns button{width:52px;height:52px;border-radius:50%;border:1.5px solid var(--line-2);background:#fff;cursor:pointer;display:grid;place-items:center;color:var(--ink);transition:background .2s,color .2s}
+.rail-btns button:hover{background:var(--ink);color:#fff}
+.sol-rail{--pad:max(var(--gutter),calc((100vw - var(--wrap))/2 + var(--gutter)));scroll-padding-inline:var(--pad);display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding:10px max(var(--gutter),calc((100vw - var(--wrap))/2 + var(--gutter))) 30px;scrollbar-width:none;cursor:grab}
+.sol-rail::-webkit-scrollbar{display:none}
+.sol-rail.drag{cursor:grabbing;scroll-snap-type:none}
+.sol-card{flex:0 0 min(380px,84vw);scroll-snap-align:start;background:#fff;border:1px solid var(--line);border-radius:var(--radius-xl);padding:30px;display:flex;flex-direction:column;gap:16px;box-shadow:var(--shadow-sm);transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s;transform-style:preserve-3d;min-height:470px;user-select:none}
+.sol-card:hover{box-shadow:var(--shadow-lg)}
+.sol-card .role{display:inline-flex;align-items:center;gap:10px;font:600 14px var(--font-body);color:var(--muted)}
+.sol-card .role i{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-style:normal;color:#fff;font:700 15px var(--font-display)}
+.sol-card h3{font-size:25px;letter-spacing:-.02em}
+.sol-card ul{margin:0;padding:0;list-style:none;display:grid;gap:9px;font-size:15.5px}
+.sol-card li{display:flex;gap:10px;align-items:baseline}
+.sol-card li::before{content:"";flex:0 0 14px;height:5px;border-radius:9px;background:var(--grad-bar);transform:translateY(-3px)}
+.sol-card .ask{margin-top:auto;background:var(--bg-soft);border-radius:16px 16px 16px 4px;padding:13px 16px;font-size:15px;color:var(--ink);position:relative}
+.sol-card .ask small{display:block;color:var(--muted);font-size:12px;margin-bottom:4px}
+.sol-card a{font-weight:600;text-decoration:none;color:var(--blue-700)}
+
+/* =========================================================
+   7. TEEMLY AI
+   ========================================================= */
+.ai{background:var(--bg-soft);overflow:hidden}
+.ai .aurora .a1{left:-10%;top:10%;background:#CFEFFC}
+.ai .aurora .a2{right:-6%;top:auto;bottom:-10%;background:#FFD9EA}
+.ai-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(28px,5vw,72px);align-items:center;position:relative;z-index:1}
+.prompts{display:grid;gap:10px;margin-top:34px}
+.prompts button{text-align:left;background:#fff;border:1.5px solid var(--line);color:var(--ink);border-radius:16px;padding:16px 18px 16px 48px;font:500 16px/1.4 var(--font-body);cursor:pointer;position:relative;transition:border-color .25s,box-shadow .25s,transform .25s}
+.prompts button::before{content:"";position:absolute;left:16px;top:50%;width:18px;height:18px;margin-top:-9px;border-radius:50%;border:2px solid var(--line-2);transition:all .25s}
+.prompts button:hover{border-color:var(--t-azure);transform:translateX(4px)}
+.prompts button[aria-pressed="true"]{border-color:var(--t-pink);box-shadow:0 12px 30px -18px rgba(233,30,99,.6)}
+.prompts button[aria-pressed="true"]::before{border-color:var(--t-pink);background:radial-gradient(circle,var(--t-pink) 40%,transparent 45%)}
+.ai-note{margin-top:22px;font-size:14px;color:var(--muted);max-width:46ch}
+.console{background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:var(--radius-xl);box-shadow:var(--shadow-lg);overflow:hidden}
+.console-top{display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid var(--line);font-weight:600;color:var(--ink);font-size:15px}
+.console-top svg{width:24px;height:24px}
+.console-top .live{margin-left:auto;font-size:12.5px;color:#1E8E5A;display:flex;align-items:center;gap:6px;font-weight:600}
+.console-top .live i{width:7px;height:7px;border-radius:50%;background:#1E8E5A;animation:pulse 1.6s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(30,142,90,.5)}100%{box-shadow:0 0 0 8px rgba(30,142,90,0)}}
+.console-body{padding:clamp(18px,2.4vw,28px);min-height:430px;display:flex;flex-direction:column;gap:18px}
+.msg-u{align-self:flex-end;background:var(--ink);color:#fff;border-radius:18px 18px 4px 18px;padding:12px 16px;max-width:85%;font-weight:500;min-height:46px}
+.msg-u .caret{display:inline-block;width:2px;height:1em;background:#fff;vertical-align:-2px;margin-left:2px;animation:blink .8s infinite}
+@keyframes blink{50%{opacity:0}}
+.msg-a{display:flex;gap:12px}
+.msg-a .av{flex:0 0 34px;height:34px;border-radius:10px;background:var(--bg-soft);display:grid;place-items:center}
+.msg-a .av svg{width:24px;height:24px}
+.msg-a .body{display:grid;gap:14px;font-size:15.5px;flex:1}
+.msg-a .body strong{color:var(--ink)}
+.thinking{display:flex;gap:5px;padding:12px 0}
+.thinking i{width:8px;height:8px;border-radius:50%;background:var(--t-azure);animation:bounce 1s infinite}
+.thinking i:nth-child(2){animation-delay:.15s;background:#6A3BD8}.thinking i:nth-child(3){animation-delay:.3s;background:var(--t-pink)}
+@keyframes bounce{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(-6px);opacity:1}}
+.bar-row{display:grid;grid-template-columns:120px 1fr 44px;gap:10px;align-items:center;font-size:13.5px;color:var(--text)}
+.bar-row .track{height:10px;background:var(--bg-soft);border-radius:9px;overflow:hidden}
+.bar-row .fill{display:block;height:100%;width:0;border-radius:9px;background:var(--grad-bar);transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.bar-row .fill.hot{background:var(--t-pink)}
+.bars-a{display:grid;gap:8px;margin-top:8px}
+.act{display:flex;gap:8px;flex-wrap:wrap}
+.act span{font-size:13px;font-weight:600;border:1.5px solid var(--line);border-radius:var(--radius-pill);padding:7px 12px;color:var(--ink);background:#fff}
+.src{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px;display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+.fadein{animation:fi .5s both}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (max-width:900px){.ai-grid{grid-template-columns:1fr}.bar-row{grid-template-columns:92px 1fr 40px}}
+
+/* =========================================================
+   8. OUTCOMES — bento
+   ========================================================= */
+.outcomes{background:#fff}
+.bento{display:grid;grid-template-columns:repeat(12,1fr);gap:20px}
+.oc{border-radius:var(--radius-xl);padding:32px;display:flex;flex-direction:column;gap:12px;min-height:260px;border:1px solid var(--line);background:#fff;overflow:hidden}
+.oc h3{font-size:clamp(24px,2.2vw,30px);letter-spacing:-.025em}
+.oc p{color:var(--muted);max-width:44ch}
+.oc .ev{font-size:13px;font-weight:600;color:var(--muted)}
+.oc-a{grid-column:span 7;background:linear-gradient(150deg,#fff 40%,var(--bg-tint))}
+.oc-b{grid-column:span 5}
+.oc-c{grid-column:span 4}
+.oc-d{grid-column:span 4}
+.oc-e{grid-column:span 4;background:linear-gradient(160deg,#fff 30%,var(--bg-blush));border-color:rgba(233,30,99,.22)}
+.oc svg.line{margin-top:auto;width:100%;height:120px;overflow:visible}
+.oc .ring{margin-top:auto;display:flex;align-items:center;gap:18px}
+.oc .ring svg{width:92px;height:92px;transform:rotate(-90deg)}
+.oc .ring b{font:600 30px var(--font-display);color:var(--ink)}
+.oc .stackbar{margin-top:auto;display:grid;gap:8px}
+.oc .stackbar div{height:12px;border-radius:9px;background:var(--bg-soft);overflow:hidden}
+.oc .stackbar span{display:block;height:100%;border-radius:9px;background:var(--grad-bar)}
+.oc .flowdots{margin-top:auto;display:flex;align-items:center;gap:0}
+.oc .flowdots i{flex:1;height:3px;background:var(--line-2);position:relative}
+.oc .flowdots b{width:16px;height:16px;border-radius:50%;border:3px solid var(--t-azure);background:#fff}
+.oc .flowdots b.p{border-color:var(--t-pink)}
+.oc .flowdots i::after{content:"";position:absolute;top:-3px;left:0;width:9px;height:9px;border-radius:50%;background:var(--t-azure);animation:travel 2.4s linear infinite}
+@keyframes travel{to{left:calc(100% - 9px)}}
+.oc-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+@media (max-width:1000px){.oc-a,.oc-b{grid-column:span 12}.oc-c,.oc-d,.oc-e{grid-column:span 12}}
+
+/* =========================================================
+   9. ROI
+   ========================================================= */
+.roi{background:var(--bg-soft)}
+.roi-card{display:grid;grid-template-columns:1.05fr .95fr;border-radius:var(--radius-xl);overflow:hidden;border:1px solid var(--line);background:#fff;box-shadow:var(--shadow-lg)}
+.roi-in{padding:clamp(24px,3.4vw,48px);display:grid;gap:24px}
+.field label{display:flex;justify-content:space-between;gap:8px;font-weight:600;color:var(--ink);font-size:15px;margin-bottom:10px}
+.field label output{color:var(--blue-700);font-weight:700}
+.field input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:9px;background:linear-gradient(90deg,var(--t-azure) var(--p,30%),var(--line) var(--p,30%));outline-offset:6px}
+.field input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;border:6px solid var(--t-pink);box-shadow:0 4px 12px rgba(233,30,99,.35);cursor:grab}
+.field input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:#fff;border:6px solid var(--t-pink);cursor:grab}
+.field input[type=number],.field select{width:100%;font:500 16px var(--font-body);padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+.field input:focus,.field select:focus{border-color:var(--t-azure);outline:none;box-shadow:0 0 0 4px rgba(3,166,221,.15)}
+.field .hint{font-size:13px;color:var(--muted);margin-top:8px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.roi-out{position:relative;overflow:hidden;background:linear-gradient(160deg,var(--bg-tint),#fff 55%,var(--bg-blush));padding:clamp(24px,3.4vw,48px);display:flex;flex-direction:column;gap:22px;border-left:1px solid var(--line)}
+.roi-out::before{content:"";position:absolute;right:-40px;top:-40px;width:220px;height:66px;border-radius:99px;background:var(--grad-bar);opacity:.18}
+.roi-out h3{font:600 17px var(--font-body);color:var(--muted);letter-spacing:0}
+.big{font:700 clamp(48px,6vw,80px)/1 var(--font-display);letter-spacing:-.04em;background:linear-gradient(90deg,var(--ink),#233A9B);-webkit-background-clip:text;background-clip:text;color:transparent}
+.roi-lines div{display:flex;justify-content:space-between;padding:15px 0;border-top:1px solid var(--line);font-size:15.5px}
+.roi-lines b{color:var(--ink)}
+.assume{font-size:13px;color:var(--muted);line-height:1.5}
+.assume strong{color:var(--ink)}
+@media (max-width:900px){.roi-card{grid-template-columns:1fr}.roi-out{border-left:0;border-top:1px solid var(--line)}.two{grid-template-columns:1fr}}
+
+/* =========================================================
+   10. HOW IT WORKS — drawn path
+   ========================================================= */
+.how{background:#fff}
+.how-wrap{position:relative}
+.how-path{position:absolute;left:0;right:0;top:34px;height:120px;width:100%;pointer-events:none}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,4vw,56px);position:relative}
+.step .badge{width:68px;height:68px;border-radius:22px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-sm);display:grid;place-items:center;margin-bottom:28px;position:relative;z-index:1}
+.step .badge svg{width:30px;height:30px}
+.step .n{font:600 14px var(--font-body);color:var(--muted)}
+.step h3{font-size:clamp(30px,3vw,42px);margin:6px 0 14px;letter-spacing:-.03em}
+.step p{color:var(--muted)}
+.step ul{margin:18px 0 0;padding:0;list-style:none;display:grid;gap:8px;font-size:15.5px}
+.step li{display:flex;gap:10px;align-items:center}
+.step li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--t-azure);flex:0 0 6px}
+.step:nth-child(3) li::before{background:var(--t-pink)}
+@media (max-width:900px){.steps{grid-template-columns:1fr}.how-path{display:none}}
+
+/* =========================================================
+   11. INTEGRATIONS — orbit
+   ========================================================= */
+.integ{background:linear-gradient(180deg,var(--bg-soft),#fff);overflow:hidden}
+.integ-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(28px,5vw,64px);align-items:center}
+.orbit{position:relative;width:100%;max-width:560px;aspect-ratio:1;margin:0 auto}
+.orbit .ringline{position:absolute;border-radius:50%;border:1.5px dashed var(--line-2)}
+.orbit .r1{inset:6%}.orbit .r2{inset:24%}
+.spin{position:absolute;inset:0;animation:spin 50s linear infinite}
+.spin.rev{animation-duration:36s;animation-direction:reverse}
+.orbit:hover .spin,.orbit:hover .orb span{animation-play-state:paused}
+.orb{position:absolute;left:50%;top:50%;width:max-content;transform:rotate(var(--a)) translateX(var(--r)) rotate(calc(-1 * var(--a))) translate(-50%,-50%)}
+.orb span{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:var(--radius-pill);padding:10px 16px;font-weight:600;font-size:14.5px;color:var(--ink);white-space:nowrap;box-shadow:var(--shadow-sm);animation:spin 50s linear infinite reverse}
+.spin.rev .orb span{animation-duration:36s;animation-direction:normal}
+.orb span i{width:9px;height:9px;border-radius:50%;background:var(--t-azure)}
+.orb span i.p{background:var(--t-pink)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.orb span{transform-origin:center}
+.orbit .hubcore{position:absolute;inset:38%;border-radius:50%;background:#fff;box-shadow:0 0 0 14px rgba(3,166,221,.07),0 0 0 30px rgba(3,166,221,.04),var(--shadow-lg);display:grid;place-items:center}
+.orbit .hubcore svg{width:52%}
+.orbit .hubcore::before,.orbit .hubcore::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:2px solid rgba(3,166,221,.35);animation:ripple 3s infinite}
+.orbit .hubcore::after{animation-delay:1.5s;border-color:rgba(233,30,99,.3)}
+@keyframes ripple{from{transform:scale(1);opacity:1}to{transform:scale(1.9);opacity:0}}
+@media (max-width:900px){.integ-grid{grid-template-columns:1fr}.orb span{font-size:12.5px;padding:8px 12px}}
+
+/* =========================================================
+   12. PRIVACY & TRUST
+   ========================================================= */
+.trustsec{background:#fff}
+.trust-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,6vw,90px);align-items:start}
+.policy{background:linear-gradient(180deg,#fff,var(--bg-soft));border:1px solid var(--line);border-radius:var(--radius-xl);box-shadow:var(--shadow-lg);padding:clamp(20px,2.6vw,30px)}
+.policy-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.policy-head b{font:600 18px var(--font-display);color:var(--ink)}
+.pol{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 0;border-top:1px solid var(--line)}
+.pol strong{display:block;color:var(--ink);font-weight:600;font-size:15.5px}
+.pol small{color:var(--muted);font-size:13.5px}
+.tog{flex:0 0 46px;height:26px;border-radius:99px;background:var(--line-2);position:relative;cursor:pointer;border:0;transition:background .3s}
+.tog::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.2);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.tog[aria-checked="true"]{background:var(--t-azure)}
+.tog[aria-checked="true"]::after{transform:translateX(20px)}
+.principles{margin-top:36px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pr{border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px;background:#fff}
+.pr .ic{width:40px;height:40px;border-radius:12px;background:var(--bg-tint);display:grid;place-items:center;color:var(--blue-700);margin-bottom:12px}
+.pr h3{font-size:18px;margin-bottom:4px}
+.pr p{color:var(--muted);font-size:14.5px;line-height:1.5}
+.not-list{margin-top:28px;display:flex;gap:10px;flex-wrap:wrap}
+.not-list span{display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:500;color:var(--ink);background:var(--bg-blush);border:1px solid rgba(233,30,99,.2);border-radius:99px;padding:9px 14px}
+.not-list span::before{content:"✕";color:var(--pink-700);font-size:11px;font-weight:700}
+@media (max-width:900px){.trust-grid{grid-template-columns:1fr}.principles{grid-template-columns:1fr}}
+
+/* =========================================================
+   13–14. PROOF + RESOURCES
+   ========================================================= */
+.proof{padding-top:0;background:#fff}
+.proof-card{display:grid;grid-template-columns:1.4fr .6fr;gap:40px;border:1.5px dashed var(--line-2);border-radius:var(--radius-xl);padding:clamp(26px,4vw,52px);background:var(--bg-soft)}
+.proof-card blockquote{margin:18px 0 0;font:500 clamp(22px,2.6vw,34px)/1.3 var(--font-display);color:var(--ink);letter-spacing:-.015em}
+.proof-card cite{display:block;margin-top:22px;font-style:normal;color:var(--muted)}
+.proof-side{display:grid;gap:14px;align-content:center;border-left:1px solid var(--line);padding-left:32px}
+.proof-side strong{font:600 46px/1 var(--font-display);color:var(--line-2)}
+.resources{padding-top:0;background:#fff}
+.res-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:40px}
+.res-head .sec-head{margin-bottom:0}
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.res{text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:14px}
+.res .cover{border-radius:var(--radius-lg);aspect-ratio:16/11;position:relative;overflow:hidden;border:1px solid var(--line)}
+.res .cover > div{position:absolute;inset:0;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.res:hover .cover > div{transform:scale(1.07)}
+.res .type{font-size:13.5px;font-weight:600;color:var(--pink-700)}
+.res h3{font-size:22px;line-height:1.2;letter-spacing:-.02em}
+.res:hover h3{color:var(--blue-700)}
+.cv-a{background:var(--grad-bar)}
+.cv-a::before{content:"";position:absolute;left:14%;right:14%;top:20%;height:24%;border-radius:999px;background:rgba(255,255,255,.28)}
+.cv-a::after{content:"";position:absolute;left:41%;width:18%;top:44%;bottom:-4%;border-radius:0 0 999px 999px;background:var(--grad-stem)}
+.cv-b{background:radial-gradient(circle at 30% 30%,#CDEEFC,transparent 55%),radial-gradient(circle at 75% 70%,#E3E0FF,transparent 55%),var(--bg-soft)}
+.cv-b::after{content:"";position:absolute;left:12%;right:12%;bottom:22%;top:22%;background:repeating-linear-gradient(90deg,transparent 0 14px,rgba(1,135,224,.35) 14px 20px);-webkit-mask:linear-gradient(0deg,#000,transparent);mask:linear-gradient(0deg,#000,transparent)}
+.cv-c{background:radial-gradient(circle at 70% 30%,#FFD1E5,transparent 55%),radial-gradient(circle at 20% 80%,#D6F3FB,transparent 55%),#fff}
+.cv-c::after{content:"";position:absolute;left:50%;top:50%;width:40%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;border:10px solid rgba(233,30,99,.55);border-right-color:rgba(3,166,221,.6)}
+@media (max-width:900px){.res-grid{grid-template-columns:1fr}.proof-card{grid-template-columns:1fr}.proof-side{border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:20px}}
+
+/* =========================================================
+   15. FINAL CTA
+   ========================================================= */
+.final{padding:0 0 clamp(80px,10vw,140px);background:#fff}
+.final-card{position:relative;overflow:hidden;border-radius:36px;padding:clamp(40px,7vw,100px) clamp(28px,6vw,80px);background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-lg);text-align:center}
+.final-card .aurora i{opacity:.7}
+.final-card .aurora .a1{left:-10%;top:-40%}
+.final-card .aurora .a2{right:-10%;top:10%}
+.final-card .aurora .a3{left:40%;bottom:-60%}
+.final-card .inner{position:relative;z-index:1;max-width:780px;margin:0 auto}
+.final-card h2{font-size:clamp(40px,6vw,84px);letter-spacing:-.045em;line-height:.98}
+.final-card p{margin:22px auto 0;font-size:19px;color:var(--muted);max-width:48ch}
+.final-ctas{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:38px;align-items:center}
+.final-t{width:90px;margin:0 auto 26px}
+
+/* =========================================================
+   16. FOOTER
+   ========================================================= */
+footer{border-top:1px solid var(--line);padding:70px 0 36px;font-size:15px;background:var(--bg-soft)}
+.foot-top{display:grid;grid-template-columns:1.5fr repeat(5,1fr);gap:28px}
+.foot-brand p{margin-top:16px;color:var(--muted);max-width:32ch}
+.news{margin-top:22px;display:flex;gap:8px;max-width:360px}
+.news input{flex:1;min-width:0;font:500 15px var(--font-body);padding:12px 16px;border:1.5px solid var(--line);border-radius:var(--radius-pill);background:#fff;color:var(--ink)}
+footer h4{font:600 14px var(--font-body);color:var(--ink);margin-bottom:14px;letter-spacing:0}
+footer ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+footer ul a{color:var(--muted);text-decoration:none}
+footer ul a:hover{color:var(--ink)}
+.foot-big{margin-top:64px;font:800 clamp(80px,17vw,240px)/.8 var(--font-display);letter-spacing:-.06em;background:linear-gradient(180deg,rgba(11,20,66,.09),rgba(11,20,66,0));-webkit-background-clip:text;background-clip:text;color:transparent;text-align:center;user-select:none}
+.foot-bottom{margin-top:20px;padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:14px}
+.foot-bottom nav{display:flex;gap:18px;flex-wrap:wrap}
+.foot-bottom a{color:var(--muted);text-decoration:none}
+.foot-bottom a:hover{color:var(--ink)}
+@media (max-width:1000px){.foot-top{grid-template-columns:repeat(3,1fr)}.foot-brand{grid-column:1/-1}}
+@media (max-width:600px){.foot-top{grid-template-columns:1fr 1fr}}
+
+/* CHATBOT */
+.bot-btn{position:fixed;right:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:90;display:flex;align-items:center;gap:10px;background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:var(--radius-pill);padding:8px 18px 8px 8px;font:600 15px var(--font-body);cursor:pointer;box-shadow:var(--shadow-lg)}
+.bot-btn .ic{width:36px;height:36px;border-radius:50%;background:var(--bg-soft);display:grid;place-items:center}
+.bot-btn svg{width:24px;height:24px}
+.bot{position:fixed;right:20px;bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:90;width:min(360px,calc(100vw - 40px));background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);overflow:hidden;opacity:0;visibility:hidden;transform:translateY(12px) scale(.98);transform-origin:bottom right;transition:all .25s}
+.bot.open{opacity:1;visibility:visible;transform:none}
+.bot-head{background:var(--grad-bar);color:#fff;padding:16px 18px;display:flex;justify-content:space-between;align-items:center}
+.bot-head strong{font:600 17px var(--font-display)}
+.bot-head button{background:rgba(255,255,255,.25);border:0;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer}
+.bot-body{padding:18px;display:grid;gap:8px}
+.bot-body p{color:var(--ink);margin-bottom:4px}
+.bot-body a{display:block;text-decoration:none;border:1.5px solid var(--line);border-radius:12px;padding:11px 14px;color:var(--ink);font-weight:600;font-size:15px;transition:border-color .2s,transform .2s}
+.bot-body a:hover{border-color:var(--t-azure);transform:translateX(3px)}
+@media (max-width:600px){.bot-btn .lbl{display:none}.bot-btn{padding:8px}}
+
+@media (prefers-reduced-motion:reduce){
+  .aurora i,.marquee-track,.spin,.orb span,.hero h1 .l2,.v-sig i,.oc .flowdots i::after,.orbit .hubcore::before,.orbit .hubcore::after{animation:none!important}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="lgBar" x1="0" x2="1"><stop offset="0" stop-color="#0187E0"/><stop offset=".5" stop-color="#03A6DD"/><stop offset="1" stop-color="#07D7D9"/></linearGradient>
+    <linearGradient id="lgStem" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F62DA0"/><stop offset="1" stop-color="#E91E63"/></linearGradient>
+    <linearGradient id="lgBrand" x1="0" x2="1"><stop offset="0" stop-color="#0187E0"/><stop offset=".4" stop-color="#07D7D9"/><stop offset=".7" stop-color="#6A3BD8"/><stop offset="1" stop-color="#E91E63"/></linearGradient>
+    <symbol id="tmark" viewBox="0 0 100 100"><path d="M37 40h25v42a12.5 12.5 0 0 1-25 0z" fill="url(#lgStem)"/><path d="M37 40h25L37 55z" fill="#032297"/><rect x="6" y="16" width="88" height="26" rx="13" fill="url(#lgBar)"/></symbol>
+  </defs>
+</svg>
+
+<div id="progress" aria-hidden="true"></div>
+<a class="skip" href="#main">Skip to content</a>
+<div class="review-bar">Review draft. Items outlined in amber, and anything tagged “Illustrative”, need verification before launch. <button type="button" onclick="this.parentNode.remove();window.ScrollTrigger&&ScrollTrigger.refresh()">Hide</button></div>
+
+<!-- ======================= HEADER ======================= -->
+<header class="site-header" id="header">
+  <div class="wrap nav">
+    <a class="brand" href="/" aria-label="Teemly home"><svg aria-hidden="true"><use href="#tmark"/></svg>Teemly</a>
+    <nav aria-label="Primary">
+      <ul class="nav-main">
+        <li>
+          <button class="nav-trigger" aria-expanded="false" aria-controls="mm-platform">Platform <svg class="chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button>
+          <div class="mega mega-platform" id="mm-platform">
+            <div>
+              <h4>Intelligence</h4>
+              <ul style="display:grid;grid-template-columns:1fr 1fr;gap:2px 24px">
+                <li><a href="/platform/organizational-intelligence">Organizational Intelligence<small>One model of how your company works</small></a></li>
+                <li><a href="/platform/workforce-intelligence">Workforce Intelligence<small>Capacity, wellbeing and team health</small></a></li>
+                <li><a href="/platform/work-intelligence">Work Intelligence<small>Focus, rhythm and time allocation</small></a></li>
+                <li><a href="/platform/workflow-intelligence">Workflow Intelligence<small>Where handoffs slow work down</small></a></li>
+                <li><a href="/platform/ai-intelligence">AI Intelligence<small>Adoption and impact of AI tools</small></a></li>
+                <li><a href="/platform/data-platform">Data Platform<small>Context engine and data layer</small></a></li>
+                <li><a href="/platform/integrations">Integrations<small>Connect the systems you run</small></a></li>
+                <li><a href="/platform/architecture">Platform Architecture<small>How Teemly is built</small></a></li>
+              </ul>
+            </div>
+            <div class="mega-feature">
+              <div><strong>See the whole model</strong><p>How signals become context, intelligence and action, in one view.</p></div>
+              <a href="/platform">Explore the Platform</a>
+            </div>
+          </div>
+        </li>
+        <li>
+          <button class="nav-trigger" aria-expanded="false" aria-controls="mm-solutions">Solutions <svg class="chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button>
+          <div class="mega mega-cols2" id="mm-solutions">
+            <div><h4>By role</h4><ul>
+              <li><a href="/solutions/executives">Executives</a></li><li><a href="/solutions/hr">HR &amp; People Analytics</a></li><li><a href="/solutions/managers">Managers</a></li><li><a href="/solutions/operations">Operations</a></li><li><a href="/solutions/it">IT &amp; Technology</a></li><li><a href="/solutions/finance">Finance</a></li><li><a href="/solutions/ai">AI &amp; Data leaders</a></li></ul></div>
+            <div><h4>By outcome</h4><ul>
+              <li><a href="/solutions/productivity">Productivity Intelligence</a></li><li><a href="/solutions/workforce">Workforce Optimization</a></li><li><a href="/solutions/workflow">Workflow Optimization</a></li><li><a href="/solutions/ai">AI Impact</a></li><li><a href="/solutions/employee-experience">Employee Experience</a></li></ul></div>
+          </div>
+        </li>
+        <li>
+          <button class="nav-trigger" aria-expanded="false" aria-controls="mm-why">Why Teemly <svg class="chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button>
+          <div class="mega" id="mm-why" style="min-width:320px"><ul>
+            <li><a href="/why-teemly">Why Organizational Intelligence</a></li><li><a href="/why-teemly/problem">The problem</a></li><li><a href="/why-teemly/difference">How Teemly is different</a></li><li><a href="/why-teemly/business-impact">Business impact</a></li><li><a href="/roi-calculator">ROI calculator</a></li><li><a href="/customers">Customer stories</a></li></ul></div>
+        </li>
+        <li>
+          <button class="nav-trigger" aria-expanded="false" aria-controls="mm-res">Resources <svg class="chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button>
+          <div class="mega mega-cols2" id="mm-res" style="min-width:420px">
+            <ul><li><a href="/resources">Resource Center</a></li><li><a href="/resources/research">Research</a></li><li><a href="/resources/reports">Reports</a></li><li><a href="/resources/guides">Guides</a></li><li><a href="/resources/case-studies">Case studies</a></li></ul>
+            <ul><li><a href="/resources/blog">Blog</a></li><li><a href="/resources/webinars">Webinars</a></li><li><a href="/resources/videos">Videos</a></li><li><a href="/resources/glossary">Glossary</a></li><li><a href="/roi-calculator">ROI calculator</a></li></ul>
+          </div>
+        </li>
+        <li><a class="nav-trigger" href="/security">Security &amp; Trust</a></li>
+        <li><a class="nav-trigger" href="/pricing">Pricing</a></li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a class="login" href="/login">Log in</a>
+      <a class="btn btn-ghost btn-sm" href="/take-a-tour">Take a Tour</a>
+      <a class="btn btn-primary btn-sm magnetic" href="/book-a-demo">Book a Demo</a>
+    </div>
+    <button class="menu-toggle" aria-expanded="false" aria-controls="mobilePanel" aria-label="Open menu"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M2 5h16M2 10h16M2 15h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  </div>
+  <div class="mobile-panel" id="mobilePanel">
+    <details><summary>Platform</summary><ul><li><a href="/platform">Overview</a></li><li><a href="/platform/organizational-intelligence">Organizational Intelligence</a></li><li><a href="/platform/workforce-intelligence">Workforce Intelligence</a></li><li><a href="/platform/work-intelligence">Work Intelligence</a></li><li><a href="/platform/workflow-intelligence">Workflow Intelligence</a></li><li><a href="/platform/ai-intelligence">AI Intelligence</a></li><li><a href="/platform/integrations">Integrations</a></li></ul></details>
+    <details><summary>Solutions</summary><ul><li><a href="/solutions/executives">Executives</a></li><li><a href="/solutions/hr">HR</a></li><li><a href="/solutions/managers">Managers</a></li><li><a href="/solutions/operations">Operations</a></li><li><a href="/solutions/it">IT</a></li><li><a href="/solutions/finance">Finance</a></li><li><a href="/solutions/ai">AI &amp; Data leaders</a></li></ul></details>
+    <details><summary>Why Teemly</summary><ul><li><a href="/why-teemly">Why Organizational Intelligence</a></li><li><a href="/why-teemly/business-impact">Business impact</a></li><li><a href="/roi-calculator">ROI calculator</a></li></ul></details>
+    <details><summary>Resources</summary><ul><li><a href="/resources">Resource Center</a></li><li><a href="/resources/research">Research</a></li><li><a href="/resources/blog">Blog</a></li></ul></details>
+    <details><summary>Security &amp; Trust</summary><ul><li><a href="/security">Security overview</a></li><li><a href="/trust-center">Trust Center</a></li></ul></details>
+    <details><summary>Pricing</summary><ul><li><a href="/pricing">Plans and pricing</a></li></ul></details>
+    <div class="m-ctas"><a class="btn btn-primary" href="/book-a-demo">Book a Demo</a><a class="btn btn-ghost" href="/take-a-tour">Take a Tour</a><a class="btn btn-ghost" href="/login">Log in</a></div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ======================= 1. HERO ======================= -->
+<section class="hero dots-bg" id="hero" aria-labelledby="hero-title">
+  <div class="aurora" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i></div>
+  <canvas id="heroCanvas" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="hero-copy">
+      <span class="kicker" data-hero>Organizational Intelligence Platform</span>
+      <h1 id="hero-title"><span class="l1 split">Understand how your organization works.</span><span class="l2">Improve how work happens.</span></h1>
+      <p class="hero-sub" data-hero>Teemly connects signals from your people, work, tools and workflows into one living model of your organization, then turns it into intelligence your leaders can act on.</p>
+      <div class="hero-ctas" data-hero>
+        <a class="btn btn-primary magnetic" href="/book-a-demo">Book a Demo <span class="arr" aria-hidden="true"></span></a>
+        <a class="btn btn-ghost magnetic" href="/take-a-tour">Take a Tour</a>
+      </div>
+      <div class="hero-meta" data-hero>
+        <span><i></i>Privacy by design</span>
+        <span><i></i>Team-level insight, not individual scoring</span>
+      </div>
+    </div>
+  </div>
+  <!-- chips + cards positioned around the particle T by script -->
+  <div class="hero-float"><span class="hero-chip" data-chip>People</span><span class="hero-chip" data-chip>Work</span><span class="hero-chip" data-chip>Apps</span><span class="hero-chip" data-chip>Workflows</span><span class="hero-chip" data-chip>AI</span>
+  <div class="hero-card" id="hcard1"><b>Intelligence</b><p>Focus time down 18% in Sales since the new review cadence</p><div class="mini"><span style="height:80%"></span><span style="height:74%"></span><span style="height:70%"></span><span class="h" style="height:52%"></span><span class="h" style="height:48%"></span></div></div>
+  <div class="hero-card pink" id="hcard2"><b>Outcome</b><p>Reviews moved to Friday. Selling time recovered, tracked weekly.</p></div></div>
+  <span class="tag-illus illus">Interactive · Illustrative example</span>
+  <div class="scroll-cue" aria-hidden="true"><span></span>Scroll</div>
+</section>
+
+<!-- ======================= 2. MARQUEE / TRUST ======================= -->
+<!-- Blueprint: swap this marquee for verified customer logos once at least 4 are approved. -->
+<div class="marquee" aria-label="Teemly intelligence areas">
+  <div class="marquee-track">
+    <div class="marquee-item">Organizational Intelligence<span class="sep"></span><span class="o">Workforce Intelligence</span><span class="sep"></span>Work Intelligence<span class="sep"></span><span class="o">Workflow Intelligence</span><span class="sep"></span>AI Intelligence<span class="sep"></span><span class="o">Tool Intelligence</span><span class="sep"></span></div>
+    <div class="marquee-item" aria-hidden="true">Organizational Intelligence<span class="sep"></span><span class="o">Workforce Intelligence</span><span class="sep"></span>Work Intelligence<span class="sep"></span><span class="o">Workflow Intelligence</span><span class="sep"></span>AI Intelligence<span class="sep"></span><span class="o">Tool Intelligence</span><span class="sep"></span></div>
+  </div>
+</div>
+
+<!-- ======================= 3. PROBLEM ======================= -->
+<section class="problem" id="problem" aria-labelledby="problem-title">
+  <div class="problem-pin">
+    <div class="wrap problem-grid">
+      <div>
+        <span class="kicker pink">The problem</span>
+        <h2 id="problem-title" class="h2 split">Your organization already has the answers. They’re just scattered.</h2>
+        <div class="caps">
+          <p class="cap c1"><strong>Four systems. Four partial stories.</strong>Every tool you run holds a piece of how work happens. None hold the whole thing, so leaders decide on instinct and lagging reports.</p>
+          <p class="cap c2"><strong>One model. The whole picture.</strong>Teemly connects the pieces into a shared organizational context, so every decision starts from how work really happens.</p>
+        </div>
+      </div>
+      <div class="stage" aria-hidden="true">
+        <svg class="links" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path pathLength="1" d="M24 24 Q 38 30 50 50" stroke="#0187E0"/>
+          <path pathLength="1" d="M76 24 Q 62 30 50 50" stroke="#07D7D9"/>
+          <path pathLength="1" d="M24 76 Q 38 70 50 50" stroke="#6A3BD8"/>
+          <path pathLength="1" d="M76 76 Q 62 70 50 50" stroke="#E91E63"/>
+        </svg>
+        <div class="silos">
+          <div class="silo"><div class="ic" style="background:#0187E0"><svg width="20" height="20" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2" fill="none" stroke="#fff" stroke-width="2"/><path d="M3 19c.8-3 3-4.5 6-4.5s5.2 1.5 6 4.5M16 6.5a3 3 0 0 1 0 5.5M18 14.8c1.6.6 2.6 2 3 4.2" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div><h3>People</h3><p>HR knows who is on each team, not how the week is spent.</p></div>
+          <div class="silo"><div class="ic" style="background:#03A6DD"><svg width="20" height="20" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="#fff" stroke-width="2"/><path d="M8 9h8M8 13h5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div><h3>Work</h3><p>Project tools know what was planned, not what pushed it out.</p></div>
+          <div class="silo"><div class="ic" style="background:#6A3BD8"><svg width="20" height="20" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="2" fill="none" stroke="#fff" stroke-width="2"/><path d="M8 21h8M12 17v4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div><h3>Technology</h3><p>Finance knows what software costs, not which tools earn it.</p></div>
+          <div class="silo"><div class="ic" style="background:#E91E63"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg></div><h3>AI</h3><p>You rolled out AI. Its impact on work is still a guess.</p></div>
+        </div>
+        <div class="core"><div class="core-inner"><svg><use href="#tmark"/></svg></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 4. MODEL (horizontal) ======================= -->
+<section class="model" id="model" aria-labelledby="model-title">
+  <div class="model-pin">
+    <div class="wrap model-head">
+      <div class="sec-head">
+        <span class="kicker">The Teemly model</span>
+        <h2 id="model-title" class="split">From raw signals to measurable outcomes</h2>
+      </div>
+      <p style="max-width:40ch;color:var(--muted)">Every insight follows the same path, so you can always see where a recommendation came from and what it changed.</p>
+    </div>
+    <div class="rail" aria-hidden="true"><i id="railFill"></i></div>
+    <div class="h-track" id="hTrack">
+      <article class="panel"><span class="num"><b style="background:#0187E0">1</b>Signals</span><h3>Collect</h3><p>Work activity, tool usage and system data, collected under rules you set and employees can see.</p>
+        <div class="viz"><div class="v-sig" id="vSig"></div></div></article>
+      <article class="panel"><span class="num"><b style="background:#03A6DD">2</b>Context</span><h3>Connect</h3><p>Signals are mapped to your teams, roles, locations and business cycles.</p>
+        <div class="viz"><svg viewBox="0 0 300 130" width="86%"><g stroke="#CFD8EA" stroke-width="2" fill="none"><path d="M150 22V50M150 50H60V80M150 50H240V80M150 50V80M60 80V100M240 80V100"/></g><rect x="118" y="8" width="64" height="26" rx="13" fill="#032297"/><rect x="28" y="68" width="64" height="24" rx="12" fill="#0187E0"/><rect x="118" y="68" width="64" height="24" rx="12" fill="#03A6DD"/><rect x="208" y="68" width="64" height="24" rx="12" fill="#E91E63"/><g fill="#07D7D9"><circle cx="46" cy="112" r="7"/><circle cx="74" cy="112" r="7"/><circle cx="226" cy="112" r="7" fill="#F62DA0"/><circle cx="254" cy="112" r="7" fill="#F62DA0"/></g></svg></div></article>
+      <article class="panel"><span class="num"><b style="background:#032297">3</b>Intelligence</span><h3>Understand</h3><p>Patterns, trends and meaningful changes are surfaced automatically.</p>
+        <div class="viz"><svg viewBox="0 0 300 120" width="90%"><defs><linearGradient id="ar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#03A6DD" stop-opacity=".3"/><stop offset="1" stop-color="#03A6DD" stop-opacity="0"/></linearGradient></defs><path d="M0 70 C40 60 60 40 100 46 S160 30 190 40 S240 90 300 96 V120 H0Z" fill="url(#ar)"/><path class="draw" pathLength="1" d="M0 70 C40 60 60 40 100 46 S160 30 190 40 S240 90 300 96" fill="none" stroke="#03A6DD" stroke-width="3"/><circle cx="240" cy="80" r="7" fill="#E91E63"/><circle cx="240" cy="80" r="14" fill="#E91E63" opacity=".2"/></svg></div></article>
+      <article class="panel"><span class="num"><b style="background:#6A3BD8">4</b>Recommendations</span><h3>Advise</h3><p>Specific, explainable next steps, routed to the person who can act.</p>
+        <div class="viz"><div class="v-rec"><b>Protect a 10–12 AM focus block</b><small>Sales · based on 3 weeks of calendar and activity signals</small><div class="row"><span>Owner: Sales lead</span><span class="p">Accept</span></div></div></div></article>
+      <article class="panel"><span class="num"><b style="background:#F62DA0">5</b>Action</span><h3>Act</h3><p>Decisions are taken, tracked and shared with the team.</p>
+        <div class="viz"><div class="v-chk"><div><i></i>Move weekly review to Friday</div><div><i></i>Block 10–12 AM for deep work</div><div><i class="o"></i>Review impact in 4 weeks</div></div></div></article>
+      <article class="panel"><span class="num"><b style="background:#E91E63">6</b>Outcomes</span><h3>Improve</h3><p>Impact is measured against the baseline you started from.</p>
+        <div class="viz"><div class="v-ba"><div><span style="height:52px;background:#CFD8EA"></span>Before</div><div><span style="height:96px;background:linear-gradient(180deg,#F62DA0,#E91E63)"></span>After</div></div></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 5. PLATFORM (scrollytelling) ======================= -->
+<section class="platform" id="platform" aria-labelledby="platform-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker">Platform</span>
+      <h2 id="platform-title" class="split">One intelligence layer across your organization</h2>
+      <p>Six connected areas, built on the same organizational model. Not six separate dashboards.</p>
+    </div>
+    <div class="pl-grid">
+      <div id="plSteps"></div>
+      <div class="pl-sticky"><div class="dash" id="dash"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 6. SOLUTIONS ======================= -->
+<section class="solutions" id="solutions" aria-labelledby="sol-title">
+  <div class="wrap sol-head">
+    <div class="sec-head">
+      <span class="kicker">Solutions</span>
+      <h2 id="sol-title" class="split">Built around the decisions each leader makes</h2>
+    </div>
+    <div class="rail-btns">
+      <button type="button" id="solPrev" aria-label="Previous"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M11 3L5 9l6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+      <button type="button" id="solNext" aria-label="Next"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M7 3l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    </div>
+  </div>
+  <div class="sol-rail" id="solRail" tabindex="0" aria-label="Solutions by role"></div>
+</section>
+
+<!-- ======================= 7. TEEMLY AI ======================= -->
+<section class="ai" id="ai" aria-labelledby="ai-title">
+  <div class="aurora" aria-hidden="true"><i class="a1"></i><i class="a2"></i></div>
+  <div class="wrap ai-grid">
+    <div>
+      <span class="kicker pink">Teemly AI</span>
+      <h2 id="ai-title" class="h2 split">Ask your organization a question. Get an answer with context.</h2>
+      <p class="lede">Plain-language answers grounded in your organizational model, with the source of every number.</p>
+      <div class="prompts" id="prompts"></div>
+      <p class="ai-note">Answers are shown at team level by default. What each person can ask follows the roles you set.</p>
+    </div>
+    <div class="console">
+      <div class="console-top"><svg aria-hidden="true"><use href="#tmark"/></svg>Teemly AI<span class="live"><i></i>Live demo</span></div>
+      <div class="console-body" id="console" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 8. OUTCOMES ======================= -->
+<section class="outcomes" id="outcomes" aria-labelledby="oc-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker pink">Business outcomes</span>
+      <h2 id="oc-title" class="split">What changes when leaders can see how work happens</h2>
+      <p>We publish customer results only once they’re verified. Until then, this is what Teemly is built to improve.</p>
+    </div>
+    <div class="bento">
+      <article class="oc oc-a spot" data-reveal><div class="oc-top"><h3>More time for focused work</h3><span class="tag-illus">Illustrative</span></div><p>Find the meetings, handoffs and context switches that fragment the day, and give teams hours back for the work they were hired to do.</p>
+        <svg class="line" viewBox="0 0 600 120" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="la" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#03A6DD" stop-opacity=".25"/><stop offset="1" stop-color="#03A6DD" stop-opacity="0"/></linearGradient></defs><path d="M0 100 C80 96 120 90 180 84 S300 70 360 52 S480 30 600 14 V120 H0Z" fill="url(#la)"/><path class="draw" pathLength="1" d="M0 100 C80 96 120 90 180 84 S300 70 360 52 S480 30 600 14" fill="none" stroke="url(#lgBrand)" stroke-width="4" stroke-linecap="round"/></svg></article>
+      <article class="oc oc-b spot" data-reveal><h3>Less operational friction</h3><p>See where work waits between teams and which processes create rework.</p>
+        <div class="flowdots" aria-hidden="true"><b></b><i></i><b></b><i style="background:var(--line)"></i><b class="p"></b><i></i><b></b></div><span class="ev">Operations</span></article>
+      <article class="oc oc-c spot" data-reveal><h3>Clear workforce capacity</h3><p>Know which teams are stretched and which have room before you hire or reassign.</p>
+        <div class="stackbar" aria-hidden="true"><div><span data-w="88%" style="width:0"></span></div><div><span data-w="62%" style="width:0"></span></div><div><span data-w="45%" style="width:0;background:var(--grad-stem)"></span></div></div></article>
+      <article class="oc oc-d spot" data-reveal><h3>Technology that earns its cost</h3><p>Spot unused licenses and tools that don’t support the work.</p>
+        <div class="ring" aria-hidden="true"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15" fill="none" stroke="#E1E7F2" stroke-width="4"/><circle class="ringfill" cx="18" cy="18" r="15" fill="none" stroke="url(#lgBar)" stroke-width="4" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/></svg><span class="ev">Seat usage, at a glance</span></div></article>
+      <article class="oc oc-e spot" data-reveal><h3>Healthier teams</h3><p>Catch sustained after-hours work early, at team level, and act before it turns into attrition.</p><span class="ev" style="margin-top:auto">People</span></article>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 9. ROI ======================= -->
+<section class="roi" id="roi" aria-labelledby="roi-title">
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="kicker">ROI</span>
+      <h2 id="roi-title" class="split">Estimate the opportunity in your organization</h2>
+      <p>Drag the sliders to model your own scenario. Every assumption is shown.</p>
+    </div>
+    <div class="roi-card" data-reveal>
+      <div class="roi-in">
+        <div class="two">
+          <div class="field"><label for="cur">Currency</label><select id="cur"><option value="USD">USD ($)</option><option value="INR">INR (₹)</option><option value="EUR">EUR (€)</option><option value="GBP">GBP (£)</option></select></div>
+          <div class="field"><label for="cost">Avg. annual cost per employee</label><input type="number" id="cost" min="0" step="1000" value="60000"></div>
+        </div>
+        <div class="field"><label for="emp">Number of employees <output id="empOut" for="emp">500</output></label><input type="range" id="emp" min="25" max="10000" step="25" value="500"></div>
+        <div class="field"><label for="prod">Productivity opportunity <output id="prodOut" for="prod">3%</output></label><input type="range" id="prod" min="1" max="10" step="0.5" value="3"><p class="hint">Share of working time recovered from fragmentation, rework and low-value meetings. Start conservative.</p></div>
+        <div class="two">
+          <div class="field"><label for="saas">Annual software spend</label><input type="number" id="saas" min="0" step="1000" value="400000"></div>
+          <div class="field"><label for="saasPct">Unused software <output id="saasOut" for="saasPct">8%</output></label><input type="range" id="saasPct" min="0" max="25" step="1" value="8"></div>
+        </div>
+      </div>
+      <div class="roi-out" aria-live="polite">
+        <h3>Estimated annual opportunity</h3>
+        <div class="big" id="total">—</div>
+        <div class="roi-lines">
+          <div><span>Productivity opportunity</span><b id="o1">—</b></div>
+          <div><span>Capacity recovered</span><b id="o2">—</b></div>
+          <div><span>Technology optimization</span><b id="o3">—</b></div>
+        </div>
+        <p class="assume"><strong>Modeled estimate, not a customer result.</strong> Productivity = employees × annual cost × opportunity %. Capacity assumes 1,880 working hours per employee per year. Technology = software spend × unused %.</p>
+        <div><a class="btn btn-primary magnetic" href="/roi-calculator">Open the full ROI calculator <span class="arr" aria-hidden="true"></span></a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 10. HOW IT WORKS ======================= -->
+<section class="how" id="how" aria-labelledby="how-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker">How Teemly works</span>
+      <h2 id="how-title" class="split">Connect. Understand. Improve.</h2>
+    </div>
+    <div class="how-wrap">
+      <svg class="how-path" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true"><path id="howPath" pathLength="1" d="M34 0 C 250 0, 250 100, 440 60 S 700 -20, 840 30 S 1100 80, 1200 20" fill="none" stroke="url(#lgBrand)" stroke-width="3" stroke-dasharray="1" stroke-dashoffset="1" stroke-linecap="round"/></svg>
+      <div class="steps">
+        <div class="step" data-reveal><div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="#0187E0" stroke-width="2" stroke-linecap="round"><path d="M9 7H6a4 4 0 0 0 0 8h3M15 7h3a4 4 0 0 1 0 8h-3M8 11h8"/></svg></div><span class="n">Step 1</span><h3>Connect</h3><p>Deploy the lightweight Teemly agent and connect the systems you already use.</p>
+          <ul><li>Map teams, roles and reporting lines</li><li>Choose what’s collected, by policy</li><li>Tell employees what’s measured and why</li></ul></div>
+        <div class="step" data-reveal><div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="#032297" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5M8.5 11h5M11 8.5v5"/></svg></div><span class="n">Step 2</span><h3>Understand</h3><p>Teemly builds your organizational model and sets a baseline for how work happens today.</p>
+          <ul><li>Work rhythm and focus patterns</li><li>Tool adoption and seat usage</li><li>Workload and wellbeing signals</li></ul></div>
+        <div class="step" data-reveal><div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="#E91E63" stroke-width="2" stroke-linecap="round"><path d="M4 17l5-5 4 4 7-8M15 8h5v5"/></svg></div><span class="n">Step 3</span><h3>Improve</h3><p>Act on specific recommendations and measure the change against your baseline.</p>
+          <ul><li>Recommendations with a clear owner</li><li>Before-and-after tracking</li><li>Reports ready for leadership reviews</li></ul></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 11. INTEGRATIONS ======================= -->
+<!-- Categories only. Show named integrations once each is live and verified. -->
+<section class="integ" id="integrations" aria-labelledby="int-title">
+  <div class="wrap integ-grid">
+    <div>
+      <span class="kicker">Integrations</span>
+      <h2 id="int-title" class="h2 split">Connects to the systems you already run</h2>
+      <p class="lede">Bring context from HR, collaboration, project and business systems into one model. Open APIs let your data team extend it.</p>
+      <p style="margin-top:30px"><a class="textlink" href="/platform/integrations">See all integrations</a></p>
+    </div>
+    <div class="orbit" role="img" aria-label="Integration categories: HRIS, collaboration, projects, CRM, identity and SSO, communication, AI tools, APIs">
+      <div class="ringline r1"></div><div class="ringline r2"></div>
+      <div class="spin">
+        <div class="orb" style="--a:-90deg;--r:min(44vw,246px)"><span><i></i>HRIS</span></div>
+        <div class="orb" style="--a:-18deg;--r:min(44vw,246px)"><span><i class="p"></i>Collaboration</span></div>
+        <div class="orb" style="--a:54deg;--r:min(44vw,246px)"><span><i></i>CRM</span></div>
+        <div class="orb" style="--a:126deg;--r:min(44vw,246px)"><span><i class="p"></i>Identity &amp; SSO</span></div>
+        <div class="orb" style="--a:198deg;--r:min(44vw,246px)"><span><i></i>Communication</span></div>
+      </div>
+      <div class="spin rev">
+        <div class="orb" style="--a:0deg;--r:min(27vw,146px)"><span><i class="p"></i>Projects</span></div>
+        <div class="orb" style="--a:120deg;--r:min(27vw,146px)"><span><i></i>AI tools</span></div>
+        <div class="orb" style="--a:240deg;--r:min(27vw,146px)"><span><i class="p"></i>APIs</span></div>
+      </div>
+      <div class="hubcore"><svg aria-hidden="true"><use href="#tmark"/></svg></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 12. PRIVACY & TRUST ======================= -->
+<section class="trustsec" id="trust" aria-labelledby="trust-title">
+  <div class="wrap trust-grid">
+    <div>
+      <span class="kicker">Privacy &amp; trust</span>
+      <h2 id="trust-title" class="h2 split">Intelligence about work, built with respect for the people doing it</h2>
+      <p class="lede">Teemly is designed to improve how organizations work, not to watch individuals. You set the rules, employees can see them, and access follows role.</p>
+      <div class="not-list"><span>Not for ranking individuals</span><span>Never hidden from employees</span><span>Not a replacement for judgment</span></div>
+      <div class="hero-ctas"><a class="btn btn-dark magnetic" href="/security">Explore Security <span class="arr" aria-hidden="true"></span></a><a class="btn btn-ghost" href="/trust-center">Visit the Trust Center</a></div>
+    </div>
+    <div>
+      <div class="policy" data-reveal>
+        <div class="policy-head"><b>Workspace privacy policy</b><span class="tag-illus">Illustrative settings</span></div>
+        <div class="pol"><div><strong>Team-level reporting</strong><small>Insights aggregated to teams by default</small></div><button class="tog" role="switch" aria-checked="true" aria-label="Team-level reporting"></button></div>
+        <div class="pol"><div><strong>Individual detail</strong><small>Only for roles you approve</small></div><button class="tog" role="switch" aria-checked="false" aria-label="Individual detail"></button></div>
+        <div class="pol"><div><strong>Employee transparency page</strong><small>Everyone can see what’s measured</small></div><button class="tog" role="switch" aria-checked="true" aria-label="Employee transparency page"></button></div>
+        <div class="pol"><div><strong>Data retention</strong><small>Delete raw signals after a set period</small></div><button class="tog" role="switch" aria-checked="true" aria-label="Data retention"></button></div>
+      </div>
+      <div class="principles">
+        <div class="pr" data-reveal><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 3.5v5.5c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V5.5z"/></svg></div><h3>Privacy by design</h3><p>Collect only what a question needs.</p></div>
+        <div class="pr verify" data-reveal><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div><h3>Enterprise security</h3><p>Encryption in transit and at rest, RBAC and audit logs.</p></div>
+        <div class="pr" data-reveal><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h10M4 18h13"/></svg></div><h3>Transparent governance</h3><p>Clear retention and deletion rules.</p></div>
+        <div class="pr verify" data-reveal><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></svg></div><h3>Data protection laws</h3><p>Designed with India’s DPDP Act in mind.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 13. SOCIAL PROOF ======================= -->
+<!-- Placeholder. Publish only a verified, approved customer quote. -->
+<section class="proof" aria-labelledby="proof-title">
+  <div class="wrap">
+    <h2 id="proof-title" class="sr-only">Customer story</h2>
+    <div class="proof-card" data-reveal>
+      <div><span class="tag-illus">Placeholder until approved</span><blockquote>“Customer quote goes here: one specific decision Teemly helped them make, and what changed as a result.”</blockquote><cite>Name, Title, Company</cite></div>
+      <div class="proof-side"><strong>—</strong><p style="color:var(--muted)">Verified result from the same customer</p><a class="textlink" href="/customers">Read customer stories</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 14. RESOURCES ======================= -->
+<section class="resources" aria-labelledby="res-title">
+  <div class="wrap">
+    <div class="res-head">
+      <div class="sec-head"><span class="kicker">Resources</span><h2 id="res-title" class="split">Learn how Organizational Intelligence works</h2></div>
+      <a class="btn btn-ghost magnetic" href="/resources">Explore Resources</a>
+    </div>
+    <div class="res-grid">
+      <a class="res" href="/resources/guides" data-reveal><div class="cover"><div class="cv-a"></div></div><span class="type">Guide</span><h3>What is Organizational Intelligence? A guide for leadership teams</h3></a>
+      <a class="res" href="/resources/research" data-reveal><div class="cover"><div class="cv-b"></div></div><span class="type">Research</span><h3>How fragmented work affects focus across knowledge teams</h3></a>
+      <a class="res" href="/resources/blog" data-reveal><div class="cover"><div class="cv-c"></div></div><span class="type">Blog</span><h3>Measuring AI adoption without measuring people</h3></a>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 15. FINAL CTA ======================= -->
+<section class="final" aria-labelledby="final-title">
+  <div class="wrap">
+    <div class="final-card" id="finalCard">
+      <div class="aurora" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i></div>
+      <div class="inner">
+        <svg class="final-t" viewBox="0 0 100 100" aria-hidden="true"><use href="#tmark"/></svg>
+        <h2 id="final-title" class="split">See how your organization really works</h2>
+        <p>A 30-minute walkthrough with our team, shaped around the questions your leaders are asking.</p>
+        <div class="final-ctas">
+          <a class="btn btn-primary magnetic" href="/book-a-demo">Book a Demo <span class="arr" aria-hidden="true"></span></a>
+          <a class="btn btn-ghost magnetic" href="/take-a-tour">Take a Tour</a>
+          <a class="textlink" href="/roi-calculator">Calculate ROI</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ======================= 16. FOOTER ======================= -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a class="brand" href="/" aria-label="Teemly home"><svg aria-hidden="true"><use href="#tmark"/></svg>Teemly</a>
+        <p>The Organizational Intelligence Platform.</p>
+        <form class="news" onsubmit="event.preventDefault();this.querySelector('button').textContent='Subscribed'"><label for="nl" class="sr-only">Work email</label><input id="nl" type="email" placeholder="Work email" required><button class="btn btn-primary btn-sm" type="submit">Subscribe</button></form>
+      </div>
+      <div><h4>Platform</h4><ul><li><a href="/platform">Platform</a></li><li><a href="/platform/organizational-intelligence">Organizational Intelligence</a></li><li><a href="/platform/workforce-intelligence">Workforce Intelligence</a></li><li><a href="/platform/work-intelligence">Work Intelligence</a></li><li><a href="/platform/integrations">Integrations</a></li><li><a href="/platform/architecture">Architecture</a></li></ul></div>
+      <div><h4>Solutions</h4><ul><li><a href="/solutions/executives">Executives</a></li><li><a href="/solutions/hr">HR</a></li><li><a href="/solutions/managers">Managers</a></li><li><a href="/solutions/operations">Operations</a></li><li><a href="/solutions/it">IT</a></li><li><a href="/solutions/finance">Finance</a></li><li><a href="/solutions/ai">AI Leaders</a></li></ul></div>
+      <div><h4>Resources</h4><ul><li><a href="/resources">Resource Center</a></li><li><a href="/resources/research">Research</a></li><li><a href="/resources/reports">Reports</a></li><li><a href="/resources/case-studies">Case Studies</a></li><li><a href="/resources/blog">Blog</a></li><li><a href="/resources/webinars">Webinars</a></li><li><a href="/roi-calculator">ROI Calculator</a></li></ul></div>
+      <div><h4>Trust</h4><ul><li><a href="/security">Security</a></li><li><a href="/security/data-privacy">Privacy</a></li><li><a href="/security/governance">Governance</a></li><li><a href="/security/compliance">Compliance</a></li><li><a href="/trust-center">Trust Center</a></li><li><a href="/security">Data Protection</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="/company/about">About</a></li><li><a href="/customers">Customers</a></li><li><a href="/company/partners">Partners</a></li><li><a href="/company/careers">Careers</a></li><li><a href="/company/contact">Contact</a></li><li><a href="/support">Support</a></li></ul></div>
+    </div>
+    <div class="foot-big" aria-hidden="true">teemly</div>
+    <div class="foot-bottom"><span>© 2026 Teemly. All rights reserved.</span><nav aria-label="Legal"><a href="/legal/privacy">Privacy</a><a href="/legal/terms">Terms</a><a href="/legal/cookie-policy">Cookie Policy</a><a href="/legal/dpa">DPA</a><a href="/accessibility">Accessibility</a></nav></div>
+  </div>
+</footer>
+
+<!-- CHATBOT -->
+<button class="bot-btn" id="botBtn" aria-expanded="false" aria-controls="bot"><span class="ic"><svg aria-hidden="true"><use href="#tmark"/></svg></span><span class="lbl">Ask Teemly AI</span></button>
+<div class="bot" id="bot" role="dialog" aria-label="Teemly AI assistant">
+  <div class="bot-head"><strong>Hi, I’m Teemly AI</strong><button id="botClose" aria-label="Close">✕</button></div>
+  <div class="bot-body"><p>What would you like to explore?</p><a href="/why-teemly">Understand Teemly</a><a href="/solutions">Explore Solutions</a><a href="/platform">See the Platform</a><a href="/roi-calculator">Calculate ROI</a><a href="/security">Security &amp; Privacy</a><a href="/book-a-demo">Book a Demo</a></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  var $=function(id){return document.getElementById(id)};
+  var $$=function(s,r){return [].slice.call((r||document).querySelectorAll(s))};
+  var REDUCE=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var G=window.gsap,ST=window.ScrollTrigger;
+  var HAS=!!(G&&ST)&&!REDUCE;
+  if(HAS)G.registerPlugin(ST);
+
+  /* ---------------- Header ---------------- */
+  var header=$('header');
+  function onScroll(){header.classList.toggle('scrolled',window.scrollY>10)}
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+  var triggers=$$('.nav-trigger[aria-controls]');
+  function closeAll(except){triggers.forEach(function(t){if(t!==except){t.setAttribute('aria-expanded','false');$(t.getAttribute('aria-controls')).classList.remove('open')}})}
+  triggers.forEach(function(t){t.addEventListener('click',function(e){e.stopPropagation();var o=t.getAttribute('aria-expanded')==='true';closeAll(t);t.setAttribute('aria-expanded',String(!o));$(t.getAttribute('aria-controls')).classList.toggle('open',!o)})});
+  document.addEventListener('click',function(e){if(!e.target.closest('.mega'))closeAll()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeAll();closeBot()}});
+  var mt=document.querySelector('.menu-toggle'),mp=$('mobilePanel');
+  mt.addEventListener('click',function(){var o=mp.classList.toggle('open');mt.setAttribute('aria-expanded',String(o));mt.setAttribute('aria-label',o?'Close menu':'Open menu')});
+
+  /* ---------------- Split headings into words ---------------- */
+  $$('.split').forEach(function(el){
+    var words=el.textContent.trim().split(/\s+/);
+    el.setAttribute('aria-label',el.textContent.trim());
+    el.innerHTML=words.map(function(w){return '<span class="w" aria-hidden="true"><span>'+w+'</span></span>'}).join(' ');
+  });
+
+  /* ---------------- Hero particle T ---------------- */
+  var hero=$('hero'),cv=$('heroCanvas'),ctx=cv.getContext('2d');
+  var W=0,H=0,geo=null,parts=[],amb=[],rad=2,mouse={x:-9999,y:-9999},scrollP=0,t0=performance.now(),running=true,visible=true;
+  var chips=$$('[data-chip]'),hc1=$('hcard1'),hc2=$('hcard2');
+  function drawLogo(o,g){
+    o.save();o.translate(g.ox,g.oy);o.scale(g.k,g.k);
+    var sg=o.createLinearGradient(0,40,0,95);sg.addColorStop(0,'#F62DA0');sg.addColorStop(1,'#E91E63');
+    o.fillStyle=sg;o.beginPath();o.moveTo(37,40);o.lineTo(62,40);o.lineTo(62,82);o.arc(49.5,82,12.5,0,Math.PI);o.closePath();o.fill();
+    o.fillStyle='#032297';o.beginPath();o.moveTo(37,40);o.lineTo(62,40);o.lineTo(37,55);o.closePath();o.fill();
+    var bg=o.createLinearGradient(6,0,94,0);bg.addColorStop(0,'#0187E0');bg.addColorStop(.5,'#03A6DD');bg.addColorStop(1,'#07D7D9');
+    o.fillStyle=bg;o.beginPath();var x=6,y=16,w=88,h=26,r=13;o.moveTo(x+r,y);o.lineTo(x+w-r,y);o.arc(x+w-r,y+r,r,-Math.PI/2,Math.PI/2);o.lineTo(x+r,y+h);o.arc(x+r,y+r,r,Math.PI/2,Math.PI*1.5);o.closePath();o.fill();
+    o.restore();
+  }
+  function layout(){
+    var r=hero.getBoundingClientRect(),dpr=Math.min(2,window.devicePixelRatio||1);
+    W=r.width;H=r.height;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);cv.style.width=W+'px';cv.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0);
+    var mobile=W<900,S,cx,cy;
+    if(mobile){S=Math.min(W*0.8,380);cx=W/2;cy=H-S*0.5-24}else{S=Math.min(H*0.7,W*0.4,580);cx=Math.min(W*0.74,W/2+(Math.min(W,1240)/2)-S*0.52);cy=H*0.52}
+    geo={S:S,cx:cx,cy:cy,k:S/100,ox:cx-50*S/100,oy:cy-55*S/100};
+    var oc=document.createElement('canvas');oc.width=Math.ceil(W);oc.height=Math.ceil(H);var o=oc.getContext('2d');drawLogo(o,geo);
+    var gap=Math.max(5,Math.round(S/64)),data=o.getImageData(0,0,oc.width,oc.height).data,tg=[];
+    for(var y=Math.floor(geo.oy);y<geo.oy+S;y+=gap){for(var x=Math.floor(geo.ox);x<geo.ox+S;x+=gap){if(x<0||y<0||x>=oc.width||y>=oc.height)continue;var i=(y*oc.width+x)*4;if(data[i+3]>200)tg.push({x:x,y:y,c:'rgb('+data[i]+','+data[i+1]+','+data[i+2]+')'})}}
+    rad=gap*0.36;
+    parts=tg.map(function(t,i){var p=parts[i]||{x:Math.random()*W,y:Math.random()*H,vx:0,vy:0,sx:Math.random()*W,sy:Math.random()*H,d:Math.random()*1.1,rx:Math.random()*2-1,ry:Math.random()*0.8+0.2,ph:Math.random()*6.283};p.tx=t.x;p.ty=t.y;p.c=t.c;return p});
+    if(!amb.length){for(var a=0;a<70;a++)amb.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.8+.8,c:Math.random()<.5?'3,166,221':'233,30,99'})}
+    // chips across the top bar, cards beside the stem
+    chips.forEach(function(c,i){c.style.left=(geo.ox+(10+80*(i+.5)/5)*geo.k)+'px';c.style.top=(geo.oy+14*geo.k-4)+'px'});
+    var showCards=W>=1180;
+    hc1.style.display=hc2.style.display=showCards?'block':'none';
+    if(showCards){hc1.style.left=(geo.ox+37*geo.k-250)+'px';hc1.style.top=(geo.oy+52*geo.k)+'px';hc2.style.left=(geo.ox+62*geo.k+34)+'px';hc2.style.top=(geo.oy+70*geo.k)+'px'}
+    if(REDUCE){parts.forEach(function(p){p.x=p.tx;p.y=p.ty});draw(99)}
+  }
+  function draw(t){
+    ctx.clearRect(0,0,W,H);
+    for(var j=0;j<amb.length;j++){var b=amb[j];b.x+=b.vx;b.y+=b.vy;if(b.x<0)b.x=W;if(b.x>W)b.x=0;if(b.y<0)b.y=H;if(b.y>H)b.y=0;ctx.fillStyle='rgba('+b.c+',.35)';ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,6.283);ctx.fill()}
+    var R=110,R2=R*R;
+    for(var i=0;i<parts.length;i++){
+      var p=parts[i],tx,ty,on=t>0.35+p.d;
+      if(on){tx=p.tx+Math.sin(t*1.3+p.ph)*.9;ty=p.ty+Math.cos(t*1.1+p.ph)*.9}else{tx=p.sx+Math.sin(t*.9+p.ph)*24;ty=p.sy+Math.cos(t*.8+p.ph)*24}
+      if(scrollP>0){tx+=p.rx*scrollP*W*.35;ty+=p.ry*scrollP*H*.9}
+      if(!REDUCE){
+        var k=on?.055:.02;p.vx+=(tx-p.x)*k;p.vy+=(ty-p.y)*k;
+        var dx=p.x-mouse.x,dy=p.y-mouse.y,d2=dx*dx+dy*dy;
+        if(d2<R2){var d=Math.sqrt(d2)||1,f=(1-d/R)*5.5;p.vx+=dx/d*f;p.vy+=dy/d*f}
+        p.vx*=.8;p.vy*=.8;p.x+=p.vx;p.y+=p.vy;
+      }
+      ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(p.x,p.y,rad,0,6.283);ctx.fill();
+    }
+  }
+  function loop(now){if(!visible){running=false;return}draw((now-t0)/1000);requestAnimationFrame(loop)}
+  layout();
+  if(!REDUCE){requestAnimationFrame(loop);setTimeout(function(){chips.forEach(function(c,i){setTimeout(function(){c.classList.add('show')},i*90)})},1700);setTimeout(function(){hc1.classList.add('show')},2300);setTimeout(function(){hc2.classList.add('show')},2700)}
+  else{chips.forEach(function(c){c.classList.add('show')});hc1.classList.add('show');hc2.classList.add('show')}
+  new IntersectionObserver(function(e){visible=e[0].isIntersecting;if(visible&&!running&&!REDUCE){running=true;requestAnimationFrame(loop)}}).observe(hero);
+  var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(layout,150)});
+  hero.addEventListener('pointermove',function(e){var r=cv.getBoundingClientRect();mouse.x=e.clientX-r.left;mouse.y=e.clientY-r.top;
+    if(HAS){var mx=(mouse.x/W-.5),my=(mouse.y/H-.5);G.to([hc1],{x:mx*-18,y:my*-14,duration:.8,overwrite:'auto'});G.to([hc2],{x:mx*18,y:my*14,duration:.8,overwrite:'auto'})}});
+  hero.addEventListener('pointerleave',function(){mouse.x=mouse.y=-9999});
+
+  /* ---------------- Solutions cards ---------------- */
+  var ROLES=[
+    {r:'Executives',c:'#032297',h:'See organizational performance in one view',p:['Capacity and performance trends','Workforce cost against where time goes','AI and technology impact'],q:'Which functions are over capacity going into next quarter?',u:'/solutions/executives'},
+    {r:'HR',c:'#E91E63',h:'Workforce intelligence that supports people',p:['Team-level wellbeing and workload','Evidence for workforce planning','Experience beyond annual surveys'],q:'Where is sustained after-hours work rising?',u:'/solutions/hr'},
+    {r:'Managers',c:'#0187E0',h:'Understand your team’s capacity and patterns',p:['Capacity before new commitments','Bottlenecks and meeting load','Coaching grounded in patterns'],q:'When does my team do its best focused work?',u:'/solutions/managers'},
+    {r:'Operations',c:'#6A3BD8',h:'Remove friction from how work flows',p:['Handoff delays between teams','Rework loops and process friction','Before-and-after impact of changes'],q:'Which approval step adds the most delay?',u:'/solutions/operations'},
+    {r:'IT',c:'#03A6DD',h:'Know which technology earns its place',p:['Tool adoption and unused licenses','Overlap across similar apps','AI rollout and adoption'],q:'Which licenses went unused last quarter?',u:'/solutions/it'},
+    {r:'Finance',c:'#0B1442',h:'Connect workforce cost to where time goes',p:['Workforce cost by activity','Capacity planning with a baseline','Software spend against usage'],q:'Where would one new hire add the most capacity?',u:'/solutions/finance'},
+    {r:'AI & Data leaders',c:'#F62DA0',h:'Measure AI impact with organizational context',p:['AI adoption by team and use case','Impact on focus and cycle time','Context your own models can use'],q:'Which teams get the most from AI assistants?',u:'/solutions/ai'}
+  ];
+  var solRail=$('solRail');
+  solRail.innerHTML=ROLES.map(function(x){var n=x.r.replace('&','&amp;');return '<article class="sol-card spot"><span class="role"><i style="background:'+x.c+'">'+x.r.charAt(0)+'</i>'+n+'</span><h3>'+x.h+'</h3><ul>'+x.p.map(function(p){return '<li>'+p+'</li>'}).join('')+'</ul><div class="ask"><small>They ask Teemly</small>'+x.q+'</div><a href="'+x.u+'">See solutions for '+n+'</a></article>'}).join('');
+  function railStep(dir){var c=solRail.querySelector('.sol-card');solRail.scrollBy({left:dir*(c.offsetWidth+20),behavior:REDUCE?'auto':'smooth'})}
+  $('solPrev').addEventListener('click',function(){railStep(-1)});$('solNext').addEventListener('click',function(){railStep(1)});
+  var drag=null;
+  solRail.addEventListener('pointerdown',function(e){if(e.pointerType!=='mouse')return;drag={x:e.clientX,s:solRail.scrollLeft,moved:false};solRail.classList.add('drag')});
+  window.addEventListener('pointermove',function(e){if(!drag)return;var dx=e.clientX-drag.x;if(Math.abs(dx)>4)drag.moved=true;solRail.scrollLeft=drag.s-dx});
+  window.addEventListener('pointerup',function(){if(!drag)return;solRail.classList.remove('drag');var m=drag.moved;drag=null;if(m){solRail.addEventListener('click',function k(ev){ev.preventDefault();solRail.removeEventListener('click',k,true)},true)}});
+  // tilt
+  $$('.sol-card').forEach(function(c){
+    c.addEventListener('pointermove',function(e){if(REDUCE||drag)return;var r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform='perspective(900px) rotateY('+(x*8)+'deg) rotateX('+(-y*8)+'deg) translateY(-6px)'});
+    c.addEventListener('pointerleave',function(){c.style.transform=''});
+  });
+
+  /* ---------------- Spotlight ---------------- */
+  document.addEventListener('pointermove',function(e){var s=e.target.closest&&e.target.closest('.spot');if(!s)return;var r=s.getBoundingClientRect();s.style.setProperty('--mx',(e.clientX-r.left)+'px');s.style.setProperty('--my',(e.clientY-r.top)+'px')});
+
+  /* ---------------- Magnetic buttons ---------------- */
+  if(HAS&&window.matchMedia('(pointer:fine)').matches){
+    $$('.magnetic').forEach(function(b){
+      b.addEventListener('pointermove',function(e){var r=b.getBoundingClientRect();G.to(b,{x:(e.clientX-r.left-r.width/2)*.25,y:(e.clientY-r.top-r.height/2)*.35,duration:.4,ease:'power3.out'})});
+      b.addEventListener('pointerleave',function(){G.to(b,{x:0,y:0,duration:.7,ease:'elastic.out(1,.4)'})});
+    });
+  }
+
+  /* ---------------- Platform scrollytelling ---------------- */
+  var P=[
+    {t:'Organizational Intelligence',d:'A living model of your teams, roles and how work moves between them.',b:['Teams, roles and reporting lines','Cross-team handoff paths','One shared baseline'],w:'Organization overview',k:[['Teams mapped','14'],['Cross-team handoffs','312','+9%'],['Avg. focus score','62','+6']],v:[40,62,55,78,70,86,74],hi:[5],cap:'Handoff volume by team',i:'Two teams route 40% of their handoffs through Design. A shared review slot would cut the wait.'},
+    {t:'Workforce Intelligence',d:'Capacity, workload balance and wellbeing signals, at team level.',b:['Capacity by team','Sustained after-hours work','Workload balance'],w:'Workforce health',k:[['Teams at capacity','3'],['After-hours work','22%','+4%',1],['In healthy range','11 of 14']],v:[62,70,74,81,88,79,72],hi:[3,4],cap:'Weekly after-hours share, last 7 weeks',i:'Engineering after-hours work has risen three weeks running. Review sprint load before the next cycle.'},
+    {t:'Work Intelligence',d:'Focus time, work rhythm and where the week actually goes.',b:['Peak focus windows','Deep-work blocks','Context switching'],w:'Work rhythm',k:[['Peak window','10–11 AM'],['Deep-work blocks','3.2/day','+0.4'],['Switches per hour','8.4','−1.1']],v:[48,66,100,92,58,40,52,61,44],hi:[2,3],cap:'Productive time by hour, 9 AM to 6 PM',i:'Output drops 42% after 2 PM. Moving recurring syncs out of 10–12 AM protects the peak.'},
+    {t:'Workflow Intelligence',d:'Where work waits, loops back or stalls between teams.',b:['Wait time between stages','Rework loops','Stalled work'],w:'Workflow friction',k:[['Avg. wait time','1.8 days','−0.3'],['Rework loops','11%'],['Stalled items','27']],v:[30,42,96,36,28,54],hi:[2],cap:'Wait time by workflow stage',i:'Finance approvals add a median 2 days to vendor onboarding. Delegating below a threshold removes most of it.'},
+    {t:'AI Intelligence',d:'Which AI tools teams adopt, and whether they change how work gets done.',b:['Adoption by team','Active AI seats','Impact on focus and cycle time'],w:'AI adoption',k:[['Teams using AI weekly','9 of 14'],['AI seats active','68%','+12%'],['Time in AI tools','5.1 h/wk']],v:[20,28,35,44,52,61,68],hi:[5,6],cap:'Active AI seats, last 7 weeks',i:'Support’s AI use doubled with no change in resolution time. Pair adoption with a workflow change.'},
+    {t:'Tool Intelligence',d:'Adoption, overlap and unused seats across the software you pay for.',b:['Seat usage by tool','Overlapping apps','Spend against usage'],w:'Tool usage',k:[['Tools in use','184'],['Underused seats','12'],['Productive-tool share','61%','+3%']],v:[96,82,70,56,40,22,14],hi:[5,6],cap:'Seat usage by tool, highest to lowest',i:'Three project tools overlap across teams. Consolidating would release unused seats.'}
+  ];
+  function dashHTML(p,idx){
+    return '<div class="win"><div class="win-top"><div class="dots3"><i></i><i></i><i></i></div><b>'+p.w+'</b><span>Last 21 days</span></div><div class="win-body">'+
+      '<div class="kpis">'+p.k.map(function(k){return '<div class="kpi"><small>'+k[0]+'</small><strong>'+k[1]+'</strong>'+(k[2]?'<em class="'+(k[3]?'dn':'')+'">'+k[2]+'</em>':'')+'</div>'}).join('')+'</div>'+
+      '<div class="chartbox"><small>'+p.cap+' · team level</small><div class="bars">'+p.v.map(function(v,i){return '<span class="'+(p.hi.indexOf(i)>-1?'h':'')+'" style="height:'+v+'%"></span>'}).join('')+'</div></div>'+
+      '<div class="insight"><span class="spark" aria-hidden="true">✦</span><span>'+p.i+'</span></div></div></div>'+
+      '<div class="dash-foot"><div class="pips">'+P.map(function(_,j){return '<i class="'+(j===idx?'on':'')+'"></i>'}).join('')+'</div><span class="tag-illus">Illustrative data</span></div>';
+  }
+  var plSteps=$('plSteps'),dash=$('dash'),curPl=-1;
+  plSteps.innerHTML=P.map(function(p,i){return '<div class="pl-step" data-i="'+i+'"><span class="idx">0'+(i+1)+' / 06</span><h3>'+p.t+'</h3><p>'+p.d+'</p><ul>'+p.b.map(function(b){return '<li>'+b+'</li>'}).join('')+'</ul><div class="pl-inline"><div class="dash">'+dashHTML(p,i)+'</div></div></div>'}).join('');
+  var steps=$$('.pl-step');
+  function showPl(i){
+    if(i===curPl)return;curPl=i;
+    steps.forEach(function(s,j){s.classList.toggle('active',j===i)});
+    dash.innerHTML=dashHTML(P[i],i);
+    if(HAS){G.from(dash.querySelectorAll('.kpi'),{y:14,opacity:0,stagger:.06,duration:.5,ease:'power3.out'});G.from(dash.querySelectorAll('.bars span'),{scaleY:0,stagger:.04,duration:.7,ease:'power3.out'});G.from(dash.querySelector('.insight'),{opacity:0,x:-10,duration:.5,delay:.25})}
+  }
+  showPl(0);
+  if(HAS){steps.forEach(function(s,i){ST.create({trigger:s,start:'top 55%',end:'bottom 55%',onToggle:function(self){if(self.isActive)showPl(i)}})})}
+  else{steps.forEach(function(s){s.classList.add('active')})}
+
+  /* ---------------- Signals viz dots ---------------- */
+  var vs=$('vSig');var h='';for(var n=0;n<48;n++){h+='<i style="animation-delay:'+(Math.random()*2.4).toFixed(2)+'s;background:'+(['#0187E0','#03A6DD','#07D7D9','#F62DA0'][n%4])+'"></i>'}vs.innerHTML=h;
+
+  /* ---------------- Teemly AI demo ---------------- */
+  var A=[
+    {q:'Which teams are showing signs of overload this month?',a:'<p><strong>Two teams are above their healthy range.</strong> Engineering and Support show sustained after-hours work for three weeks in a row.</p>',b:[['Engineering',38,1],['Support',31,1],['Sales',18],['Design',12],['Product',9]],u:'Share of team with after-hours sessions',x:['Review sprint scope','Share with HR partner'],s:'Work activity, team structure'},
+    {q:'Where are we losing the most focus time?',a:'<p><strong>Mid-morning meetings are the biggest drain.</strong> Recurring syncs between 10 and 12 AM overlap the organization’s peak focus window four days a week.</p>',b:[['Recurring syncs',42,1],['Ad-hoc calls',24],['Chat interruptions',19],['Tool switching',15]],u:'Share of fragmented focus time',x:['Suggest a focus block','Compare by team'],s:'Calendar signals, work activity'},
+    {q:'Are teams actually using the AI tools we rolled out?',a:'<p><strong>Adoption is uneven.</strong> 68% of AI seats were active in the last 30 days, concentrated in Product and Engineering. Finance and Operations are under 30%.</p>',b:[['Product',84],['Engineering',79],['Support',61],['Operations',28,1],['Finance',22,1]],u:'AI seats active, last 30 days',x:['Plan enablement sessions','Review unused seats'],s:'Tool usage, license data'}
+  ];
+  var pr=$('prompts'),co=$('console'),aiTok=0,aiAuto=true,aiTimer=null,aiIdx=0;
+  A.forEach(function(x,i){var b=document.createElement('button');b.type='button';b.textContent=x.q;b.addEventListener('click',function(){aiAuto=false;playAI(i)});pr.appendChild(b)});
+  function wait(ms,tok){return new Promise(function(res,rej){setTimeout(function(){tok===aiTok?res():rej()},ms)})}
+  function playAI(i){
+    var tok=++aiTok,x=A[i];aiIdx=i;clearTimeout(aiTimer);
+    $$('button',pr).forEach(function(b,j){b.setAttribute('aria-pressed',String(i===j))});
+    co.innerHTML='<div class="msg-u"><span class="typed"></span><span class="caret"></span></div>';
+    var typed=co.querySelector('.typed'),n=0;
+    function typeNext(){if(tok!==aiTok)return;if(REDUCE){typed.textContent=x.q;return answer()}if(n<=x.q.length){typed.textContent=x.q.slice(0,n++);setTimeout(typeNext,22)}else answer()}
+    function answer(){
+      var c=co.querySelector('.caret');c&&c.remove();
+      var m=document.createElement('div');m.className='msg-a fadein';m.innerHTML='<div class="av"><svg aria-hidden="true"><use href="#tmark"/></svg></div><div class="body"><div class="thinking"><i></i><i></i><i></i></div></div>';co.appendChild(m);
+      wait(REDUCE?0:900,tok).then(function(){
+        m.querySelector('.body').innerHTML='<div class="fadein">'+x.a+'</div><div class="fadein" style="animation-delay:.15s"><small style="color:var(--muted)">'+x.u+'</small><div class="bars-a">'+x.b.map(function(b){return '<div class="bar-row"><span>'+b[0]+'</span><span class="track"><span class="fill'+(b[2]?' hot':'')+'" data-w="'+b[1]+'"></span></span><b>'+b[1]+'%</b></div>'}).join('')+'</div></div><div class="act fadein" style="animation-delay:.3s">'+x.x.map(function(a){return '<span>'+a+'</span>'}).join('')+'</div><div class="src fadein" style="animation-delay:.4s"><span>Sources: '+x.s+'</span><span class="tag-illus">Illustrative</span></div>';
+        requestAnimationFrame(function(){requestAnimationFrame(function(){$$('.fill',co).forEach(function(f){f.style.width=f.dataset.w+'%'})})});
+        if(aiAuto&&!REDUCE){aiTimer=setTimeout(function(){if(aiAuto&&tok===aiTok)playAI((i+1)%A.length)},7000)}
+      }).catch(function(){});
+    }
+    typeNext();
+  }
+  if(HAS){ST.create({trigger:'#ai',start:'top 60%',once:true,onEnter:function(){playAI(0)}})}else{playAI(0)}
+
+  /* ---------------- ROI ---------------- */
+  var defaults={USD:[60000,400000],INR:[900000,6000000],EUR:[55000,370000],GBP:[48000,320000]},sym={USD:'$',INR:'₹',EUR:'€',GBP:'£'};
+  var shown={t:0,o1:0,o2:0,o3:0};
+  function fmt(v,c){if(c==='INR'){if(v>=1e7)return '₹'+(v/1e7).toFixed(2)+' Cr';if(v>=1e5)return '₹'+(v/1e5).toFixed(1)+' L';return '₹'+Math.round(v).toLocaleString('en-IN')}if(v>=1e6)return sym[c]+(v/1e6).toFixed(2)+'M';if(v>=1e3)return sym[c]+Math.round(v/1e3)+'K';return sym[c]+Math.round(v)}
+  function paintRange(el){var p=(el.value-el.min)/(el.max-el.min)*100;el.style.setProperty('--p',p+'%')}
+  function calc(){
+    var c=$('cur').value,e=+$('emp').value,cost=+$('cost').value||0,p=+$('prod').value,s=+$('saas').value||0,sp=+$('saasPct').value;
+    $('empOut').textContent=e.toLocaleString();$('prodOut').textContent=p+'%';$('saasOut').textContent=sp+'%';
+    $$('input[type=range]').forEach(paintRange);
+    var target={t:e*cost*p/100+s*sp/100,o1:e*cost*p/100,o2:e*1880*p/100,o3:s*sp/100};
+    function render(){$('total').textContent=fmt(shown.t,c);$('o1').textContent=fmt(shown.o1,c);$('o2').textContent=Math.round(shown.o2).toLocaleString()+' hrs';$('o3').textContent=fmt(shown.o3,c)}
+    if(HAS){G.to(shown,{t:target.t,o1:target.o1,o2:target.o2,o3:target.o3,duration:.6,ease:'power2.out',overwrite:true,onUpdate:render})}else{shown=target;render()}
+  }
+  $('cur').addEventListener('change',function(){var d=defaults[$('cur').value];$('cost').value=d[0];$('saas').value=d[1];shown={t:0,o1:0,o2:0,o3:0};calc()});
+  ['emp','cost','prod','saas','saasPct'].forEach(function(id){$(id).addEventListener('input',calc)});
+  if(HAS){ST.create({trigger:'#roi',start:'top 70%',once:true,onEnter:calc});$$('input[type=range]').forEach(paintRange)}else calc();
+
+  /* ---------------- Privacy toggles ---------------- */
+  $$('.tog').forEach(function(t){t.addEventListener('click',function(){t.setAttribute('aria-checked',String(t.getAttribute('aria-checked')!=='true'))})});
+
+  /* ---------------- Chatbot ---------------- */
+  var bb=$('botBtn'),bot=$('bot');
+  function closeBot(){bot.classList.remove('open');bb.setAttribute('aria-expanded','false')}
+  bb.addEventListener('click',function(){var o=bot.classList.toggle('open');bb.setAttribute('aria-expanded',String(o));if(o)setTimeout(function(){bot.querySelector('a').focus()},50)});
+  $('botClose').addEventListener('click',function(){closeBot();bb.focus()});
+
+  /* =========================================================
+     SCROLL ANIMATIONS (GSAP)
+     ========================================================= */
+  if(!HAS){
+    $$('.stackbar span').forEach(function(s){s.style.width=s.dataset.w});
+    $$('.ringfill').forEach(function(r){r.style.strokeDashoffset='28'});
+    $('howPath').style.strokeDashoffset='0';
+    return;
+  }
+
+  // progress bar
+  G.to('#progress',{scaleX:1,ease:'none',scrollTrigger:{trigger:document.documentElement,start:'top top',end:'bottom bottom',scrub:.3}});
+
+  // hero intro
+  var tl=G.timeline({defaults:{ease:'expo.out'}});
+  tl.from('.hero .l1 .w > span',{yPercent:110,duration:1.1,stagger:.05})
+    .from('.hero .l2',{y:40,opacity:0,duration:1},'-=.8')
+    .from('[data-hero]',{y:24,opacity:0,duration:.9,stagger:.08},'-=.8');
+  // hero particles disperse on scroll
+  ST.create({trigger:'#hero',start:'top top',end:'bottom top',scrub:true,onUpdate:function(s){scrollP=Math.max(0,(s.progress-.3)/.7)}});
+  G.to('.hero-copy',{y:-80,opacity:.2,ease:'none',scrollTrigger:{trigger:'#hero',start:'top top',end:'bottom top',scrub:true}});
+  G.fromTo('.hero-float',{opacity:1},{opacity:0,ease:'none',scrollTrigger:{trigger:'#hero',start:'20% top',end:'55% top',scrub:true}});
+
+  // headings: word reveal
+  $$('.split').forEach(function(el){if(el.closest('.hero'))return;G.from(el.querySelectorAll('.w > span'),{yPercent:110,duration:1,ease:'expo.out',stagger:.04,scrollTrigger:{trigger:el,start:'top 85%'}})});
+  // generic reveals
+  $$('.sec-head p,.lede,[data-reveal]').forEach(function(el){if(el.closest('.hero'))return;G.from(el,{y:40,opacity:0,duration:1,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 88%'}})});
+  G.from('.prompts button',{x:-30,opacity:0,stagger:.1,duration:.8,ease:'power3.out',scrollTrigger:{trigger:'.prompts',start:'top 85%'}});
+  G.from('.console',{y:60,opacity:0,rotateX:8,transformPerspective:1000,duration:1.1,ease:'power3.out',scrollTrigger:{trigger:'.console',start:'top 85%'}});
+  G.from('.orbit',{scale:.7,opacity:0,rotate:-30,duration:1.4,ease:'expo.out',scrollTrigger:{trigger:'.orbit',start:'top 80%'}});
+  G.from('.sol-card',{x:120,opacity:0,stagger:.08,duration:1,ease:'power3.out',scrollTrigger:{trigger:'#solRail',start:'top 85%'}});
+  G.from('.not-list span',{scale:.8,opacity:0,stagger:.08,duration:.6,ease:'back.out(2)',scrollTrigger:{trigger:'.not-list',start:'top 90%'}});
+  G.from('.pol',{x:30,opacity:0,stagger:.1,duration:.7,ease:'power3.out',scrollTrigger:{trigger:'.policy',start:'top 80%'}});
+
+  // outcomes: drawn line, bars, ring
+  $$('.oc svg.line .draw').forEach(function(p){G.fromTo(p,{strokeDasharray:1,strokeDashoffset:1},{strokeDashoffset:0,duration:1.8,ease:'power2.inOut',scrollTrigger:{trigger:p,start:'top 85%'}})});
+  $$('.stackbar span').forEach(function(s,i){G.to(s,{width:s.dataset.w,duration:1.2,delay:i*.12,ease:'power3.out',scrollTrigger:{trigger:s,start:'top 90%'}})});
+  $$('.ringfill').forEach(function(r){G.to(r,{strokeDashoffset:28,duration:1.6,ease:'power3.out',scrollTrigger:{trigger:r,start:'top 90%'}})});
+
+  // how it works path
+  G.to('#howPath',{strokeDashoffset:0,ease:'none',scrollTrigger:{trigger:'.how-wrap',start:'top 80%',end:'bottom 60%',scrub:.6}});
+  G.from('.step .badge',{scale:0,rotate:-45,stagger:.2,duration:.8,ease:'back.out(2)',scrollTrigger:{trigger:'.steps',start:'top 80%'}});
+
+  // resources parallax cover
+  $$('.res .cover > div').forEach(function(c){G.fromTo(c,{yPercent:-6},{yPercent:6,ease:'none',scrollTrigger:{trigger:c,start:'top bottom',end:'bottom top',scrub:true}})});
+
+  // final CTA
+  G.from('.final-card',{scale:.92,opacity:0,duration:1.2,ease:'expo.out',scrollTrigger:{trigger:'.final-card',start:'top 85%'}});
+  G.from('.final-t',{y:-40,rotate:-20,opacity:0,duration:1.2,ease:'elastic.out(1,.5)',scrollTrigger:{trigger:'.final-card',start:'top 75%'}});
+  G.fromTo('.foot-big',{yPercent:40,opacity:0},{yPercent:0,opacity:1,ease:'none',scrollTrigger:{trigger:'footer',start:'top bottom',end:'bottom bottom',scrub:true}});
+
+  var mm=G.matchMedia();
+  // Desktop: pinned sections
+  mm.add('(min-width: 901px)',function(){
+    // problem: silos connect
+    var silos=$$('.silo'),offs=[[-90,-70,-14],[110,-40,12],[-60,90,10],[120,70,-10]];
+    var ptl=G.timeline({scrollTrigger:{trigger:'#problem',start:'top top',end:'+=130%',pin:'.problem-pin',scrub:.8,anticipatePin:1,refreshPriority:2}});
+    silos.forEach(function(s,i){ptl.fromTo(s,{x:offs[i][0],y:offs[i][1],rotate:offs[i][2],opacity:.45,filter:'grayscale(1)'},{x:0,y:0,rotate:0,opacity:1,filter:'grayscale(0)',duration:1,ease:'power2.inOut'},0)});
+    ptl.fromTo('.core',{scale:0,rotate:-90},{scale:1,rotate:0,duration:.6,ease:'back.out(1.6)'},.6)
+       .fromTo('.stage .links path',{strokeDasharray:1,strokeDashoffset:1},{strokeDashoffset:0,duration:.6,stagger:.08},.8)
+       .to('.cap.c1',{opacity:0,y:-20,duration:.3},.7)
+       .fromTo('.cap.c2',{opacity:0,y:20},{opacity:1,y:0,duration:.3},.85)
+       .to({},{duration:.3});
+    // model: horizontal scroll
+    var track=$('hTrack');
+    function dist(){return Math.max(0,track.scrollWidth-window.innerWidth)}
+    var htl=G.timeline({scrollTrigger:{trigger:'#model',start:'top top',end:function(){return '+='+(dist()+window.innerHeight*.3)},pin:'.model-pin',scrub:.8,invalidateOnRefresh:true,anticipatePin:1,refreshPriority:1}});
+    htl.to(track,{x:function(){return -dist()},ease:'none'},0).fromTo('#railFill',{scaleX:.08},{scaleX:1,ease:'none'},0);
+    var draw3=document.querySelector('.panel .draw');if(draw3)G.fromTo(draw3,{strokeDasharray:1,strokeDashoffset:1},{strokeDashoffset:0,duration:1.6,scrollTrigger:{trigger:'#model',start:'top 40%'}});
+    return function(){G.set(silos,{clearProps:'all'});G.set(track,{clearProps:'transform'})};
+  });
+  // Mobile: simpler, no pins
+  mm.add('(max-width: 900px)',function(){
+    G.set('.stage .links path',{strokeDasharray:1,strokeDashoffset:1});
+    var m=G.timeline({scrollTrigger:{trigger:'.stage',start:'top 75%'}});
+    m.from('.silo',{scale:.8,opacity:0,stagger:.1,duration:.6,ease:'back.out(1.6)'})
+     .from('.core',{scale:0,duration:.5,ease:'back.out(2)'},'-=.2')
+     .to('.stage .links path',{strokeDashoffset:0,duration:.6,stagger:.08},'-=.2')
+     .to('.cap.c1',{opacity:0,duration:.3},'+=.3').to('.cap.c2',{opacity:1,duration:.4});
+    $$('.panel').forEach(function(p){G.from(p,{y:50,opacity:0,duration:.8,ease:'power3.out',scrollTrigger:{trigger:p,start:'top 88%'}})});
+  });
+
+  window.addEventListener('load',function(){ST.refresh()});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){ST.refresh();layout()});
+})();
+</script>
+</body>
+</html>

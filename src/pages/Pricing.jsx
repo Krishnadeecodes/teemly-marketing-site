@@ -3,6 +3,7 @@ import PageHero from '../components/PageHero.jsx'
 import SectionHead from '../components/SectionHead.jsx'
 import PricingCard from '../components/PricingCard.jsx'
 import Accordion from '../components/Accordion.jsx'
+import Reveal from '../home/Reveal.jsx'
 import FinalCTA from '../sections/FinalCTA.jsx'
 import Icon from '../components/Icon.jsx'
 import { plans } from '../data/plans.js'
@@ -81,8 +82,10 @@ export default function Pricing() {
           </div>
 
           <div className="price-grid">
-            {plans.map((p) => (
-              <PricingCard plan={p} featured={p.featured} cycle={cycle} seats={seats} key={p.name} />
+            {plans.map((p, i) => (
+              <Reveal as="div" delay={i * 0.06} key={p.name}>
+                <PricingCard plan={p} featured={p.featured} cycle={cycle} seats={seats} />
+              </Reveal>
             ))}
           </div>
         </div>
