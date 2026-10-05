@@ -125,7 +125,7 @@ export default function TeemlyAISection() {
   const current = QA[active]
 
   return (
-    <section className="h-ai" ref={sectionRef}>
+    <section className="h-ai h-sec-blue" ref={sectionRef}>
       <div className="h-aurora" aria-hidden="true">
         <i className="a1" />
         <i className="a2" />

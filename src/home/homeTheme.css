@@ -300,6 +300,132 @@
   color: var(--h-muted);
 }
 
+/* =========================================================
+   GRADIENT-BLUE SECTIONS — Teemly model, Teemly AI, Privacy & trust
+   Break up the light page with three enterprise "anchor" bands.
+   ========================================================= */
+.home-v2 .h-sec-blue {
+  --h-sb-text: #c9d6f2;
+  color: var(--h-sb-text);
+  isolation: isolate;
+  background: linear-gradient(135deg, #040e45 0%, #032297 50%, #0a4fb8 100%);
+}
+.home-v2 .h-model.h-sec-blue {
+  background: radial-gradient(900px 520px at 100% 100%, rgba(7, 215, 217, 0.18), transparent 62%),
+    radial-gradient(760px 480px at 0% 100%, rgba(246, 45, 160, 0.14), transparent 62%),
+    linear-gradient(170deg, #040e45 0%, #032297 55%, #0a4fb8 100%);
+}
+.home-v2 .h-trust.h-sec-blue {
+  background: radial-gradient(900px 560px at 92% 10%, rgba(7, 215, 217, 0.18), transparent 62%),
+    radial-gradient(700px 460px at 0% 0%, rgba(246, 45, 160, 0.12), transparent 62%),
+    linear-gradient(115deg, #040e45 0%, #032297 50%, #0a4fb8 100%);
+}
+.home-v2 .h-sec-blue::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1.2px);
+  background-size: 26px 26px;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 22%, #000 78%, transparent);
+  mask-image: linear-gradient(180deg, transparent, #000 22%, #000 78%, transparent);
+}
+.home-v2 .h-sec-blue h2 {
+  color: #fff;
+}
+.home-v2 .h-sec-blue .h-sec-head p,
+.home-v2 .h-sec-blue .h-model-note,
+.home-v2 .h-sec-blue .h-ai-lede,
+.home-v2 .h-sec-blue .h-ai-note {
+  color: var(--h-sb-text) !important;
+}
+.home-v2 .h-sec-blue .h-kicker {
+  color: #7fe6ee;
+}
+.home-v2 .h-sec-blue .h-kicker.pink {
+  color: #ff9dcb;
+}
+.home-v2 .h-sec-blue :focus-visible {
+  outline-color: #7fe6ee;
+}
+/* white cards inside blue bands keep the normal text colour */
+.home-v2 .h-sec-blue .h-panel,
+.home-v2 .h-sec-blue .h-console,
+.home-v2 .h-sec-blue .h-policy {
+  color: var(--h-text);
+}
+/* model */
+.home-v2 .h-sec-blue .h-rail {
+  background: rgba(255, 255, 255, 0.16);
+}
+.home-v2 .h-sec-blue .h-panel {
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 30px 70px -30px rgba(2, 8, 40, 0.65);
+}
+/* AI */
+.home-v2 .h-sec-blue .h-aurora i {
+  opacity: 0.2;
+}
+.home-v2 .h-sec-blue .h-prompts button {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  backdrop-filter: blur(6px);
+}
+.home-v2 .h-sec-blue .h-prompts button::before {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+.home-v2 .h-sec-blue .h-prompts button:hover {
+  border-color: #7fe6ee;
+}
+.home-v2 .h-sec-blue .h-prompts button[aria-pressed='true'] {
+  border-color: #ff5fb0;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 30px -16px rgba(246, 45, 160, 0.7);
+}
+.home-v2 .h-sec-blue .h-console {
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 40px 90px -30px rgba(2, 8, 40, 0.75);
+}
+/* trust */
+.home-v2 .h-sec-blue .h-not-list span {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.24);
+  color: #fff;
+}
+.home-v2 .h-sec-blue .h-not-list span::before {
+  color: #ff9dcb;
+}
+.home-v2 .h-sec-blue .h-btn-ghost {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.45);
+  color: #fff;
+  backdrop-filter: none;
+}
+.home-v2 .h-sec-blue .h-btn-ghost:hover {
+  border-color: #fff;
+}
+.home-v2 .h-sec-blue .h-policy {
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 40px 90px -30px rgba(2, 8, 40, 0.75);
+}
+.home-v2 .h-sec-blue .h-trust-pr {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(6px);
+}
+.home-v2 .h-sec-blue .h-trust-pr h3 {
+  color: #fff;
+}
+.home-v2 .h-sec-blue .h-trust-pr p {
+  color: var(--h-sb-text);
+}
+.home-v2 .h-sec-blue .h-trust-pr-ic {
+  background: rgba(255, 255, 255, 0.12);
+  color: #7fe6ee;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .home-v2 .h-aurora i {
     animation: none !important;

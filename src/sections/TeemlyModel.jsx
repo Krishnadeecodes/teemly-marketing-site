@@ -175,7 +175,7 @@ export default function TeemlyModel() {
   }, [])
 
   return (
-    <section className="h-model" ref={sectionRef}>
+    <section className="h-model h-sec-blue" ref={sectionRef}>
       <div className="h-wrap h-model-head">
         <div className="h-sec-head">
           <span className="h-kicker">The Teemly model</span>

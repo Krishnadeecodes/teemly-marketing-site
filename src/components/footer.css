@@ -1,7 +1,20 @@
 .site-footer {
-  background: var(--dark-950);
+  position: relative;
+  background: linear-gradient(135deg, #040e45 0%, #032297 55%, #0a4fb8 100%);
   color: var(--dark-text);
   margin-top: var(--section-pad);
+  isolation: isolate;
+}
+.site-footer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1.2px);
+  background-size: 26px 26px;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 15%, #000 85%, transparent);
+  mask-image: linear-gradient(180deg, transparent, #000 15%, #000 85%, transparent);
 }
 
 .footer-top {
@@ -17,7 +30,7 @@
   margin-top: 16px;
   font-size: 0.92rem;
   line-height: 1.7;
-  color: var(--dark-text-soft);
+  color: #c9d6f2;
   max-width: 320px;
 }
 
@@ -61,7 +74,7 @@
 
 .footer-col a {
   font-size: 0.88rem;
-  color: var(--dark-text-soft);
+  color: #c9d6f2;
   transition: color var(--dur-fast);
 }
 
@@ -87,7 +100,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  border-top: 1px solid var(--dark-line);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
   padding-top: 22px;
   padding-bottom: 28px;
   flex-wrap: wrap;
@@ -95,7 +108,7 @@
 
 .footer-bottom p {
   font-size: 0.82rem;
-  color: var(--dark-text-soft);
+  color: #c9d6f2;
 }
 
 .footer-legal {
@@ -106,7 +119,7 @@
 
 .footer-legal a {
   font-size: 0.82rem;
-  color: var(--dark-text-soft);
+  color: #c9d6f2;
 }
 
 .footer-legal a:hover {

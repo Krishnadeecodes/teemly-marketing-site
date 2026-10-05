@@ -65,7 +65,7 @@ function PolicyPanel() {
 
 export default function Trust() {
   return (
-    <section className="h-trust">
+    <section className="h-trust h-sec-blue">
       <div className="h-wrap">
         <div className="h-trust-grid">
           <div className="h-sec-head">
