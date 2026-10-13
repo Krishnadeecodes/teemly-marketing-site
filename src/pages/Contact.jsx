@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import PageHero from '../components/PageHero.jsx'
 import Icon from '../components/Icon.jsx'
+import { submitForm } from '../lib/submitForm.js'
 import '../sections/sections.css'
 import './pages.css'
 
@@ -12,15 +13,26 @@ const info = [
 
 export default function Contact() {
   const [sent, setSent] = useState(false)
-  const [form, setForm] = useState({ name: '', email: '', company: '', seats: '', message: '' })
+  const [sending, setSending] = useState(false)
+  const [error, setError] = useState('')
+  const [form, setForm] = useState({ name: '', email: '', company: '', seats: '', message: '', website: '' })
 
   function update(field) {
     return (e) => setForm((f) => ({ ...f, [field]: e.target.value }))
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
-    setSent(true)
+    setSending(true)
+    setError('')
+    try {
+      await submitForm('contact', form)
+      setSent(true)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -69,6 +81,10 @@ export default function Contact() {
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
+                <div className="form-hp" aria-hidden="true">
+                  <label htmlFor="website">Website</label>
+                  <input id="website" name="website" tabIndex={-1} autoComplete="off" value={form.website} onChange={update('website')} />
+                </div>
                 <div className="form-grid">
                   <div className="form-field">
                     <label htmlFor="name">Full name</label>
@@ -111,8 +127,13 @@ export default function Contact() {
                     />
                   </div>
                 </div>
-                <button type="submit" className="btn btn-primary btn-block btn-lg">
-                  Send &amp; Book a Demo
+                {error && (
+                  <p className="form-error" role="alert">
+                    {error}
+                  </p>
+                )}
+                <button type="submit" disabled={sending} className="btn btn-primary btn-block btn-lg">
+                  {sending ? 'Sending…' : 'Send & Book a Demo'}
                   <Icon name="arrowRight" size={18} />
                 </button>
               </form>

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import PageHero from '../components/PageHero.jsx'
 import Icon from '../components/Icon.jsx'
+import { submitForm } from '../lib/submitForm.js'
 import './pages.css'
 
 const valueProps = [
@@ -24,6 +25,8 @@ const problemOptions = [
 
 export default function BookADemo() {
   const [sent, setSent] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [error, setError] = useState('')
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -36,6 +39,7 @@ export default function BookADemo() {
     problem: '',
     message: '',
     consent: false,
+    website: '',
   })
 
   function update(field) {
@@ -45,9 +49,18 @@ export default function BookADemo() {
     }
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
-    setSent(true)
+    setSending(true)
+    setError('')
+    try {
+      await submitForm('demo', form)
+      setSent(true)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -86,6 +99,10 @@ export default function BookADemo() {
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
+                <div className="form-hp" aria-hidden="true">
+                  <label htmlFor="website">Website</label>
+                  <input id="website" name="website" tabIndex={-1} autoComplete="off" value={form.website} onChange={update('website')} />
+                </div>
                 <div className="form-grid">
                   <div className="form-field">
                     <label htmlFor="firstName">First name</label>
@@ -149,8 +166,13 @@ export default function BookADemo() {
                   <input type="checkbox" checked={form.consent} onChange={update('consent')} required />
                   I agree to be contacted about this request and understand Teemly's privacy practices.
                 </label>
-                <button type="submit" className="btn btn-primary btn-block btn-lg" style={{ marginTop: 16 }}>
-                  Book a Demo
+                {error && (
+                  <p className="form-error" role="alert">
+                    {error}
+                  </p>
+                )}
+                <button type="submit" disabled={sending} className="btn btn-primary btn-block btn-lg" style={{ marginTop: 16 }}>
+                  {sending ? 'Sending…' : 'Book a Demo'}
                   <Icon name="arrowRight" size={18} />
                 </button>
               </form>

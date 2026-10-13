@@ -866,6 +866,23 @@ a.related-card:hover {
   margin-top: 3px;
   flex-shrink: 0;
 }
+.form-error {
+  margin: 0 0 12px;
+  padding: 10px 14px;
+  border-radius: var(--r-sm);
+  background: rgba(226, 31, 92, 0.08);
+  color: var(--pink-deep);
+  font-size: 0.86rem;
+}
+
+/* Honeypot field — hidden from people, visible to naive bots */
+.form-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
 
 .form-success {
   display: flex;
