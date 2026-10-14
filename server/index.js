@@ -1,9 +1,12 @@
 // Teemly website server: serves the built Vite site (dist/) and handles the
-// Contact + Book a Demo form submissions by emailing them via Gmail SMTP.
+// Contact + Book a Demo form submissions by emailing them via Gmail SMTP
+// (and, optionally, forwarding them to a CRM webhook).
 import path from 'node:path'
+import { createHash } from 'node:crypto'
 import { fileURLToPath } from 'node:url'
 import express from 'express'
 import nodemailer from 'nodemailer'
+import { LEAD_FORMS, validateLead } from '../src/lib/leadForms.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
@@ -18,6 +21,12 @@ try {
 const { SMTP_USER, SMTP_PASS, MAIL_TO, PORT = 3001 } = process.env
 // Public site URL for links in auto-reply emails (optional, no trailing slash)
 const SITE_URL = (process.env.SITE_URL || '').replace(/\/+$/, '')
+// Optional per-form recipients (comma-separated); fall back to MAIL_TO.
+const MAIL_TO_CONTACT = process.env.MAIL_TO_CONTACT || MAIL_TO
+const MAIL_TO_DEMO = process.env.MAIL_TO_DEMO || MAIL_TO
+// Optional CRM / automation webhook (HubSpot, Zapier, Make, …) that receives
+// every accepted lead as JSON. LEAD_WEBHOOK_SECRET is sent as a Bearer token.
+const { LEAD_WEBHOOK_URL, LEAD_WEBHOOK_SECRET } = process.env
 
 if (!SMTP_USER || !SMTP_PASS || !MAIL_TO) {
   console.error('Missing SMTP_USER, SMTP_PASS or MAIL_TO. Copy .env.example to .env and fill it in.')
@@ -35,7 +44,7 @@ const transporter = nodemailer.createTransport({
 const FORMS = {
   contact: {
     title: 'Contact / Sales enquiry',
-    required: ['name', 'email'],
+    mailTo: MAIL_TO_CONTACT,
     fields: {
       name: 'Full name',
       email: 'Work email',
@@ -60,7 +69,7 @@ const FORMS = {
   },
   demo: {
     title: 'Book a Demo request',
-    required: ['firstName', 'lastName', 'email', 'company', 'country', 'companySize', 'role', 'problem'],
+    mailTo: MAIL_TO_DEMO,
     fields: {
       firstName: 'First name',
       lastName: 'Last name',
@@ -90,39 +99,84 @@ const FORMS = {
   },
 }
 
-const MAX_LEN = 5000
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
 function escapeHtml(s) {
   return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c])
 }
 
-// Keep only known fields, coerce to trimmed strings, cap length.
+// Keep only known fields as trimmed strings (validateLead enforces lengths).
 function clean(body, def) {
   const data = {}
   for (const key of Object.keys(def.fields)) {
     const v = body?.[key]
-    data[key] = typeof v === 'string' ? v.trim().slice(0, MAX_LEN) : ''
+    data[key] = typeof v === 'string' ? v.trim() : ''
   }
   return data
 }
 
-function buildEmail(def, data) {
-  const rows = Object.entries(def.fields)
-  const text = rows.map(([k, label]) => `${label}: ${data[k] || '-'}`).join('\n')
-  const html = `
-    <h2 style="font-family:sans-serif;color:#09124b">${escapeHtml(def.title)}</h2>
+// Campaign attribution sent by the browser (src/lib/attribution.js).
+const ATTRIBUTION_FIELDS = {
+  utm_source: 'UTM source',
+  utm_medium: 'UTM medium',
+  utm_campaign: 'UTM campaign',
+  utm_term: 'UTM term',
+  utm_content: 'UTM content',
+  referrer: 'Referrer',
+  landingPage: 'Landing page',
+  pagePath: 'Submitted from',
+}
+
+function cleanAttribution(raw) {
+  const out = {}
+  for (const key of Object.keys(ATTRIBUTION_FIELDS)) {
+    const v = raw?.[key]
+    if (typeof v === 'string' && v.trim()) out[key] = v.replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, 300)
+  }
+  return out
+}
+
+function buildEmail(def, lead) {
+  const sections = [
+    [def.title, Object.entries(def.fields).map(([k, label]) => [label, lead.data[k] || '-'])],
+    [
+      'Source & consent',
+      [
+        ...Object.entries(ATTRIBUTION_FIELDS).map(([k, label]) => [label, lead.attribution[k] || '-']),
+        ['Contact consent', lead.consent ? `Yes (${lead.submittedAt})` : 'Not requested on this form'],
+        ['Submitted at', lead.submittedAt],
+      ],
+    ],
+  ]
+  const text = sections.map(([title, rows]) => [`== ${title} ==`, ...rows.map(([l, v]) => `${l}: ${v}`)].join('\n')).join('\n\n')
+  const html = sections
+    .map(
+      ([title, rows]) => `
+    <h2 style="font-family:sans-serif;color:#09124b;font-size:18px;margin:24px 0 8px">${escapeHtml(title)}</h2>
     <table style="font-family:sans-serif;font-size:14px;border-collapse:collapse">
       ${rows
         .map(
-          ([k, label]) => `<tr>
+          ([label, v]) => `<tr>
             <td style="padding:6px 16px 6px 0;color:#6b7093;vertical-align:top;white-space:nowrap">${escapeHtml(label)}</td>
-            <td style="padding:6px 0;color:#0a1140;white-space:pre-wrap">${escapeHtml(data[k] || '-')}</td>
+            <td style="padding:6px 0;color:#0a1140;white-space:pre-wrap">${escapeHtml(v)}</td>
           </tr>`,
         )
         .join('')}
-    </table>`
+    </table>`,
+    )
+    .join('')
   return { text, html }
+}
+
+async function postToWebhook(lead) {
+  const res = await fetch(LEAD_WEBHOOK_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(LEAD_WEBHOOK_SECRET ? { Authorization: `Bearer ${LEAD_WEBHOOK_SECRET}` } : {}),
+    },
+    body: JSON.stringify(lead),
+    signal: AbortSignal.timeout(8000),
+  })
+  if (!res.ok) throw new Error(`webhook responded ${res.status}`)
 }
 
 // Confirmation email to the person who submitted the form. Deliberately only
@@ -212,10 +266,24 @@ function rateLimit(req, res, next) {
   next()
 }
 
+// ---- Duplicate guard: identical submissions within the window are accepted
+// (so a double-click or retry still shows success) but delivered only once ----
+const recentLeads = new Map() // fingerprint -> timestamp
+
+function fingerprint(type, data) {
+  return createHash('sha256').update(JSON.stringify([type, data.email.toLowerCase(), data])).digest('hex')
+}
+
+// Bots that fill the form faster than a person could are silently dropped.
+const MIN_FILL_MS = 1500
+
 setInterval(() => {
   const now = Date.now()
   for (const [ip, times] of hits) {
     if (times.every((t) => now - t >= WINDOW_MS)) hits.delete(ip)
+  }
+  for (const [key, t] of recentLeads) {
+    if (now - t >= WINDOW_MS) recentLeads.delete(key)
   }
 }, WINDOW_MS).unref()
 
@@ -228,33 +296,65 @@ app.post('/api/forms/:type', rateLimit, async (req, res) => {
   const def = FORMS[req.params.type]
   if (!def) return res.status(404).json({ error: 'Unknown form' })
 
+  const tag = `[forms/${req.params.type}]`
+
   // Honeypot: real users never see or fill this field.
   if (req.body?.website) {
-    console.warn(`[forms/${req.params.type}] honeypot filled — submission dropped`)
+    console.warn(`${tag} honeypot filled — submission dropped`)
+    return res.json({ ok: true })
+  }
+  const elapsed = Number(req.body?.elapsedMs)
+  if (Number.isFinite(elapsed) && elapsed < MIN_FILL_MS) {
+    console.warn(`${tag} submitted ${elapsed}ms after load — submission dropped`)
     return res.json({ ok: true })
   }
 
-  const data = clean(req.body, def)
-  const missing = def.required.filter((k) => !data[k])
-  if (missing.length) return res.status(400).json({ error: 'Please fill in all required fields.' })
-  if (!EMAIL_RE.test(data.email)) return res.status(400).json({ error: 'Please enter a valid email address.' })
-
-  const { text, html } = buildEmail(def, data)
-
-  try {
-    await transporter.sendMail({
-      from: `"Teemly Website" <${SMTP_USER}>`,
-      to: MAIL_TO,
-      replyTo: data.email,
-      subject: def.subject(data).replace(/[\r\n]+/g, ' '),
-      text,
-      html,
-    })
-    console.log(`[forms/${req.params.type}] lead emailed to ${MAIL_TO}`)
-  } catch (err) {
-    console.error(`[forms/${req.params.type}] sendMail failed:`, err)
-    return res.status(500).json({ error: 'Sorry, we could not send your message. Please try again or email us directly.' })
+  const fields = validateLead(req.params.type, req.body)
+  if (Object.keys(fields).length) {
+    return res.status(400).json({ error: 'Please fix the highlighted fields and try again.', fields })
   }
+
+  const data = clean(req.body, def)
+  const key = fingerprint(req.params.type, data)
+  if (recentLeads.has(key)) {
+    console.log(`${tag} duplicate submission ignored`)
+    return res.json({ ok: true })
+  }
+
+  const lead = {
+    form: req.params.type,
+    submittedAt: new Date().toISOString(),
+    data,
+    attribution: cleanAttribution(req.body?.attribution),
+    consent: 'consent' in LEAD_FORMS[req.params.type] ? req.body.consent === true : undefined,
+  }
+  const { text, html } = buildEmail(def, lead)
+
+  // Deliver to every configured destination. The lead counts as received if
+  // at least one succeeded; partial failures are logged for follow-up.
+  const deliveries = [
+    transporter
+      .sendMail({
+        from: `"Teemly Website" <${SMTP_USER}>`,
+        to: def.mailTo,
+        replyTo: data.email,
+        subject: def.subject(data).replace(/[\r\n]+/g, ' '),
+        text,
+        html,
+      })
+      .then(() => console.log(`${tag} lead emailed to ${def.mailTo}`)),
+  ]
+  if (LEAD_WEBHOOK_URL) deliveries.push(postToWebhook(lead).then(() => console.log(`${tag} lead sent to webhook`)))
+
+  const results = await Promise.allSettled(deliveries)
+  const failed = results.filter((r) => r.status === 'rejected')
+  for (const r of failed) console.error(`${tag} delivery failed:`, r.reason)
+  if (failed.length === results.length) {
+    return res.status(502).json({
+      error: 'Sorry, we could not send your request just now. Please try again in a moment — your details are still in the form.',
+    })
+  }
+  recentLeads.set(key, Date.now())
 
   // The lead reached us, so the submission is a success regardless of the
   // auto-reply. Send the confirmation in the background and only log failures.
@@ -265,13 +365,13 @@ app.post('/api/forms/:type', rateLimit, async (req, res) => {
     .sendMail({
       from: `"Teemly" <${SMTP_USER}>`,
       to: data.email,
-      replyTo: MAIL_TO,
+      replyTo: def.mailTo,
       subject: reply.subject,
       text: reply.text,
       html: reply.html,
     })
-    .then(() => console.log(`[forms/${req.params.type}] auto-reply sent to ${data.email}`))
-    .catch((err) => console.error(`[forms/${req.params.type}] auto-reply to submitter failed:`, err.message))
+    .then(() => console.log(`${tag} auto-reply sent to ${data.email}`))
+    .catch((err) => console.error(`${tag} auto-reply to submitter failed:`, err.message))
 })
 
 // ---- Serve the built site with SPA fallback ----

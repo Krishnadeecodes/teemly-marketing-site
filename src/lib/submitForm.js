@@ -1,4 +1,9 @@
 // Posts a form payload to the Node server (server/index.js), which emails it.
+// Shown alongside errors so visitors always have a route that bypasses the form.
+export const FALLBACK_EMAIL = 'hello@teemly.app'
+
+const TIMEOUT_MS = 20000
+
 export async function submitForm(type, payload) {
   let res
   try {
@@ -6,11 +11,20 @@ export async function submitForm(type, payload) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(TIMEOUT_MS),
     })
-  } catch {
-    throw new Error('Network error. Please check your connection and try again.')
+  } catch (err) {
+    throw new Error(
+      err?.name === 'TimeoutError'
+        ? 'The request took too long. Your details are still here — please try again.'
+        : 'Network error. Please check your connection and try again — your details are still here.',
+    )
   }
   const data = await res.json().catch(() => ({}))
-  if (!res.ok) throw new Error(data.error || 'Something went wrong. Please try again.')
+  if (!res.ok) {
+    const error = new Error(data.error || 'Something went wrong. Please try again.')
+    error.fields = data.fields
+    throw error
+  }
   return data
 }

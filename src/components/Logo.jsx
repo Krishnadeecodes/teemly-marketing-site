@@ -1,4 +1,4 @@
-export default function Logo({ variant = 'dark', size = 28, withText = true }) {
+export default function Logo({ variant = 'dark', size = 28, withText = true, viewBox = '0 0 64 64' }) {
   const textColor = variant === 'light' ? '#ffffff' : 'var(--navy)'
 
   return (
@@ -10,7 +10,7 @@ export default function Logo({ variant = 'dark', size = 28, withText = true }) {
         lineHeight: 1,
       }}
     >
-      <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden="true">
+      <svg width={size} height={size} viewBox={viewBox} aria-hidden="true">
         <defs>
           <linearGradient id="logoBar" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0" stopColor="#0aa1e8" />

@@ -1,7 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import PageHero from '../components/PageHero.jsx'
 import Icon from '../components/Icon.jsx'
-import { submitForm } from '../lib/submitForm.js'
+import FieldError from '../components/FieldError.jsx'
+import { useLeadForm } from '../lib/useLeadForm.js'
+import { PROBLEM_OPTIONS, ROLE_OPTIONS, SIZE_OPTIONS } from '../lib/leadForms.js'
+import { FALLBACK_EMAIL } from '../lib/submitForm.js'
 import './pages.css'
 
 const valueProps = [
@@ -11,23 +15,14 @@ const valueProps = [
   { icon: 'clock', text: 'Most demos are scheduled within one business day' },
 ]
 
-const roleOptions = ['CEO/Founder', 'Executive', 'HR', 'People Analytics', 'IT', 'Operations', 'Finance', 'AI/Data', 'Manager', 'Other']
-const problemOptions = [
-  'Productivity',
-  'Workforce Planning',
-  'Workflow Optimization',
-  'AI Impact',
-  'Technology Utilization',
-  'Employee Experience',
-  'Organizational Intelligence',
-  'Other',
+const nextSteps = [
+  'You get an email confirming we received your request.',
+  'Within one business day, our team emails you a few time slots to choose from.',
+  'We run a guided walkthrough tailored to the problem you selected — bring your team and your questions.',
 ]
 
 export default function BookADemo() {
-  const [sent, setSent] = useState(false)
-  const [sending, setSending] = useState(false)
-  const [error, setError] = useState('')
-  const [form, setForm] = useState({
+  const { values, errors, status, formError, field, handleSubmit } = useLeadForm('demo', {
     firstName: '',
     lastName: '',
     email: '',
@@ -39,29 +34,13 @@ export default function BookADemo() {
     problem: '',
     message: '',
     consent: false,
-    website: '',
   })
+  const successRef = useRef(null)
+  const sending = status === 'sending'
 
-  function update(field) {
-    return (e) => {
-      const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
-      setForm((f) => ({ ...f, [field]: value }))
-    }
-  }
-
-  async function handleSubmit(e) {
-    e.preventDefault()
-    setSending(true)
-    setError('')
-    try {
-      await submitForm('demo', form)
-      setSent(true)
-    } catch (err) {
-      setError(err.message)
-    } finally {
-      setSending(false)
-    }
-  }
+  useEffect(() => {
+    if (status === 'success') successRef.current?.focus()
+  }, [status])
 
   return (
     <>
@@ -84,94 +63,132 @@ export default function BookADemo() {
                 </div>
               </div>
             ))}
+            <div className="contact-info-card form-next">
+              <div>
+                <h4>What happens next</h4>
+                <ol>
+                  {nextSteps.map((s) => (
+                    <li key={s}>{s}</li>
+                  ))}
+                </ol>
+              </div>
+            </div>
           </div>
 
           <div className="contact-form">
-            {sent ? (
-              <div className="form-success">
+            {status === 'success' ? (
+              <div className="form-success" role="status">
                 <span className="icon-circle">
                   <Icon name="check" size={26} />
                 </span>
-                <h3 style={{ fontSize: 'var(--fs-xl)' }}>Thanks — your demo request is in</h3>
+                <h3 ref={successRef} tabIndex={-1} style={{ fontSize: 'var(--fs-xl)' }}>
+                  Thanks — your demo request is in
+                </h3>
                 <p style={{ color: 'var(--muted)' }}>
-                  We'll reach out to {form.email || 'you'} within one business day to find a time.
+                  We've sent a confirmation to {values.email}. Our team will email you within one business day with
+                  time slots to choose from.
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} noValidate>
                 <div className="form-hp" aria-hidden="true">
                   <label htmlFor="website">Website</label>
-                  <input id="website" name="website" tabIndex={-1} autoComplete="off" value={form.website} onChange={update('website')} />
+                  <input {...field('website')} tabIndex={-1} autoComplete="off" />
                 </div>
                 <div className="form-grid">
                   <div className="form-field">
                     <label htmlFor="firstName">First name</label>
-                    <input id="firstName" required value={form.firstName} onChange={update('firstName')} />
+                    <input {...field('firstName')} required autoComplete="given-name" />
+                    <FieldError id="firstName" error={errors.firstName} />
                   </div>
                   <div className="form-field">
                     <label htmlFor="lastName">Last name</label>
-                    <input id="lastName" required value={form.lastName} onChange={update('lastName')} />
+                    <input {...field('lastName')} required autoComplete="family-name" />
+                    <FieldError id="lastName" error={errors.lastName} />
                   </div>
                   <div className="form-field">
                     <label htmlFor="email">Work email</label>
-                    <input id="email" type="email" required value={form.email} onChange={update('email')} />
+                    <input {...field('email')} type="email" required autoComplete="email" />
+                    <FieldError id="email" error={errors.email} />
                   </div>
                   <div className="form-field">
                     <label htmlFor="company">Company</label>
-                    <input id="company" required value={form.company} onChange={update('company')} />
+                    <input {...field('company')} required autoComplete="organization" />
+                    <FieldError id="company" error={errors.company} />
                   </div>
                   <div className="form-field">
-                    <label htmlFor="jobTitle">Job title</label>
-                    <input id="jobTitle" value={form.jobTitle} onChange={update('jobTitle')} />
+                    <label htmlFor="jobTitle">
+                      Job title <span className="form-optional">(optional)</span>
+                    </label>
+                    <input {...field('jobTitle')} autoComplete="organization-title" />
+                    <FieldError id="jobTitle" error={errors.jobTitle} />
                   </div>
                   <div className="form-field">
                     <label htmlFor="country">Country</label>
-                    <input id="country" required value={form.country} onChange={update('country')} />
+                    <input {...field('country')} required autoComplete="country-name" />
+                    <FieldError id="country" error={errors.country} />
                   </div>
                   <div className="form-field">
                     <label htmlFor="companySize">Company size</label>
-                    <select id="companySize" required value={form.companySize} onChange={update('companySize')}>
+                    <select {...field('companySize')} required>
                       <option value="">Select a range</option>
-                      <option>1–10</option>
-                      <option>11–50</option>
-                      <option>51–200</option>
-                      <option>201–500</option>
-                      <option>500+</option>
+                      {SIZE_OPTIONS.map((s) => (
+                        <option key={s}>{s}</option>
+                      ))}
                     </select>
+                    <FieldError id="companySize" error={errors.companySize} />
                   </div>
                   <div className="form-field">
                     <label htmlFor="role">Role</label>
-                    <select id="role" required value={form.role} onChange={update('role')}>
+                    <select {...field('role')} required>
                       <option value="">Select a role</option>
-                      {roleOptions.map((r) => (
+                      {ROLE_OPTIONS.map((r) => (
                         <option key={r}>{r}</option>
                       ))}
                     </select>
+                    <FieldError id="role" error={errors.role} />
                   </div>
                   <div className="form-field full">
                     <label htmlFor="problem">Primary problem</label>
-                    <select id="problem" required value={form.problem} onChange={update('problem')}>
+                    <select {...field('problem')} required>
                       <option value="">Select the closest fit</option>
-                      {problemOptions.map((p) => (
+                      {PROBLEM_OPTIONS.map((p) => (
                         <option key={p}>{p}</option>
                       ))}
                     </select>
+                    <FieldError id="problem" error={errors.problem} />
                   </div>
                   <div className="form-field full">
-                    <label htmlFor="message">What would you like to discuss?</label>
-                    <textarea id="message" rows={4} value={form.message} onChange={update('message')} />
+                    <label htmlFor="message">
+                      What would you like to discuss? <span className="form-optional">(optional)</span>
+                    </label>
+                    <textarea {...field('message')} rows={4} />
+                    <FieldError id="message" error={errors.message} />
                   </div>
                 </div>
-                <label className="consent-check">
-                  <input type="checkbox" checked={form.consent} onChange={update('consent')} required />
-                  I agree to be contacted about this request and understand Teemly's privacy practices.
+                <label className="consent-check" htmlFor="consent">
+                  <input {...field('consent')} type="checkbox" required />
+                  <span>
+                    I agree to be contacted about this request and have read Teemly's{' '}
+                    <Link to="/legal/privacy">Privacy Policy</Link>.
+                  </span>
                 </label>
-                {error && (
-                  <p className="form-error" role="alert">
-                    {error}
-                  </p>
+                <FieldError id="consent" error={errors.consent} />
+                {formError && (
+                  <div className="form-error" role="alert">
+                    <p>{formError}</p>
+                    <p>
+                      Still stuck? Email us at <a href={`mailto:${FALLBACK_EMAIL}`}>{FALLBACK_EMAIL}</a>.
+                    </p>
+                  </div>
                 )}
-                <button type="submit" disabled={sending} className="btn btn-primary btn-block btn-lg" style={{ marginTop: 16 }}>
+                <button
+                  type="submit"
+                  disabled={sending}
+                  aria-busy={sending || undefined}
+                  className="btn btn-primary btn-block btn-lg"
+                  style={{ marginTop: 16 }}
+                >
                   {sending ? 'Sending…' : 'Book a Demo'}
                   <Icon name="arrowRight" size={18} />
                 </button>

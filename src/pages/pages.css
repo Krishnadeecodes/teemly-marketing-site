@@ -875,6 +875,64 @@ a.related-card:hover {
   font-size: 0.86rem;
 }
 
+.form-error p {
+  margin: 0;
+}
+
+.form-error p + p {
+  margin-top: 4px;
+}
+
+.form-error a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.form-field input[aria-invalid='true'],
+.form-field select[aria-invalid='true'],
+.form-field textarea[aria-invalid='true'] {
+  border-color: var(--pink-deep);
+}
+
+.field-error {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--pink-deep);
+}
+
+.consent-check + .field-error {
+  margin: 6px 0 0 24px;
+}
+
+.form-optional {
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.form-notice {
+  margin: 0 0 12px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.consent-check a,
+.form-notice a {
+  color: var(--navy);
+  text-decoration: underline;
+}
+
+.form-next ol {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
 /* Honeypot field — hidden from people, visible to naive bots */
 .form-hp {
   position: absolute;
