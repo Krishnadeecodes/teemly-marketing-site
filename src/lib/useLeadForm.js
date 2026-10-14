@@ -5,13 +5,15 @@ import { submitForm } from './submitForm.js'
 
 // State + validation for a lead form. Fields validate on blur, re-validate as
 // the visitor fixes them, and the whole form validates on submit (focusing the
-// first invalid field). Values are never cleared on error.
-export function useLeadForm(type, initial) {
+// first invalid field). Values are never cleared on error. `submit` defaults to
+// the email form endpoint; its resolved value is exposed as `result`.
+export function useLeadForm(type, initial, submit = submitForm) {
   const rules = LEAD_FORMS[type]
   const [values, setValues] = useState({ ...initial, website: '' })
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState('idle') // idle | sending | success
   const [formError, setFormError] = useState('')
+  const [result, setResult] = useState(null)
   const startedAt = useRef(Date.now())
   const inFlight = useRef(false)
 
@@ -62,7 +64,7 @@ export function useLeadForm(type, initial) {
     setStatus('sending')
     setFormError('')
     try {
-      await submitForm(type, { ...values, attribution: getAttribution(), elapsedMs: Date.now() - startedAt.current })
+      setResult(await submit(type, { ...values, attribution: getAttribution(), elapsedMs: Date.now() - startedAt.current }))
       setStatus('success')
     } catch (err) {
       setStatus('idle')
@@ -76,5 +78,5 @@ export function useLeadForm(type, initial) {
     }
   }
 
-  return { values, errors, status, formError, field, handleSubmit }
+  return { values, errors, status, formError, result, field, handleSubmit }
 }

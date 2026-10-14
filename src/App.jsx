@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './components/Layout.jsx'
 import Home from './pages/Home.jsx'
@@ -37,6 +38,7 @@ import TrustCenter from './pages/TrustCenter.jsx'
 // Resources
 import ResourcesHub from './pages/resources/ResourcesHub.jsx'
 import ResourceTypePage from './pages/resources/ResourceTypePage.jsx'
+import ResourceDetailPage from './pages/resources/ResourceDetailPage.jsx'
 
 // Company
 import Careers from './pages/company/Careers.jsx'
@@ -48,9 +50,21 @@ import Customers from './pages/Customers.jsx'
 // Legal
 import LegalPage from './pages/legal/LegalPage.jsx'
 
+// Admin panel: loaded only when someone visits /admin
+const AdminApp = lazy(() => import('./admin/AdminApp.jsx'))
+
 export default function App() {
   return (
     <Routes>
+      <Route
+        path="/admin/*"
+        element={
+          <Suspense fallback={null}>
+            <AdminApp />
+          </Suspense>
+        }
+      />
+
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
 
@@ -81,6 +95,7 @@ export default function App() {
 
         <Route path="/resources" element={<ResourcesHub />} />
         <Route path="/resources/:slug" element={<ResourceTypePage />} />
+        <Route path="/resources/:slug/:item" element={<ResourceDetailPage />} />
 
         <Route path="/customers" element={<Customers />} />
 

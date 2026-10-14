@@ -5,3 +5,6 @@ dist
 scripts/shots
 live tested screenshot/
 .env
+
+# Admin panel database + uploaded files
+server/data/

@@ -7,6 +7,7 @@ export default defineConfig({
     // Forward form submissions to the Node server (npm run server) in dev
     proxy: {
       '/api': 'http://localhost:3001',
+      '/uploads': 'http://localhost:3001',
     },
   },
 })

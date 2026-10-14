@@ -7,6 +7,8 @@ import { fileURLToPath } from 'node:url'
 import express from 'express'
 import nodemailer from 'nodemailer'
 import { LEAD_FORMS, validateLead } from '../src/lib/leadForms.js'
+import { publicRouter, adminRouter } from './resources.js'
+import { PUBLIC_UPLOAD_DIR, ready as dbReady } from './db.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
@@ -250,6 +252,28 @@ function buildAutoReply(def, data) {
   return { subject: reply.subject, text, html }
 }
 
+// Team notification for a gated PDF download (called by server/resources.js).
+function notifyDownload(lead) {
+  const def = {
+    title: 'Gated download',
+    fields: { name: 'Name', email: 'Work email', company: 'Company', resource: 'Downloaded' },
+  }
+  const { text, html } = buildEmail(def, {
+    data: { ...lead, resource: `${lead.resource.title} (/resources/${lead.resource.type}/${lead.resource.slug})` },
+    attribution: lead.attribution,
+    consent: lead.consent,
+    submittedAt: new Date().toISOString(),
+  })
+  return transporter.sendMail({
+    from: `"Teemly Website" <${SMTP_USER}>`,
+    to: process.env.MAIL_TO_DOWNLOADS || MAIL_TO,
+    replyTo: lead.email,
+    subject: `New download — ${lead.resource.title} — ${lead.name}${lead.company ? ` (${lead.company})` : ''}`.replace(/[\r\n]+/g, ' '),
+    text,
+    html,
+  })
+}
+
 // ---- Simple in-memory rate limit: 5 submissions / 10 min per IP ----
 const WINDOW_MS = 10 * 60 * 1000
 const MAX_HITS = 5
@@ -290,6 +314,21 @@ setInterval(() => {
 // ---- App ----
 const app = express()
 app.set('trust proxy', 1) // behind Nginx: use X-Forwarded-For for req.ip
+
+// Resource Center + admin panel (mounted before the global JSON parser: they
+// set their own body limits for long articles and file uploads).
+app.use('/api/resources', publicRouter({ notifyDownload }))
+app.use('/api/admin', adminRouter())
+app.use(
+  '/uploads',
+  express.static(PUBLIC_UPLOAD_DIR, {
+    index: false,
+    maxAge: '30d',
+    immutable: true,
+    setHeaders: (res) => res.setHeader('X-Content-Type-Options', 'nosniff'),
+  }),
+)
+
 app.use(express.json({ limit: '50kb' }))
 
 app.post('/api/forms/:type', rateLimit, async (req, res) => {
@@ -378,9 +417,16 @@ app.post('/api/forms/:type', rateLimit, async (req, res) => {
 const DIST = path.join(ROOT, 'dist')
 app.use(express.static(DIST))
 app.use((req, res, next) => {
-  if (req.method !== 'GET' || req.path.startsWith('/api/')) return next()
+  if (req.method !== 'GET' || req.path.startsWith('/api/') || req.path.startsWith('/uploads/')) return next()
   res.sendFile(path.join(DIST, 'index.html'))
 })
+
+try {
+  await dbReady
+} catch (err) {
+  console.error(`Could not connect to MySQL (${err.code || err.message}). Check MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD and MYSQL_DATABASE in .env.`)
+  process.exit(1)
+}
 
 app.listen(PORT, () => {
   console.log(`Teemly server listening on http://localhost:${PORT}`)

@@ -41,6 +41,13 @@ export const LEAD_FORMS = {
     message: { max: 3000 },
     consent: { checkbox: true, required: 'Please confirm we may contact you about this request.' },
   },
+  // Gated report / research PDF downloads (server/resources.js)
+  download: {
+    name: { required: 'Please enter your name.', max: 100 },
+    email: { required: 'Please enter your work email.', email: true, max: 254 },
+    company: { required: 'Please enter your company name.', max: 120 },
+    consent: { checkbox: true, required: 'Please confirm we may email you about this download.' },
+  },
 }
 
 export function validateField(rule, value) {

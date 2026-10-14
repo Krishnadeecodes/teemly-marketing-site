@@ -2,20 +2,22 @@ import { Link } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import SplitHeading from '../home/SplitHeading.jsx'
 import Reveal from '../home/Reveal.jsx'
+import { useResourcesHub } from '../lib/resourcesApi.js'
+import { DEFAULT_SETTINGS } from '../data/resourcesMeta.js'
 import '../home/resources.css'
 
 export default function ResourcesTeaser() {
+  // Copy is editable in the admin panel (Page text); defaults render until it loads.
+  const { data } = useResourcesHub()
+  const t = data?.settings.teaser || DEFAULT_SETTINGS.teaser
+
   return (
     <section className="h-resources">
       <div className="h-wrap">
         <div className="h-sec-head center">
-          <span className="h-kicker">Resources</span>
-          <SplitHeading as="h2" text="Start with the glossary, the rest is on the way" />
-          <p>
-            The Resource Center is live today with an Organizational Intelligence glossary. Research, guides and
-            case studies are being published as they're ready — nothing placeholder gets dressed up as finished
-            content.
-          </p>
+          <span className="h-kicker">{t.kicker}</span>
+          <SplitHeading key={t.title} as="h2" text={t.title} />
+          <p>{t.desc}</p>
         </div>
 
         <Reveal as="div" className="h-res-card">
@@ -23,8 +25,8 @@ export default function ResourcesTeaser() {
             <Icon name="book" size={22} />
           </span>
           <div>
-            <h3>Organizational Intelligence Glossary</h3>
-            <p>Teemly's core terms, defined in plain language — available now.</p>
+            <h3>{t.cardTitle}</h3>
+            <p>{t.cardDesc}</p>
           </div>
         </Reveal>
 

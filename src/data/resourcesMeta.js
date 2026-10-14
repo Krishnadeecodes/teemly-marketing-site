@@ -1,3 +1,5 @@
+// Seed + offline fallback for the Resource Center. Live content is managed in
+// the admin panel (/admin) and served by the Node server from MySQL.
 export const resourceTypes = [
   { slug: 'research', icon: 'chart', label: 'Research', description: 'Original analysis on organisational intelligence.' },
   { slug: 'reports', icon: 'fileText', label: 'Reports', description: 'In-depth reports on workforce and workplace data.' },
@@ -31,3 +33,18 @@ export const glossaryTerms = [
   { term: 'Burnout & Wellbeing Signal', def: 'A derived indicator built from overtime, after-hours activity and weekend work patterns.' },
   { term: 'Org-Scoped Query', def: 'A database query restricted to a single organisation\'s data by design — there is no code path into another organisation\'s records.' },
 ]
+
+export const DEFAULT_SETTINGS = {
+  hub: {
+    eyebrow: 'Resource Center',
+    title: 'Start with the glossary — the rest is on the way',
+    desc: "The glossary is live today. Research, guides, reports and case studies are being published as they're genuinely ready.",
+  },
+  teaser: {
+    kicker: 'Resources',
+    title: 'Start with the glossary, the rest is on the way',
+    desc: "The Resource Center is live today with an Organizational Intelligence glossary. Research, guides and case studies are being published as they're ready — nothing placeholder gets dressed up as finished content.",
+    cardTitle: 'Organizational Intelligence Glossary',
+    cardDesc: "Teemly's core terms, defined in plain language — available now.",
+  },
+}
