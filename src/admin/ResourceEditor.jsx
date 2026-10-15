@@ -1,11 +1,12 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { api, slugify, formatBytes, formatDateTime } from './api.js'
 import { ErrorBox, Field, Loading, PageHead, StatusBadge, ConfirmButton, useApi, useToast } from './ui.jsx'
-import { renderMarkdown } from '../lib/markdown.js'
 import { toEmbedUrl } from '../lib/video.js'
+import { templateFor } from '../lib/resourceTemplates.js'
+import RichTextEditor from './RichTextEditor.jsx'
 
-// Which optional field groups each category shows.
+// Which optional field groups each page template shows.
 const PDF_TYPES = ['research', 'reports', 'guides']
 const GATED_BY_DEFAULT = ['research', 'reports']
 const VIDEO_TYPES = ['webinars', 'videos']
@@ -61,82 +62,18 @@ function UploadButton({ accept, label, onUploaded, disabled }) {
   )
 }
 
-// Wraps the textarea selection in Markdown syntax.
-function applyFormat(textarea, before, after = '', placeholder = '') {
-  const { selectionStart: s, selectionEnd: e, value } = textarea
-  const selected = value.slice(s, e) || placeholder
-  const next = value.slice(0, s) + before + selected + after + value.slice(e)
-  return { next, cursor: [s + before.length, s + before.length + selected.length] }
-}
-
-function MarkdownEditor({ value, onChange }) {
-  const [mode, setMode] = useState('split')
-  const ref = useRef()
-  const html = useMemo(() => renderMarkdown(value), [value])
-
-  function format(before, after, placeholder) {
-    const ta = ref.current
-    const { next, cursor } = applyFormat(ta, before, after, placeholder)
-    onChange(next)
-    requestAnimationFrame(() => {
-      ta.focus()
-      ta.setSelectionRange(...cursor)
-    })
-  }
-
-  function insertImage(upload) {
-    format(`![`, `](${upload.url})`, upload.name.replace(/\.\w+$/, ''))
-  }
-
+// One-per-line list field (stored as an array of strings).
+function LinesField({ label, id, hint, value, onChange, rows = 4, placeholder }) {
   return (
-    <div className={`adm-md mode-${mode}`}>
-      <div className="adm-md-bar">
-        <div className="adm-md-tools">
-          <button type="button" title="Heading" onClick={() => format('\n## ', '', 'Heading')}>
-            H2
-          </button>
-          <button type="button" title="Subheading" onClick={() => format('\n### ', '', 'Subheading')}>
-            H3
-          </button>
-          <button type="button" title="Bold" onClick={() => format('**', '**', 'bold')}>
-            <b>B</b>
-          </button>
-          <button type="button" title="Italic" onClick={() => format('_', '_', 'italic')}>
-            <i>I</i>
-          </button>
-          <button type="button" title="Link" onClick={() => format('[', '](https://)', 'link text')}>
-            Link
-          </button>
-          <button type="button" title="Bulleted list" onClick={() => format('\n- ', '', 'List item')}>
-            • List
-          </button>
-          <button type="button" title="Quote" onClick={() => format('\n> ', '', 'Quote')}>
-            “ ”
-          </button>
-          <UploadButton accept="image/png,image/jpeg,image/webp,image/gif" label="Image" onUploaded={insertImage} />
-        </div>
-        <div className="adm-seg" role="tablist" aria-label="Editor view">
-          {['write', 'split', 'preview'].map((m) => (
-            <button key={m} type="button" role="tab" aria-selected={mode === m} onClick={() => setMode(m)}>
-              {m[0].toUpperCase() + m.slice(1)}
-            </button>
-          ))}
-        </div>
-      </div>
-      <div className="adm-md-panes">
-        <textarea
-          ref={ref}
-          id="body"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={'Write in Markdown…\n\n## A heading\n\nSome **bold** text and a [link](https://teemly.app).'}
-          spellCheck
-        />
-        <div className="adm-md-preview res-prose" aria-label="Preview">
-          {value.trim() ? <div dangerouslySetInnerHTML={{ __html: html }} /> : <p className="adm-muted">Preview appears here.</p>}
-        </div>
-      </div>
-    </div>
+    <Field label={label} id={id} hint={hint} full>
+      <textarea
+        id={id}
+        rows={rows}
+        placeholder={placeholder}
+        value={(value || []).join('\n')}
+        onChange={(e) => onChange(e.target.value.split('\n'))}
+      />
+    </Field>
   )
 }
 
@@ -153,11 +90,13 @@ export default function ResourceEditor() {
   const [formError, setFormError] = useState('')
   const [saving, setSaving] = useState(false)
   const [slugTouched, setSlugTouched] = useState(!isNew)
+  // A category's page template (built-in categories default to their own slug).
+  const templateKey = (slug) => cats.data?.categories.find((c) => c.slug === slug)?.template || slug
 
   useEffect(() => {
     if (isNew) {
       const type = params.get('type') || ''
-      const f = { ...EMPTY, type, gated: GATED_BY_DEFAULT.includes(type) }
+      const f = { ...EMPTY, type, gated: GATED_BY_DEFAULT.includes(templateKey(type)) }
       setForm(f)
       setSaved(f)
       return
@@ -237,10 +176,10 @@ export default function ResourceEditor() {
   if (!form) return formError ? <ErrorBox>{formError}</ErrorBox> : <Loading />
 
   const categories = cats.data?.categories.filter((c) => c.slug !== 'glossary') || []
-  const showPdf = PDF_TYPES.includes(form.type) || form.fileId
-  const showVideo = VIDEO_TYPES.includes(form.type) || form.videoUrl
-  const isCase = form.type === 'case-studies'
-  const isWebinar = form.type === 'webinars'
+  const showPdf = PDF_TYPES.includes(templateKey(form.type)) || form.fileId
+  const showVideo = VIDEO_TYPES.includes(templateKey(form.type)) || form.videoUrl
+  const template = templateFor(templateKey(form.type))
+  const extras = form.type ? template.extras : []
   const live = !isNew && saved.status === 'published'
   const embed = form.videoUrl && toEmbedUrl(form.videoUrl)
 
@@ -274,7 +213,7 @@ export default function ResourceEditor() {
                   value={form.type}
                   onChange={(e) => {
                     const type = e.target.value
-                    set({ type, ...(isNew && !form.fileId ? { gated: GATED_BY_DEFAULT.includes(type) } : {}) })
+                    set({ type, ...(isNew && !form.fileId ? { gated: GATED_BY_DEFAULT.includes(templateKey(type)) } : {}) })
                   }}
                 >
                   <option value="">Choose…</option>
@@ -320,45 +259,98 @@ export default function ResourceEditor() {
             </div>
           </div>
 
-          {isCase && (
+          {extras.length > 0 && (
             <div className="adm-card">
-              <h2 className="adm-card-title">Case study details</h2>
+              <h2 className="adm-card-title">{template.name} details</h2>
               <div className="adm-grid-2">
-                <Field label="Customer" id="customer">
-                  <input id="customer" value={form.meta.customer || ''} maxLength={120} onChange={(e) => setMeta({ customer: e.target.value })} />
-                </Field>
-                <Field label="Industry" id="industry">
-                  <input id="industry" value={form.meta.industry || ''} maxLength={80} onChange={(e) => setMeta({ industry: e.target.value })} />
-                </Field>
-                <Field label="Key results" id="results" hint="One per line, up to 6 — shown as a highlighted checklist." full>
-                  <textarea
-                    id="results"
+                {extras.includes('customer') && (
+                  <>
+                    <Field label="Customer" id="customer">
+                      <input id="customer" value={form.meta.customer || ''} maxLength={120} onChange={(e) => setMeta({ customer: e.target.value })} />
+                    </Field>
+                    <Field label="Industry" id="industry">
+                      <input id="industry" value={form.meta.industry || ''} maxLength={80} onChange={(e) => setMeta({ industry: e.target.value })} />
+                    </Field>
+                    <Field label="Company size" id="companySize" hint="e.g. 1,200 employees">
+                      <input id="companySize" value={form.meta.companySize || ''} maxLength={60} onChange={(e) => setMeta({ companySize: e.target.value })} />
+                    </Field>
+                  </>
+                )}
+                {extras.includes('event') && (
+                  <>
+                    <Field label="Event date" id="eventOn" error={errors.eventOn} hint="Before this date the page shows “Register”; after it, the recording.">
+                      <input id="eventOn" type="date" value={form.meta.eventOn || ''} onChange={(e) => setMeta({ eventOn: e.target.value })} />
+                    </Field>
+                    <Field label="Time" id="eventDate" hint="e.g. 4pm GMT — or “On demand”">
+                      <input id="eventDate" value={form.meta.eventDate || ''} maxLength={40} onChange={(e) => setMeta({ eventDate: e.target.value })} />
+                    </Field>
+                    <Field label="Registration link" id="registerUrl" error={errors.registerUrl} hint="Zoom, Teams, HubSpot… (https://)">
+                      <input id="registerUrl" value={form.meta.registerUrl || ''} maxLength={500} onChange={(e) => setMeta({ registerUrl: e.target.value })} />
+                    </Field>
+                  </>
+                )}
+                {(extras.includes('event') || extras.includes('duration')) && (
+                  <Field label="Length" id="duration" hint="e.g. 45 min">
+                    <input id="duration" value={form.meta.duration || ''} maxLength={40} onChange={(e) => setMeta({ duration: e.target.value })} />
+                  </Field>
+                )}
+                {extras.includes('stats') && (
+                  <LinesField
+                    label="Headline stats"
+                    id="stats"
                     rows={4}
-                    value={(form.meta.results || []).join('\n')}
-                    onChange={(e) => setMeta({ results: e.target.value.split('\n') })}
+                    hint="Up to 4, one per line as value | label — shown as big numbers."
+                    placeholder={'73% | of managers can’t see where time goes\n2.4× | faster reporting'}
+                    value={form.meta.stats}
+                    onChange={(stats) => setMeta({ stats })}
                   />
-                </Field>
-              </div>
-            </div>
-          )}
-
-          {isWebinar && (
-            <div className="adm-card">
-              <h2 className="adm-card-title">Webinar details</h2>
-              <div className="adm-grid-2">
-                <Field label="When" id="eventDate" hint="e.g. 12 Nov 2026, 4pm GMT — or “On demand”">
-                  <input id="eventDate" value={form.meta.eventDate || ''} maxLength={40} onChange={(e) => setMeta({ eventDate: e.target.value })} />
-                </Field>
-                <Field label="Length" id="duration" hint="e.g. 45 min">
-                  <input id="duration" value={form.meta.duration || ''} maxLength={40} onChange={(e) => setMeta({ duration: e.target.value })} />
-                </Field>
+                )}
+                {extras.includes('results') && (
+                  <LinesField
+                    label="Key results"
+                    id="results"
+                    hint="Up to 6, one per line — shown as a highlighted checklist."
+                    value={form.meta.results}
+                    onChange={(results) => setMeta({ results })}
+                  />
+                )}
+                {extras.includes('quote') && (
+                  <>
+                    <Field label="Customer quote" id="quote" full>
+                      <textarea id="quote" rows={3} maxLength={600} value={form.meta.quote || ''} onChange={(e) => setMeta({ quote: e.target.value })} />
+                    </Field>
+                    <Field label="Quote by" id="quoteBy" hint="Name, role" full>
+                      <input id="quoteBy" value={form.meta.quoteBy || ''} maxLength={120} onChange={(e) => setMeta({ quoteBy: e.target.value })} />
+                    </Field>
+                  </>
+                )}
+                {extras.includes('speakers') && (
+                  <LinesField
+                    label="Speakers"
+                    id="speakers"
+                    rows={3}
+                    hint="Up to 6, one per line as Name | Role, Company"
+                    placeholder="Priya Shah | Head of People Analytics, Acme"
+                    value={form.meta.speakers}
+                    onChange={(speakers) => setMeta({ speakers })}
+                  />
+                )}
+                {extras.includes('takeaways') && (
+                  <LinesField
+                    label={template.takeawaysLabel}
+                    id="takeaways"
+                    hint="Up to 8, one per line."
+                    value={form.meta.takeaways}
+                    onChange={(takeaways) => setMeta({ takeaways })}
+                  />
+                )}
               </div>
             </div>
           )}
 
           <div className="adm-card">
             <h2 className="adm-card-title">Body</h2>
-            <MarkdownEditor value={form.body} onChange={(body) => set({ body })} />
+            <RichTextEditor key={form.id || 'new'} value={form.body} onChange={(body) => set({ body })} />
           </div>
         </div>
 
@@ -399,6 +391,14 @@ export default function ResourceEditor() {
               <p className="adm-hint">{dirty ? 'Unsaved changes · Ctrl+S to save' : 'All changes saved'}</p>
             </div>
           </div>
+
+          {form.type && (
+            <div className="adm-card adm-template">
+              <span className="adm-template-kicker">Page template</span>
+              <strong>{template.name}</strong>
+              <p className="adm-hint">{template.layout}</p>
+            </div>
+          )}
 
           <div className="adm-card">
             <h2 className="adm-card-title">Cover image</h2>

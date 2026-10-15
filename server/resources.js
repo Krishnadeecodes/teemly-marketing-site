@@ -31,9 +31,12 @@ import {
   publicUser,
 } from './auth.js'
 import { validateLead, EMAIL_RE } from '../src/lib/leadForms.js'
+import { TEMPLATES } from '../src/lib/resourceTemplates.js'
 
 const ICONS = ['chart', 'fileText', 'book', 'target', 'monitor', 'play', 'sparkle', 'layers', 'trendingUp', 'users', 'globe', 'briefcase', 'shield', 'cpu', 'bolt', 'download']
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
+// Category slugs that would collide with public API routes.
+const RESERVED_CATEGORY_SLUGS = ['file', 'categories', 'glossary', 'new']
 const DOWNLOAD_LINK_MS = 30 * 60 * 1000
 
 class HttpError extends Error {
@@ -96,12 +99,26 @@ async function parseResourceInput(body) {
     .filter(Boolean)
     .slice(0, 12)
   const m = body.meta || {}
+  const lines = (v, max, n) => (Array.isArray(v) ? v : []).map((r) => str(r, max)).filter(Boolean).slice(0, n)
+  const eventOn = str(m.eventOn, 10)
+  if (eventOn && !/^\d{4}-\d{2}-\d{2}$/.test(eventOn)) fields.eventOn = 'Use a valid date.'
+  const registerUrl = safeUrl(m.registerUrl, { allowUploads: false })
+  if (registerUrl === null) fields.registerUrl = 'Use an https:// link.'
+  // Per-template extras; which ones the editor shows depends on the category.
   const meta = {
     customer: str(m.customer, 120),
     industry: str(m.industry, 80),
-    results: (Array.isArray(m.results) ? m.results : []).map((r) => str(r, 160)).filter(Boolean).slice(0, 6),
+    companySize: str(m.companySize, 60),
+    results: lines(m.results, 160, 6),
+    quote: str(m.quote, 600),
+    quoteBy: str(m.quoteBy, 120),
     eventDate: str(m.eventDate, 40),
+    eventOn,
     duration: str(m.duration, 40),
+    registerUrl,
+    speakers: lines(m.speakers, 160, 6),
+    stats: lines(m.stats, 160, 4),
+    takeaways: lines(m.takeaways, 200, 8),
   }
   for (const k of Object.keys(meta)) if (!meta[k] || (Array.isArray(meta[k]) && !meta[k].length)) delete meta[k]
 
@@ -140,11 +157,20 @@ function card(r) {
     tags: json(r.tags, []),
     hasVideo: !!r.video_url,
     hasFile: !!r.file_id,
+    gated: !!r.gated,
+    readMins: readMins(r.body),
+    meta: json(r.meta, {}),
   }
 }
 
+// Rough reading time for Markdown or editor HTML bodies.
+function readMins(body) {
+  const words = String(body || '').replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length
+  return Math.max(1, Math.round(words / 220))
+}
+
 function fullPublic(r) {
-  return { ...card(r), body: r.body, videoUrl: r.video_url, gated: !!r.gated, meta: json(r.meta, {}) }
+  return { ...card(r), body: r.body, videoUrl: r.video_url }
 }
 
 async function fullAdmin(r) {
@@ -160,8 +186,16 @@ async function fullAdmin(r) {
   }
 }
 
+// Page template a category renders with: the one chosen in the admin, else the
+// built-in one matching its slug, else the default article layout.
+function templateOf(c) {
+  if (c.slug === 'glossary') return 'glossary'
+  if (TEMPLATES[c.template]) return c.template
+  return TEMPLATES[c.slug] ? c.slug : 'default'
+}
+
 function category(c) {
-  return { slug: c.slug, label: c.label, description: c.description, icon: c.icon, sort: c.sort, visible: !!c.visible }
+  return { slug: c.slug, label: c.label, description: c.description, icon: c.icon, template: templateOf(c), sort: c.sort, visible: !!c.visible }
 }
 
 // Published and not scheduled for the future, in a visible category.
@@ -212,13 +246,21 @@ export function publicRouter({ notifyDownload }) {
     )
     const { n: glossaryCount } = await one('SELECT COUNT(*) AS n FROM glossary')
     const featured = await query(`SELECT * FROM resources r WHERE ${LIVE} AND r.featured = 1 ORDER BY r.published_at DESC LIMIT 6`)
-    const latest = await query(`SELECT * FROM resources r WHERE ${LIVE} ORDER BY r.published_at DESC, r.id DESC LIMIT 6`)
+    const latest = await query(`SELECT * FROM resources r WHERE ${LIVE} ORDER BY r.published_at DESC, r.id DESC LIMIT 60`)
+    const downloads = await query(`SELECT * FROM resources r WHERE ${LIVE} AND r.file_id IS NOT NULL ORDER BY r.featured DESC, r.published_at DESC LIMIT 4`)
     res.json({
       categories: cats.map((c) => ({ ...category(c), count: Number(c.slug === 'glossary' ? glossaryCount : c.count) })),
       featured: featured.map(card),
       latest: latest.map(card),
+      downloads: downloads.map(card),
       settings: { hub: await getSetting('hub'), teaser: await getSetting('teaser') },
     })
+  })
+
+  // Lightweight list for the site header and footer menus.
+  r.get('/categories', async (req, res) => {
+    const cats = await query('SELECT * FROM categories WHERE visible = 1 ORDER BY sort, label')
+    res.json({ categories: cats.map(({ slug, label, description, icon }) => ({ slug, label, description, icon })) })
   })
 
   // PDF downloads: gated ones need a signed link from /unlock.
@@ -513,26 +555,95 @@ export function adminRouter() {
     res.json({ terms: await allTerms() })
   })
 
-  // ---- Categories (fixed set of slugs; label/description/icon/order/visibility editable) ----
-  const allCats = async () => (await query('SELECT * FROM categories ORDER BY sort, label')).map(category)
-  r.get('/categories', async (req, res) => res.json({ categories: await allCats(), icons: ICONS }))
-  r.put('/categories/:slug', async (req, res) => {
-    const label = str(req.body?.label, 60)
-    const description = str(req.body?.description, 300)
-    const icon = ICONS.includes(req.body?.icon) ? req.body.icon : null
+  // ---- Categories ----
+  // The slug is fixed once created (it's in every resource URL); everything
+  // else is editable. Glossary is built in and can't be deleted.
+  const allCats = async () => {
+    const rows = await query(
+      `SELECT c.*, (SELECT COUNT(*) FROM resources r WHERE r.type = c.slug) AS total
+       FROM categories c ORDER BY c.sort, c.label`,
+    )
+    const { n: glossary } = await one('SELECT COUNT(*) AS n FROM glossary')
+    return rows.map((c) => ({ ...category(c), total: Number(c.slug === 'glossary' ? glossary : c.total) }))
+  }
+  const templateChoices = Object.entries(TEMPLATES).map(([key, t]) => ({ key, name: t.name, layout: t.layout }))
+
+  function parseCategoryInput(body, slug) {
+    const label = str(body?.label, 60)
+    const description = str(body?.description, 300)
+    const icon = ICONS.includes(body?.icon) ? body.icon : null
+    const template = slug === 'glossary' ? '' : TEMPLATES[body?.template] ? body.template : null
     const fields = {}
     if (!label) fields.label = 'Label is required.'
     if (!icon) fields.icon = 'Choose an icon.'
+    if (template === null) fields.template = 'Choose a page template.'
+    return { label, description, icon, template, visible: body?.visible === false ? 0 : 1, fields }
+  }
+
+  r.get('/categories', async (req, res) => res.json({ categories: await allCats(), icons: ICONS, templates: templateChoices }))
+
+  r.post('/categories', requireAdmin, async (req, res) => {
+    const slug = str(req.body?.slug, 60).toLowerCase()
+    const { fields, ...v } = parseCategoryInput(req.body, slug)
+    if (!SLUG_RE.test(slug)) fields.slug = 'Use lowercase letters, numbers and hyphens only.'
+    else if (RESERVED_CATEGORY_SLUGS.includes(slug) || (await one('SELECT 1 FROM categories WHERE slug = ?', [slug]))) {
+      fields.slug = 'That URL is already taken.'
+    }
     if (Object.keys(fields).length) throw new HttpError(400, 'Please fix the highlighted fields.', fields)
-    const result = await query('UPDATE categories SET label = ?, description = ?, icon = ?, visible = ? WHERE slug = ?', [
-      label,
-      description,
-      icon,
-      req.body?.visible === false ? 0 : 1,
+    const { n } = await one('SELECT COALESCE(MAX(sort), -1) + 1 AS n FROM categories')
+    await query('INSERT INTO categories (slug, label, description, icon, template, sort, visible) VALUES (?, ?, ?, ?, ?, ?, ?)', [
+      slug,
+      v.label,
+      v.description,
+      v.icon,
+      v.template,
+      n,
+      v.visible,
+    ])
+    res.status(201).json({ categories: await allCats() })
+  })
+
+  r.put('/categories/:slug', async (req, res) => {
+    const { fields, ...v } = parseCategoryInput(req.body, req.params.slug)
+    if (Object.keys(fields).length) throw new HttpError(400, 'Please fix the highlighted fields.', fields)
+    const result = await query('UPDATE categories SET label = ?, description = ?, icon = ?, template = ?, visible = ? WHERE slug = ?', [
+      v.label,
+      v.description,
+      v.icon,
+      v.template,
+      v.visible,
       req.params.slug,
     ])
     if (!result.affectedRows) throw new HttpError(404, 'Category not found.')
     res.json({ categories: await allCats() })
+  })
+
+  // A category that still has resources can only be deleted by moving them
+  // into another category first (?moveTo=<slug>), all in one transaction.
+  r.delete('/categories/:slug', requireAdmin, async (req, res) => {
+    const { slug } = req.params
+    if (slug === 'glossary') throw new HttpError(400, 'The glossary is built in and can’t be deleted.')
+    if (!(await one('SELECT 1 FROM categories WHERE slug = ?', [slug]))) throw new HttpError(404, 'Category not found.')
+    const { n } = await one('SELECT COUNT(*) AS n FROM resources WHERE type = ?', [slug])
+    const moveTo = str(req.query.moveTo, 60)
+    if (n > 0) {
+      if (!moveTo) throw new HttpError(409, `This category still has ${n} resource${n === 1 ? '' : 's'}. Move them to another category first.`)
+      if (moveTo === slug || moveTo === 'glossary' || !(await one('SELECT 1 FROM categories WHERE slug = ?', [moveTo]))) {
+        throw new HttpError(400, 'Choose another category to move the resources into.')
+      }
+      const clashes = await query('SELECT a.title FROM resources a JOIN resources b ON b.slug = a.slug AND b.type = ? WHERE a.type = ?', [moveTo, slug])
+      if (clashes.length) {
+        throw new HttpError(
+          409,
+          `These resources have the same URL as one already in the target category — rename their slugs first: ${clashes.map((c) => c.title).join(', ')}`,
+        )
+      }
+    }
+    await transaction(async (tx) => {
+      if (n > 0) await tx.query('UPDATE resources SET type = ?, updated_by = ?, updated_at = CURRENT_TIMESTAMP(3) WHERE type = ?', [moveTo, req.user.id, slug])
+      await tx.query('DELETE FROM categories WHERE slug = ?', [slug])
+    })
+    res.json({ categories: await allCats(), moved: Number(n) })
   })
   r.put('/categories-order', async (req, res) => {
     const slugs = Array.isArray(req.body?.slugs) ? req.body.slugs.map(String) : []

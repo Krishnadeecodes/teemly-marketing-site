@@ -1,8 +1,4 @@
 /* ================= Resource Center: cards, article page, gated download ================= */
-.res-loading {
-  min-height: 60vh;
-}
-
 .res-section-title {
   font-size: var(--fs-2xl);
   color: var(--navy);
@@ -328,7 +324,66 @@
 
 .res-prose img {
   max-width: 100%;
+  height: auto;
   border-radius: var(--r-md);
+}
+
+/* Images sized & aligned in the admin editor (width is a % of the text column) */
+.res-prose img[data-align='center'] {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.res-prose img[data-align='left'] {
+  float: left;
+  margin: 4px 28px 12px 0;
+}
+
+.res-prose img[data-align='right'] {
+  float: right;
+  margin: 4px 0 12px 28px;
+}
+
+.res-prose::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.res-prose h2,
+.res-prose h3,
+.res-prose h4,
+.res-prose hr,
+.res-prose table,
+.res-prose pre {
+  clear: both;
+}
+
+.res-prose mark {
+  background: #fff2a8;
+  color: inherit;
+  padding: 0 2px;
+  border-radius: 3px;
+}
+
+.res-prose th {
+  background: var(--surface-soft);
+  color: var(--navy);
+  font-weight: 600;
+}
+
+.res-prose th p,
+.res-prose td p {
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .res-prose img[data-align] {
+    float: none;
+    width: 100% !important;
+    margin: 0;
+  }
 }
 
 .res-prose code {

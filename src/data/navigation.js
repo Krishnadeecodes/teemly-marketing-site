@@ -73,6 +73,16 @@ export const legalLinks = [
   { to: '/legal/acceptable-use', label: 'Acceptable Use' },
 ]
 
+// The Resources menus list the categories managed in the admin (see
+// useResourceMenu in src/lib/resourcesApi.js); resourcesLinks is the fallback.
+export function resourcesFooterLinks(links) {
+  return [
+    { label: 'Resource Center', to: '/resources' },
+    ...links.slice(0, 5).map((l) => ({ label: l.label, to: l.to })),
+    { label: 'ROI Calculator', to: '/roi-calculator' },
+  ]
+}
+
 export const footerColumns = [
   {
     title: 'Platform',
@@ -90,11 +100,7 @@ export const footerColumns = [
   },
   {
     title: 'Resources',
-    links: [
-      { label: 'Resource Center', to: '/resources' },
-      ...resourcesLinks.slice(0, 5).map((l) => ({ label: l.label, to: l.to })),
-      { label: 'ROI Calculator', to: '/roi-calculator' },
-    ],
+    links: resourcesFooterLinks(resourcesLinks),
   },
   {
     title: 'Trust',

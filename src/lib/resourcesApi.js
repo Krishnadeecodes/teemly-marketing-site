@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { resourceTypes, glossaryTerms, DEFAULT_SETTINGS, getResourceType } from '../data/resourcesMeta.js'
+import { resourcesLinks } from '../data/navigation.js'
 
 // Public Resource Center data from the Node server (server/resources.js).
 // If the API is unreachable (e.g. `npm run dev` without `npm run server`),
@@ -30,20 +31,41 @@ async function load(path) {
   return res.json()
 }
 
+// One request per path at a time, shared by prefetching and the page hooks.
+const inflight = new Map()
+const fetchedAt = new Map()
+const FRESH_MS = 10_000 // data this recent isn't refetched when its page opens
+function fetchInto(path) {
+  if (!inflight.has(path)) {
+    inflight.set(
+      path,
+      load(path)
+        .then((data) => {
+          cache.set(path, data)
+          fetchedAt.set(path, Date.now())
+          return data
+        })
+        .finally(() => inflight.delete(path)),
+    )
+  }
+  return inflight.get(path)
+}
+
 // { data, loading } — data is null when the resource doesn't exist.
+// Cached pages render immediately and refresh quietly in the background.
 function useResourceData(path, fallback) {
   const [state, setState] = useState(() => (cache.has(path) ? { data: cache.get(path), loading: false } : { data: null, loading: true }))
 
   useEffect(() => {
     let alive = true
-    if (!cache.has(path)) setState({ data: null, loading: true })
-    load(path)
+    setState(cache.has(path) ? { data: cache.get(path), loading: false } : { data: null, loading: true })
+    if (cache.has(path) && !inflight.has(path) && Date.now() - (fetchedAt.get(path) || 0) < FRESH_MS) return undefined
+    fetchInto(path)
       .then((data) => {
-        cache.set(path, data)
         if (alive) setState({ data, loading: false })
       })
       .catch(() => {
-        if (alive) setState({ data: fallback(), loading: false })
+        if (alive && !cache.has(path)) setState({ data: fallback(), loading: false })
       })
     return () => {
       alive = false
@@ -53,10 +75,54 @@ function useResourceData(path, fallback) {
   return state
 }
 
+// Warm the cache for a site path like /resources/blog/my-post, so the page
+// opens instantly when the link is clicked. Fresh entries are left alone.
+const prefetched = new Map()
+const PREFETCH_TTL = 30_000
+export function prefetchResourcePage(pathname) {
+  const m = /^\/resources(?:\/([^/?#]+))?(?:\/([^/?#]+))?\/?$/.exec(pathname)
+  if (!m) return
+  const path = m[1] ? `/${m[1]}${m[2] ? `/${m[2]}` : ''}` : ''
+  const at = prefetched.get(path)
+  if (at && Date.now() - at < PREFETCH_TTL) return
+  prefetched.set(path, Date.now())
+  fetchInto(path).catch(() => prefetched.delete(path))
+}
+
 export const useResourcesHub = () => useResourceData('', fallbacks.hub)
 export const useResourceType = (slug) => useResourceData(`/${encodeURIComponent(slug)}`, () => fallbacks.type(slug))
 export const useResourceItem = (type, slug) =>
   useResourceData(`/${encodeURIComponent(type)}/${encodeURIComponent(slug)}`, fallbacks.item)
+
+// Header/footer menu links for the visible categories, in admin order.
+// Loaded once per page view; the static list shows until then (or if the API is down).
+const TONES = ['blue', 'purple', 'pink', 'green', 'cyan', 'amber']
+let menuLinks = null
+let menuRequest = null
+
+export function useResourceMenu() {
+  const [links, setLinks] = useState(menuLinks || resourcesLinks)
+  useEffect(() => {
+    let alive = true
+    menuRequest ||= load('/categories')
+      .then((data) => {
+        menuLinks = data.categories.map((c, i) => ({
+          to: `/resources/${c.slug}`,
+          label: c.label,
+          desc: c.description,
+          icon: c.icon,
+          tone: TONES[i % TONES.length],
+        }))
+        return menuLinks
+      })
+      .catch(() => null)
+    menuRequest.then((l) => alive && l && setLinks(l))
+    return () => {
+      alive = false
+    }
+  }, [])
+  return links
+}
 
 export async function unlockDownload(type, slug, payload) {
   const res = await fetch(`/api/resources/${encodeURIComponent(type)}/${encodeURIComponent(slug)}/unlock`, {

@@ -14,7 +14,7 @@ import Users from './Users.jsx'
 import Account from './Account.jsx'
 import { ToastProvider } from './ui.jsx'
 import { AuthContext, useAuth } from './authContext.js'
-import '../pages/resources/resources.css' // .res-prose for the Markdown preview
+import '../pages/resources/resources.css' // .res-prose for the editor body
 import './admin.css'
 
 

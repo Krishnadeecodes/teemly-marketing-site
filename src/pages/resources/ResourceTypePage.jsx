@@ -1,17 +1,20 @@
-import { useParams, Navigate, Link } from 'react-router-dom'
-import PageHero from '../../components/PageHero.jsx'
-import Icon from '../../components/Icon.jsx'
+import { useParams, Navigate } from 'react-router-dom'
 import FinalCTA from '../../sections/FinalCTA.jsx'
-import ResourceCard from './ResourceCard.jsx'
+import { LIST_TEMPLATES, DefaultList, GlossaryList } from './templates/lists.jsx'
+import { PageSkeleton, useResourceMotion } from './templates/shared.jsx'
 import { useResourceType } from '../../lib/resourcesApi.js'
 import { useSEO } from '../../lib/useSEO.js'
 import '../pages.css'
 import './resources.css'
+import './templates/templates.css'
 
+// Each category has its own list layout (templates/lists.jsx); categories
+// added in the admin use the template chosen there (see server/resources.js).
 export default function ResourceTypePage() {
   const { slug } = useParams()
   const { data, loading } = useResourceType(slug)
   const type = data?.category
+  useResourceMotion(data ? `${slug}:${data.items?.length ?? data.terms?.length}` : null)
 
   useSEO({
     title: type ? `${type.label} — Resources` : 'Resources',
@@ -19,63 +22,13 @@ export default function ResourceTypePage() {
     path: `/resources/${slug}`,
   })
 
-  if (loading) return <div className="res-loading" aria-busy="true" />
+  if (loading) return <PageSkeleton />
   if (!type) return <Navigate to="/resources" replace />
 
-  if (data.terms) {
-    return (
-      <>
-        <PageHero eyebrow="Resources" title={type.label} desc={type.description} />
-        <section className="section-tight">
-          <div className="container">
-            <dl className="glossary-list">
-              {data.terms.map((g) => (
-                <div className="glossary-item" key={g.term}>
-                  <dt>{g.term}</dt>
-                  <dd>{g.def}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        </section>
-        <FinalCTA />
-      </>
-    )
-  }
-
+  const List = LIST_TEMPLATES[type.template || type.slug] || DefaultList
   return (
     <>
-      <PageHero eyebrow="Resources" title={type.label} desc={type.description} />
-      <section className="section-tight">
-        {data.items.length > 0 ? (
-          <div className="container">
-            <div className="res-grid">
-              {data.items.map((item) => (
-                <ResourceCard key={item.id} item={item} icon={type.icon} />
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div className="container resource-empty">
-            <span className="tile-icon resource-empty-icon">
-              <Icon name={type.icon} size={28} />
-            </span>
-            <h3>Nothing published here yet</h3>
-            <p>
-              We're not dressing up placeholder content as finished {type.label.toLowerCase()} — this section goes
-              live as soon as there is something real to publish.
-            </p>
-            <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Link to="/resources/glossary" className="btn btn-outline">
-                Read the Glossary instead
-              </Link>
-              <Link to="/resources" className="btn btn-primary">
-                Back to Resource Center
-              </Link>
-            </div>
-          </div>
-        )}
-      </section>
+      {data.terms ? <GlossaryList category={type} terms={data.terms} /> : <List category={type} items={data.items} />}
       <FinalCTA />
     </>
   )

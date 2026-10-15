@@ -7,7 +7,7 @@ import { unlockDownload } from '../../lib/resourcesApi.js'
 import { FALLBACK_EMAIL } from '../../lib/submitForm.js'
 
 // Email-gated PDF download: on success the server returns a short-lived signed link.
-export default function GatedDownload({ item }) {
+export default function GatedDownload({ item, title = 'Get the full PDF' }) {
   const { errors, status, formError, result, field, handleSubmit } = useLeadForm(
     'download',
     { name: '', email: '', company: '', consent: false },
@@ -36,7 +36,7 @@ export default function GatedDownload({ item }) {
   return (
     <form className="res-download" onSubmit={handleSubmit} noValidate>
       <h3>
-        <Icon name="download" size={18} /> Get the full PDF
+        <Icon name="download" size={18} /> {title}
       </h3>
       <p className="form-notice">Tell us where to send updates and the download starts straight away.</p>
       <div className="form-hp" aria-hidden="true">

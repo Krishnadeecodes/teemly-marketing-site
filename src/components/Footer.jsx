@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom'
 import Logo from './Logo.jsx'
 import Reveal from '../home/Reveal.jsx'
-import { footerColumns, legalLinks } from '../data/navigation.js'
+import { footerColumns, legalLinks, resourcesFooterLinks } from '../data/navigation.js'
+import { useResourceMenu } from '../lib/resourcesApi.js'
 import './footer.css'
 
 export default function Footer() {
+  const resourceLinks = resourcesFooterLinks(useResourceMenu())
   return (
     <footer className="site-footer">
       <div className="brand-bar" />
@@ -26,7 +28,7 @@ export default function Footer() {
             <div key={col.title} className="footer-col">
               <h4>{col.title}</h4>
               <ul>
-                {col.links.map((l) => (
+                {(col.title === 'Resources' ? resourceLinks : col.links).map((l) => (
                   <li key={l.label}>
                     <Link to={l.to}>{l.label}</Link>
                   </li>

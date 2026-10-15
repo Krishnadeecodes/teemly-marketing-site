@@ -10,9 +10,9 @@ import {
   platformLinks,
   solutionsLinks,
   whyTeemlyLinks,
-  resourcesLinks,
   securityLinks,
 } from '../data/navigation.js'
+import { useResourceMenu } from '../lib/resourcesApi.js'
 import './header.css'
 
 function PlatformFeature() {
@@ -81,6 +81,20 @@ function ResourcesFeature() {
         Open the glossary <Icon name="arrowRight" size={14} />
       </Link>
     </div>
+  )
+}
+
+// Category links come from the admin (Categories page).
+function ResourcesMenu() {
+  return (
+    <MegaMenu
+      items={useResourceMenu()}
+      columns={2}
+      width={480}
+      align="start"
+      footerLink={{ to: '/resources', label: 'Visit the Resource Center' }}
+      feature={<ResourcesFeature />}
+    />
   )
 }
 
@@ -154,14 +168,7 @@ const menus = [
     key: 'resources',
     label: 'Resources',
     render: () => (
-      <MegaMenu
-        items={resourcesLinks}
-        columns={2}
-        width={480}
-        align="start"
-        footerLink={{ to: '/resources', label: 'Visit the Resource Center' }}
-        feature={<ResourcesFeature />}
-      />
+      <ResourcesMenu />
     ),
   },
   {
@@ -184,6 +191,7 @@ export default function Header() {
   const [openMenu, setOpenMenu] = useState(null)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [mobileSection, setMobileSection] = useState(null)
+  const resourceLinks = useResourceMenu()
   const [scrolled, setScrolled] = useState(false)
   const location = useLocation()
   const navRef = useRef(null)
@@ -318,7 +326,7 @@ export default function Header() {
                     {(m.key === 'platform' ? platformLinks
                       : m.key === 'solutions' ? solutionsLinks
                       : m.key === 'why' ? whyTeemlyLinks
-                      : m.key === 'resources' ? resourcesLinks
+                      : m.key === 'resources' ? resourceLinks
                       : securityLinks
                     ).map((item) => (
                       <Link key={item.label} to={item.to} className="mobile-link sub">

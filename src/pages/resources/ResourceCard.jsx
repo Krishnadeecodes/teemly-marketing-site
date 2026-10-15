@@ -4,7 +4,7 @@ import { formatDate } from '../../lib/resourcesApi.js'
 
 export default function ResourceCard({ item, categoryLabel, icon = 'fileText' }) {
   return (
-    <Link to={`/resources/${item.type}/${item.slug}`} className="res-card">
+    <Link to={`/resources/${item.type}/${item.slug}`} className={`res-card t-${item.type}`}>
       <div className="res-card-media">
         {item.coverUrl ? (
           <img src={item.coverUrl} alt="" loading="lazy" />

@@ -116,6 +116,7 @@ const SCHEMA = [
     label VARCHAR(60) NOT NULL,
     description VARCHAR(300) NOT NULL DEFAULT '',
     icon VARCHAR(40) NOT NULL DEFAULT 'book',
+    template VARCHAR(40) NOT NULL DEFAULT '',
     sort INT NOT NULL DEFAULT 0,
     visible TINYINT(1) NOT NULL DEFAULT 1
   )`,
@@ -195,6 +196,13 @@ async function init() {
   }
 
   for (const sql of SCHEMA) await query(`${sql} ENGINE=InnoDB DEFAULT CHARSET=utf8mb4`)
+
+  // Columns added after the first release.
+  const hasColumn = (table, column) =>
+    one('SELECT 1 FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?', [table, column])
+  if (!(await hasColumn('categories', 'template'))) {
+    await query("ALTER TABLE categories ADD COLUMN template VARCHAR(40) NOT NULL DEFAULT '' AFTER icon")
+  }
 
   if (!(await one('SELECT 1 FROM categories LIMIT 1'))) {
     await transaction(async (tx) => {

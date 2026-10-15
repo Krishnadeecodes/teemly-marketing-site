@@ -11,7 +11,17 @@ DOMPurify.addHook('afterSanitizeAttributes', (node) => {
   }
 })
 
-// Markdown -> sanitized HTML. Used by the public article page and the admin preview.
+const sanitize = (html) => DOMPurify.sanitize(html, { USE_PROFILES: { html: true } })
+
+// Bodies saved by the rich-text editor are HTML; older ones are Markdown.
+export const isHtmlBody = (src) => /^\s*<(p|h[1-6]|ul|ol|blockquote|img|figure|div|table|pre|hr)[\s>/]/i.test(src || '')
+
+// Markdown -> sanitized HTML.
 export function renderMarkdown(src) {
-  return DOMPurify.sanitize(marked.parse(src || ''), { USE_PROFILES: { html: true } })
+  return sanitize(marked.parse(src || ''))
+}
+
+// Any stored body (HTML or Markdown) -> sanitized HTML. Used by the public article pages.
+export function renderBody(src) {
+  return isHtmlBody(src) ? sanitize(src) : renderMarkdown(src)
 }
