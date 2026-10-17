@@ -1,24 +1,52 @@
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Logo from './Logo.jsx'
-import Reveal from '../home/Reveal.jsx'
 import { footerColumns, legalLinks, resourcesFooterLinks } from '../data/navigation.js'
 import { useResourceMenu } from '../lib/resourcesApi.js'
 import './footer.css'
 
+// The footer stays mounted across routes, so its "teemly" wordmark reveals with
+// its own observer rather than a GSAP ScrollTrigger: the home page kills every
+// ScrollTrigger when it unmounts, which used to leave this text stuck invisible.
+function useInView() {
+  const ref = useRef(null)
+  const [inView, setInView] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      setInView(true)
+      return undefined
+    }
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setInView(true)
+          io.disconnect()
+        }
+      },
+      { rootMargin: '0px 0px -12% 0px' },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+  return [ref, inView]
+}
+
 export default function Footer() {
   const resourceLinks = resourcesFooterLinks(useResourceMenu())
+  const [bigRef, bigIn] = useInView()
   return (
     <footer className="site-footer">
       <div className="brand-bar" />
       <div className="container footer-top">
         <div className="footer-brand">
-          <Logo variant="light" size={30} />
+          <Logo tone="light" size="md" />
           <p>
             Organizational Intelligence Platform. Teemly connects signals from people, work and technology into
-            one real-time record — captured by an agent Teemly built and owns end to end.
+            one live view, captured by Teemly’s own lightweight desktop app.
           </p>
           <div className="footer-badges">
-            <span className="pill-tag foot-pill">Own EXE Agent</span>
+            <span className="pill-tag foot-pill">Own desktop app</span>
             <span className="pill-tag foot-pill">DPDP &amp; GDPR-aligned</span>
           </div>
         </div>
@@ -39,9 +67,9 @@ export default function Footer() {
         </div>
       </div>
 
-      <Reveal as="div" className="foot-big" aria-hidden="true">
+      <div className={`foot-big${bigIn ? ' is-in' : ''}`} ref={bigRef} aria-hidden="true">
         teemly
-      </Reveal>
+      </div>
 
       <div className="container footer-bottom">
         <p>© {new Date().getFullYear()} Teemly. All rights reserved.</p>

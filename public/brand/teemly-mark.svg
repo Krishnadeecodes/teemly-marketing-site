@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="75.5 75 480 480" width="480" height="480">
+  <title>Teemly</title>
+  <defs>
+    <linearGradient id="t-bar" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0187E0"/><stop offset="1" stop-color="#07D7D9"/></linearGradient>
+    <linearGradient id="t-stem" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F62DA0"/><stop offset="1" stop-color="#E91E63"/></linearGradient>
+  </defs>
+  <path d="M257 212H389V484A66 66 0 0 1 257 484Z" fill="url(#t-stem)"/>
+  <path d="M257 212H389L257 300Z" fill="#032297"/>
+  <rect x="103" y="80" width="425" height="132" rx="66" fill="url(#t-bar)"/>
+</svg>

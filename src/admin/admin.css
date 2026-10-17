@@ -86,7 +86,7 @@ html.adm-root {
   font-family: var(--font-head);
   font-weight: 800;
   color: #fff;
-  background: var(--grad-mark);
+  background: #fff;
   flex-shrink: 0;
 }
 

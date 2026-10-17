@@ -33,8 +33,13 @@
   background: #1fb87f;
 }
 
+.mock-chrome-logo {
+  flex: none;
+  margin-left: 12px;
+}
+
 .mock-chrome-title {
-  margin-left: 10px;
+  margin-left: 2px;
   font-size: 0.76rem;
   color: var(--muted-soft);
   font-family: var(--font-body);

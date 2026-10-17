@@ -1,0 +1,593 @@
+/* Hero dashboard (HeroDashboard.jsx): a compact Teemly dashboard with an icon
+   sidebar, KPIs, charts and live activity. Uses the home page colour tokens. */
+.home-v2 .h-db {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 60px minmax(0, 1fr);
+  background: var(--h-bg-alt);
+  border: 1px solid var(--h-line);
+  border-radius: var(--h-radius-lg);
+  box-shadow: var(--h-shadow-lg);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  font-family: var(--h-font-body);
+  color: var(--h-text);
+}
+.home-v2 .h-db-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  padding: 18px 0;
+  background: var(--h-surface);
+  border-right: 1px solid var(--h-line);
+}
+.home-v2 .h-db-side nav {
+  display: grid;
+  gap: 6px;
+}
+.home-v2 .h-db-side nav span {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  color: var(--h-muted);
+}
+.home-v2 .h-db-side nav span.on {
+  color: var(--h-pink);
+  background: var(--h-bg-blush);
+}
+.home-v2 .h-db-main {
+  min-width: 0;
+  padding: 16px 18px 18px;
+  display: grid;
+  gap: 12px;
+}
+.home-v2 .h-db-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12.5px;
+}
+.home-v2 .h-db-top > b {
+  font: 600 16px/1 var(--h-font-display);
+  color: var(--h-heading);
+}
+.home-v2 .h-db-search {
+  margin-left: auto;
+  padding: 7px 12px;
+  min-width: 0;
+  border: 1px solid var(--h-line);
+  border-radius: 8px;
+  background: var(--h-surface);
+  color: var(--h-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.home-v2 .h-db-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+  color: #13875c;
+}
+.home-v2 .h-db-live i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--status-productive);
+  animation: h-db-pulse 1.8s infinite;
+}
+@keyframes h-db-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(31, 184, 127, 0.5); }
+  100% { box-shadow: 0 0 0 7px rgba(31, 184, 127, 0); }
+}
+.home-v2 .h-db-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font: 700 10.5px/1 var(--h-font-body);
+  color: #fff;
+  background: var(--h-grad-stem);
+}
+.home-v2 .h-db-hello {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+.home-v2 .h-db-hello strong {
+  font: 600 21px/1.1 var(--h-font-display);
+  color: var(--h-heading);
+  letter-spacing: -0.02em;
+}
+.home-v2 .h-db-hello span {
+  font-size: 12px;
+  color: var(--h-muted);
+  white-space: nowrap;
+}
+
+/* KPI cards */
+.home-v2 .h-db-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+.home-v2 .h-db-kpi,
+.home-v2 .h-db-panel,
+.home-v2 .h-db-table {
+  background: var(--h-surface);
+  border: 1px solid var(--h-line);
+  border-radius: 12px;
+}
+.home-v2 .h-db-kpi {
+  padding: 11px 13px;
+  min-width: 0;
+}
+.home-v2 .h-db-kpi-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--h-muted);
+  white-space: nowrap;
+}
+.home-v2 .h-db-kpi-head svg {
+  color: var(--h-azure);
+  flex: 0 0 auto;
+}
+.home-v2 .h-db-kpi strong {
+  display: block;
+  margin-top: 6px;
+  font: 600 25px/1.1 var(--h-font-display);
+  color: var(--h-heading);
+  letter-spacing: -0.02em;
+}
+.home-v2 .h-db-kpi strong small {
+  font-size: 14px;
+  color: var(--h-muted);
+  font-weight: 500;
+}
+.home-v2 .h-db-kpi em {
+  display: block;
+  margin-top: 4px;
+  font: 600 11px/1.2 var(--h-font-body);
+  font-style: normal;
+  color: var(--h-muted);
+}
+.home-v2 .h-db-kpi em.good {
+  color: #13875c;
+}
+.home-v2 .h-db-kpi em.bad {
+  color: var(--h-pink);
+}
+/* "vs last month" stays in one piece; on narrow cards it moves to the next line */
+.home-v2 .h-db-kpi em > span:last-child {
+  color: var(--h-muted);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* panels */
+.home-v2 .h-db-panel {
+  padding: 12px 14px 11px;
+  min-width: 0;
+}
+.home-v2 .h-db-ph {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.home-v2 .h-db-ph b {
+  font: 600 13px/1.2 var(--h-font-body);
+  color: var(--h-heading);
+}
+.home-v2 .h-db-ph small,
+.home-v2 .h-db-legend {
+  font-size: 11px;
+  color: var(--h-muted);
+}
+.home-v2 .h-db-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.home-v2 .h-db-legend i {
+  width: 12px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--h-grad-bar);
+}
+
+/* activity line chart */
+.home-v2 .h-db-linewrap {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 8px;
+  height: 96px;
+}
+.home-v2 .h-db-yaxis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--h-muted);
+  text-align: right;
+  line-height: 1;
+}
+.home-v2 .h-db-plot {
+  position: relative;
+}
+.home-v2 .h-db-plot svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.home-v2 .h-db-grid line {
+  stroke: var(--h-line);
+  stroke-dasharray: 3 4;
+  vector-effect: non-scaling-stroke;
+}
+/* no non-scaling-stroke here: it breaks pathLength-based dashes (draw-in) */
+.home-v2 .h-db-line {
+  fill: none;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+}
+.home-v2 .h-db-peakline {
+  stroke: var(--h-azure);
+  stroke-dasharray: 3 3;
+  vector-effect: non-scaling-stroke;
+}
+.home-v2 .h-db-peak {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+.home-v2 .h-db-peak i {
+  display: block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--h-azure);
+  box-shadow: 0 0 0 2px #fff, 0 0 0 5px rgba(3, 166, 221, 0.2);
+}
+/* white tooltip above the peak: "● 81%" */
+.home-v2 .h-db-peak em {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font: 700 11.5px/1 var(--h-font-body);
+  font-style: normal;
+  color: var(--h-heading);
+  background: var(--h-surface);
+  border: 1px solid var(--h-line);
+  box-shadow: var(--h-shadow-sm);
+  padding: 5px 8px;
+  border-radius: 7px;
+  white-space: nowrap;
+}
+.home-v2 .h-db-peak em b {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--h-azure);
+}
+.home-v2 .h-db-xaxis {
+  display: flex;
+  justify-content: space-between;
+  margin: 6px 0 0 38px;
+  font-size: 10.5px;
+  color: var(--h-muted);
+}
+
+/* activity, top apps and weekly hours side by side, like a real dashboard */
+.home-v2 .h-db-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+.home-v2 .h-db-row .h-db-panel {
+  display: flex;
+  flex-direction: column;
+}
+.home-v2 .h-db-apps {
+  flex: 1;
+  align-content: center;
+}
+/* bars need a fixed-height box to size against */
+.home-v2 .h-db-row .h-db-week {
+  margin-top: auto;
+  height: 104px;
+}
+
+/* top apps */
+.home-v2 .h-db-apps {
+  display: grid;
+  gap: 8px;
+}
+.home-v2 .h-db-app {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  color: var(--h-text);
+}
+.home-v2 .h-db-app > span:first-child {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.home-v2 .h-db-apptrack {
+  height: 10px;
+  border-radius: 4px;
+  background: var(--h-bg-tint);
+  overflow: hidden;
+}
+.home-v2 .h-db-appfill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--h-grad-bar);
+}
+
+/* hours this week */
+.home-v2 .h-db-week {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  height: 84px;
+}
+.home-v2 .h-db-day {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+  min-height: 0;
+}
+.home-v2 .h-db-stack {
+  width: 100%;
+  max-width: 20px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px 4px 2px 2px;
+  overflow: hidden;
+}
+.home-v2 .h-db-stack .idle {
+  background: var(--h-line);
+}
+.home-v2 .h-db-stack .prod {
+  background: linear-gradient(180deg, var(--h-azure), var(--h-blue));
+}
+.home-v2 .h-db-stack .prod.late {
+  background: linear-gradient(180deg, var(--h-magenta), var(--h-pink));
+}
+.home-v2 .h-db-day small {
+  font-size: 10.5px;
+  color: var(--h-muted);
+  line-height: 1;
+}
+
+/* live activity table */
+.home-v2 .h-db-table {
+  padding: 2px 14px;
+}
+.home-v2 .h-db-tr {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.1fr) 60px 76px;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  font-size: 12px;
+  border-top: 1px solid var(--h-line);
+}
+.home-v2 .h-db-th {
+  border-top: 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--h-muted);
+}
+.home-v2 .h-db-who {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+.home-v2 .h-db-who b {
+  display: block;
+  font-weight: 600;
+  color: var(--h-heading);
+  white-space: nowrap;
+}
+.home-v2 .h-db-who small {
+  display: block;
+  font-size: 10.5px;
+  color: var(--h-muted);
+}
+.home-v2 .h-db-av {
+  width: 26px;
+  height: 26px;
+  flex: 0 0 26px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font: 700 11px/1 var(--h-font-body);
+  font-style: normal;
+  color: #fff;
+}
+.home-v2 .h-db-av.a0 { background: var(--h-blue); }
+.home-v2 .h-db-av.a1 { background: #6a3bd8; }
+.home-v2 .h-db-av.a2 { background: var(--h-pink); }
+.home-v2 .h-db-now {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.home-v2 .h-db-now i {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 6px;
+  border-radius: 50%;
+}
+.home-v2 .h-db-now i.productive { background: var(--status-productive); }
+.home-v2 .h-db-now i.privacy { background: var(--status-privacy); }
+.home-v2 .h-db-time {
+  font-weight: 600;
+  color: var(--h-heading);
+}
+.home-v2 .h-db-spark {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 22px;
+}
+.home-v2 .h-db-spark i {
+  flex: 1;
+  border-radius: 1px;
+  background: var(--h-azure);
+  opacity: 0.75;
+}
+
+/* Teemly AI insight strip */
+.home-v2 .h-db-ai {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, var(--h-bg-blush), var(--h-bg-tint));
+  border: 1px solid rgba(233, 30, 99, 0.18);
+}
+.home-v2 .h-db-ai-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex: 0 0 auto;
+  font: 700 11px/1 var(--h-font-body);
+  color: var(--h-pink);
+  background: var(--h-surface);
+  border-radius: var(--h-radius-pill);
+  padding: 4px 8px;
+}
+.home-v2 .h-db-ai p {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: var(--h-text);
+}
+.home-v2 .h-db-ai b {
+  color: var(--h-heading);
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .home-v2 .h-db {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .home-v2 .h-db-side,
+  .home-v2 .h-db-search,
+  .home-v2 .h-db-th,
+  .home-v2 .h-db-tr > :nth-child(4) {
+    display: none;
+  }
+  .home-v2 .h-db-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .home-v2 .h-db-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .home-v2 .h-db-row .h-db-activity {
+    grid-column: 1 / -1;
+  }
+  .home-v2 .h-db-top > b {
+    margin-right: auto;
+  }
+  .home-v2 .h-db-hello {
+    flex-direction: column;
+    gap: 3px;
+  }
+  .home-v2 .h-db-tr {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) 50px;
+  }
+}
+/* shorter laptop screens: tighten so the whole dashboard fits on the first screen */
+@media (min-width: 1101px) and (max-height: 840px) {
+  .home-v2 .h-db-main {
+    gap: 9px;
+    padding: 12px 16px 14px;
+  }
+  .home-v2 .h-db-hello strong {
+    font-size: 19px;
+  }
+  .home-v2 .h-db-kpi {
+    padding: 8px 12px;
+  }
+  .home-v2 .h-db-kpi strong {
+    font-size: 22px;
+    margin-top: 4px;
+  }
+  .home-v2 .h-db-ai {
+    padding: 7px 12px;
+  }
+  .home-v2 .h-db-linewrap {
+    height: 82px;
+  }
+  .home-v2 .h-db-row .h-db-week {
+    height: 90px;
+  }
+  .home-v2 .h-db-tr {
+    padding: 5px 0;
+  }
+  .home-v2 .h-db-side {
+    gap: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-v2 .h-db-live i {
+    animation: none;
+  }
+  .home-v2 .h-db-line {
+    stroke-dasharray: none;
+  }
+}
+
+/* the activity panel is narrow in the 3-column row; its title is enough */
+@media (max-width: 1500px) {
+  .home-v2 .h-db-row .h-db-legend {
+    display: none;
+  }
+}
+
+/* phones: app name above its bar, tighter weekly bars */
+@media (max-width: 600px) {
+  .home-v2 .h-db-app {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3px;
+  }
+  .home-v2 .h-db-week {
+    gap: 4px;
+  }
+  .home-v2 .h-db-ph {
+    flex-wrap: wrap;
+    gap: 2px 8px;
+  }
+}

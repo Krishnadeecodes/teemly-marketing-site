@@ -8,12 +8,11 @@ import {
   VideoRecordingMock,
   LocationTrackingMock,
 } from '../components/ProductMockups.jsx'
+import { MODULES } from './modules.js'
 
-export const modules = [
+const content = [
   {
     slug: 'dashboard',
-    icon: 'chart',
-    navLabel: 'Dashboard',
     tag: 'Dashboard',
     title: 'Everything worth knowing, the moment you log in',
     intro:
@@ -38,8 +37,6 @@ export const modules = [
   },
   {
     slug: 'teams',
-    icon: 'users',
-    navLabel: 'Teams',
     tag: 'Teams',
     title: "Every team, then every person inside it",
     intro:
@@ -61,8 +58,6 @@ export const modules = [
   },
   {
     slug: 'screenshots',
-    icon: 'camera',
-    navLabel: 'Screenshots',
     tag: 'Screenshot Intelligence',
     title: 'Visual proof of work, without exposing the whole screen',
     intro:
@@ -85,8 +80,6 @@ export const modules = [
   },
   {
     slug: 'video-recording',
-    icon: 'monitor',
-    navLabel: 'Video Recording',
     tag: 'Video Recording',
     title: 'Continuous visual audit, without the manual review',
     intro:
@@ -109,8 +102,6 @@ export const modules = [
   },
   {
     slug: 'location-tracking',
-    icon: 'pin',
-    navLabel: 'Location Tracking',
     tag: 'Location Tracking',
     title: 'GPS visibility for remote, hybrid and field teams',
     intro:
@@ -133,8 +124,6 @@ export const modules = [
   },
   {
     slug: 'attendance',
-    icon: 'clock',
-    navLabel: 'Attendance',
     tag: 'Attendance',
     title: 'Attendance derived from activity, not typed in',
     intro:
@@ -155,8 +144,6 @@ export const modules = [
   },
   {
     slug: 'reports',
-    icon: 'layers',
-    navLabel: 'Reports',
     tag: 'Intelligence Reports',
     title: 'Six reports, each built to end in a decision',
     intro:
@@ -181,8 +168,6 @@ export const modules = [
   },
   {
     slug: 'settings',
-    icon: 'gear',
-    navLabel: 'Settings',
     tag: 'Settings & Controls',
     title: 'Every default, and every exception to it',
     intro:
@@ -206,6 +191,13 @@ export const modules = [
     planNote: 'Silent Tracking and custom roles beyond the two defaults require the Professional plan or above.',
   },
 ]
+
+// Name, icon and order come from the shared module list (modules.js).
+export const modules = MODULES.map((m) => ({
+  ...content.find((c) => c.slug === m.slug),
+  ...m,
+  navLabel: m.label,
+}))
 
 export function getModule(slug) {
   return modules.find((m) => m.slug === slug)

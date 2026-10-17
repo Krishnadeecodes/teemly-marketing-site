@@ -9,22 +9,22 @@ const cards = [
   {
     icon: 'eyeOff',
     title: 'Privacy Mode has no override',
-    desc: 'Any employee can pause tracking instantly. Admins see that it happened — never a way to switch it back on for them.',
+    desc: 'Any employee can pause data collection instantly. Admins see that it happened — never a way to switch it back on for them.',
   },
   {
     icon: 'shield',
-    title: 'Silent Tracking behind a legal gate',
-    desc: 'Invisible monitoring stays locked until an admin explicitly accepts responsibility for local consent law — enforced in the UI and the API, not just written down.',
+    title: 'Unannounced Mode behind a legal gate',
+    desc: 'Unannounced collection stays locked until an admin explicitly accepts responsibility for local consent law. The platform enforces this; it is not just a policy.',
   },
   {
     icon: 'lock',
     title: 'Access scoped by design',
-    desc: 'Managers see their assigned teams; admins see the org. Every API call is organisation-scoped — there is no query path into another company\'s data.',
+    desc: "Managers see their own teams; admins see the whole organization. Each company's data is kept completely separate from every other company's.",
   },
   {
     icon: 'server',
     title: 'Encrypted at rest, encrypted in transit',
-    desc: 'Every layer — database, file storage and agent payloads — is encrypted: AES-256 at rest, TLS 1.2 minimum in transit, screenshots and recordings served via 15-minute signed URLs.',
+    desc: 'All data is encrypted with industry-standard protocols, at rest and in transit. Visual snapshots and session replays open through secure links that expire after 15 minutes.',
   },
 ]
 
@@ -73,11 +73,11 @@ export default function Trust() {
             <SplitHeading as="h2" text="Visibility your team can actually trust" />
             <p>These are not policy promises — they are the same code path every one of your employees runs.</p>
             <div className="h-not-list">
-              <span>No keystroke logging</span>
-              <span>No email or clipboard content</span>
-              <span>No camera / microphone access</span>
-              <span>AES-256 encryption at rest &amp; in transit</span>
-              <span>Data residency in India (AWS Mumbai)</span>
+              <span>No typed-content capture</span>
+              <span>No personal message or copied content</span>
+              <span>No audio or video device access</span>
+              <span>Enterprise-grade encryption at rest &amp; in transit</span>
+              <span>Data residency in India</span>
               <span>DPDP &amp; GDPR-aligned architecture</span>
             </div>
             <div className="h-trust-ctas">

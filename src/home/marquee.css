@@ -1,15 +1,19 @@
 .home-v2 .h-marquee {
-  padding: 26px 0;
+  position: relative;
+  padding: 30px 0;
   border-top: 1px solid var(--h-line);
   border-bottom: 1px solid var(--h-line);
-  background: var(--h-bg);
+  background: linear-gradient(180deg, var(--h-bg), var(--h-bg-alt));
   overflow: hidden;
+  /* soft fade at both edges so words glide in and out */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
 }
 .home-v2 .h-marquee-track {
   display: flex;
-  gap: 44px;
+  gap: 48px;
   width: max-content;
-  animation: h-marq 38s linear infinite;
+  animation: h-marq 42s linear infinite;
 }
 .home-v2 .h-marquee:hover .h-marquee-track {
   animation-play-state: paused;
@@ -17,42 +21,88 @@
 .home-v2 .h-marquee-item {
   display: flex;
   align-items: center;
-  gap: 44px;
-  font: 600 clamp(20px, 2.2vw, 28px) / 1 var(--h-font-display);
-  color: var(--h-heading);
+  gap: 48px;
   white-space: nowrap;
-  letter-spacing: -0.02em;
 }
-.home-v2 .h-marquee-item .o {
+.home-v2 .h-marquee-word {
+  font: 700 clamp(22px, 2.3vw, 32px) / 1.1 var(--h-font-display);
+  letter-spacing: -0.03em;
+  color: var(--h-heading);
+  transition: color 0.3s, transform 0.3s var(--ease, ease);
+}
+/* every other word in the brand gradient, with a slow shimmer */
+.home-v2 .h-marquee-word.g {
+  background: var(--h-grad-brand);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
-  -webkit-text-stroke: 1.2px var(--h-heading);
+  animation: h-marq-sheen 6s ease-in-out infinite alternate;
 }
+.home-v2 .h-marquee-word:hover {
+  transform: translateY(-2px);
+}
+.home-v2 .h-marquee-word:not(.g):hover {
+  color: var(--h-blue);
+}
+
+/* the shared T mark between words: gentle bob and a soft glow */
 .home-v2 .h-marquee-sep {
-  display: inline-block;
-  width: 34px;
-  height: 12px;
-  border-radius: 99px;
-  background: var(--h-grad-bar);
   position: relative;
+  display: inline-grid;
+  place-items: center;
+  line-height: 0;
+  animation: h-marq-bob 3.2s ease-in-out infinite;
+  animation-delay: var(--d, 0s);
 }
-.home-v2 .h-marquee-sep::after {
+.home-v2 .h-marquee-sep::before {
   content: '';
   position: absolute;
-  left: 12px;
-  top: 10px;
-  width: 10px;
-  height: 14px;
-  border-radius: 0 0 8px 8px;
-  background: var(--h-grad-stem);
+  inset: -8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(7, 215, 217, 0.28), rgba(246, 45, 160, 0.12) 45%, transparent 70%);
+  animation: h-marq-glow 3.2s ease-in-out infinite;
+  animation-delay: var(--d, 0s);
 }
+.home-v2 .h-marquee-sep svg {
+  position: relative;
+}
+
 @keyframes h-marq {
-  to {
-    transform: translateX(-50%);
+  to { transform: translateX(-50%); }
+}
+@keyframes h-marq-sheen {
+  from { background-position: 0% 50%; }
+  to { background-position: 100% 50%; }
+}
+@keyframes h-marq-bob {
+  0%, 100% { transform: translateY(2px) rotate(-4deg); }
+  50% { transform: translateY(-3px) rotate(4deg); }
+}
+@keyframes h-marq-glow {
+  0%, 100% { opacity: 0.35; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+@media (max-width: 600px) {
+  .home-v2 .h-marquee {
+    padding: 22px 0;
+  }
+  .home-v2 .h-marquee-track,
+  .home-v2 .h-marquee-item {
+    gap: 32px;
+  }
+  .home-v2 .h-marquee-sep svg {
+    width: auto;
+    height: 24px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .home-v2 .h-marquee-track {
+  .home-v2 .h-marquee-track,
+  .home-v2 .h-marquee-word.g,
+  .home-v2 .h-marquee-sep,
+  .home-v2 .h-marquee-sep::before {
     animation: none;
   }
 }

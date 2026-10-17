@@ -4,7 +4,7 @@ import Reveal from '../home/Reveal.jsx'
 import '../home/segment.css'
 
 const cards = [
-  { icon: 'download', title: 'Nothing for IT to configure', desc: 'One installer, under 2MB, for Windows and macOS. Your team is reporting data within minutes of the invite.' },
+  { icon: 'download', title: 'Nothing for IT to configure', desc: 'One small installer for Windows and macOS. Your team is up and running within minutes of the invite.' },
   { icon: 'bolt', title: 'A day to get live', desc: 'Invite people, assign teams, set your work-hour defaults — Teemly is producing its first scores the same day.' },
   { icon: 'target', title: 'Pricing that grows with headcount', desc: 'Per-seat plans from fifty employees to unlimited, so you pay for the visibility you actually need.' },
 ]

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { api } from './api.js'
+import Logo from '../components/Logo.jsx'
 import { useAuth } from './authContext.js'
 import { ErrorBox, Field } from './ui.jsx'
 
@@ -31,7 +32,9 @@ export default function Login() {
     <div className="adm-login">
       <form className="adm-card adm-login-card" onSubmit={submit}>
         <div className="adm-brand">
-          <span className="adm-logo">T</span>
+          <span className="adm-logo">
+            <Logo variant="mark" size={24} label={null} />
+          </span>
           <div>
             <strong>Teemly</strong>
             <span>Resource admin</span>

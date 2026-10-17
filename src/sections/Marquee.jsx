@@ -1,4 +1,5 @@
 import { Fragment } from 'react'
+import Logo from '../components/Logo.jsx'
 import '../home/marquee.css'
 
 const items = [
@@ -15,8 +16,10 @@ function Track({ hidden }) {
     <div className="h-marquee-item" aria-hidden={hidden || undefined}>
       {items.map((label, i) => (
         <Fragment key={label}>
-          {i % 2 === 1 ? <span className="o">{label}</span> : label}
-          <span className="h-marquee-sep" />
+          <span className={`h-marquee-word${i % 2 ? ' g' : ''}`}>{label}</span>
+          <span className="h-marquee-sep" style={{ '--d': `${(i % 3) * -0.8}s` }}>
+            <Logo variant="mark" size={30} label={null} />
+          </span>
         </Fragment>
       ))}
     </div>

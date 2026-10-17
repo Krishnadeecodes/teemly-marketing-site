@@ -1,6 +1,8 @@
 .home-v2 .h-hero {
+  /* the hero uses more of the screen width than other sections */
+  --h-wrap: 1480px;
   position: relative;
-  padding: clamp(100px, 14vh, 160px) 0 clamp(60px, 8vh, 100px);
+  padding: clamp(40px, 6vh, 96px) 0 clamp(32px, 5vh, 80px);
   min-height: calc(100vh - 76px);
   min-height: calc(100svh - 76px);
   display: flex;
@@ -18,7 +20,7 @@
   z-index: 2;
 }
 .home-v2 .h-hero h1 {
-  font-size: clamp(38px, 3.6vw, 62px);
+  font-size: clamp(36px, 3.15vw, 52px);
   font-weight: 700;
   letter-spacing: -0.04em;
   line-height: 1.02;
@@ -80,16 +82,31 @@
    ========================================================= */
 .home-v2 .h-hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 600px) minmax(0, 1fr);
-  gap: clamp(32px, 4vw, 64px);
+  grid-template-columns: minmax(0, clamp(520px, 32vw, 600px)) minmax(0, 1fr);
+  gap: clamp(32px, 3.4vw, 56px);
   align-items: center;
 }
 .home-v2 .h-hero-vis {
   position: relative;
   width: 100%;
-  max-width: 580px;
   margin-left: auto;
-  padding: 8px 0 124px;
+  padding: 0 0 8px;
+}
+/* shorter laptop screens: less vertical padding so the dashboard fits */
+@media (min-width: 1101px) and (max-height: 840px) {
+  .home-v2 .h-hero {
+    padding-top: 24px;
+    padding-bottom: 20px;
+  }
+  .home-v2 .h-hv-flow {
+    height: 32px;
+  }
+}
+/* on wide screens the dashboard runs into the right margin, like a product screenshot */
+@media (min-width: 1241px) {
+  .home-v2 .h-hero-vis {
+    width: calc(100% + clamp(0px, (100vw - var(--h-wrap)) / 2, 120px));
+  }
 }
 .home-v2 .h-hv-sources {
   display: grid;
@@ -119,7 +136,7 @@
 .home-v2 .h-hv-flow {
   display: block;
   width: 100%;
-  height: 64px;
+  height: 44px;
   overflow: visible;
 }
 .home-v2 .h-hv-flow path {
@@ -138,257 +155,29 @@
 @keyframes h-hvflow {
   to { stroke-dashoffset: -44; }
 }
-.home-v2 .h-hv-pulse {
-  position: relative;
-  z-index: 1;
-  background: #fff;
-  border: 1px solid var(--h-line);
-  border-radius: var(--h-radius-lg);
-  box-shadow: var(--h-shadow-lg);
-  padding: 20px 22px 16px;
-  transform-style: preserve-3d;
-}
-.home-v2 .h-hv-top {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font: 600 15px/1.2 var(--h-font-body);
-  color: var(--h-heading);
-}
-.home-v2 .h-hv-top svg {
-  width: 22px;
-  height: 22px;
-  flex: 0 0 22px;
-}
-.home-v2 .h-hv-range {
-  font-weight: 500;
-  font-size: 13px;
-  color: var(--h-muted);
-  margin-left: 4px;
-}
-.home-v2 .h-hv-live {
-  margin-left: auto;
-  font-size: 12.5px;
-  color: #1e8e5a;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: 600;
-}
-.home-v2 .h-hv-live i {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #1e8e5a;
-  animation: h-hv-pulse 1.6s infinite;
-}
-@keyframes h-hv-pulse {
-  0% { box-shadow: 0 0 0 0 rgba(30, 142, 90, 0.5); }
-  100% { box-shadow: 0 0 0 8px rgba(30, 142, 90, 0); }
-}
-.home-v2 .h-hv-kpis {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 16px;
-}
-.home-v2 .h-hv-kpi {
-  background: var(--h-bg-alt);
-  border-radius: 12px;
-  padding: 12px 14px;
-}
-.home-v2 .h-hv-kpi small {
-  display: block;
-  font-size: 12.5px;
-  color: var(--h-muted);
-  line-height: 1.3;
-}
-.home-v2 .h-hv-kpi strong {
-  display: block;
-  font: 600 22px/1.1 var(--h-font-display);
-  color: var(--h-heading);
-  margin-top: 6px;
-  letter-spacing: -0.02em;
-}
-.home-v2 .h-hv-kpi em {
-  display: block;
-  margin-top: 4px;
-  font-style: normal;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--h-muted);
-}
-.home-v2 .h-hv-kpi em.up {
-  color: #1e8e5a;
-}
-.home-v2 .h-hv-chart {
-  position: relative;
-  margin-top: 16px;
-  height: 156px;
-  display: flex;
-  align-items: flex-end;
-  gap: 7px;
-  padding-top: 30px;
-  border-bottom: 1px solid var(--h-line);
-}
-.home-v2 .h-hv-chart span {
-  flex: 1;
-  border-radius: 6px 6px 2px 2px;
-  background: #c7e6f8;
-  transform-origin: 50% 100%;
-}
-.home-v2 .h-hv-chart span.dip {
-  background: var(--h-grad-stem);
-}
-.home-v2 .h-hv-chart span.rec {
-  background: var(--h-grad-bar);
-}
-.home-v2 .h-hv-mark {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  font: 600 11.5px/1.2 var(--h-font-body);
-  font-style: normal;
-  color: #0763b8;
-  white-space: nowrap;
-  padding-left: 7px;
-  border-left: 1.5px dashed var(--h-line-strong);
-  pointer-events: none;
-}
-.home-v2 .h-hv-mark.pink {
-  color: #c2185b;
-}
-.home-v2 .h-hv-mark.before {
-  padding-left: 0;
-  padding-right: 7px;
-  border-left: 0;
-  border-right: 1.5px dashed var(--h-line-strong);
-  transform: translateX(-100%);
-  text-align: right;
-}
-.home-v2 .h-hv-axis {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  color: var(--h-muted);
-  margin-top: 8px;
-}
-.home-v2 .h-hv-card {
-  position: absolute;
-  z-index: 3;
-  width: 240px;
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--h-line);
-  border-radius: var(--h-radius-md);
-  padding: 14px 16px;
-  box-shadow: var(--h-shadow-lg);
-}
-.home-v2 .h-hv-card b {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font: 600 12.5px var(--h-font-body);
-  color: #0763b8;
-  margin-bottom: 6px;
-}
-.home-v2 .h-hv-card b::before {
-  content: '';
-  width: 18px;
-  height: 6px;
-  border-radius: 99px;
-  background: var(--h-grad-bar);
-}
-.home-v2 .h-hv-card.pink {
-  border-color: rgba(233, 30, 99, 0.35);
-}
-.home-v2 .h-hv-card.pink b {
-  color: #c2185b;
-}
-.home-v2 .h-hv-card.pink b::before {
-  background: var(--h-grad-stem);
-}
-.home-v2 .h-hv-card p {
-  color: var(--h-heading);
-  font-weight: 600;
-  font-size: 15px;
-  line-height: 1.4;
-}
-.home-v2 .h-hv-intel {
-  left: -56px;
-  bottom: 44px;
-}
-.home-v2 .h-hv-out {
-  right: -28px;
-  bottom: 0;
-}
-@media (max-width: 1240px) {
-  .home-v2 .h-hv-intel { left: -20px; }
-  .home-v2 .h-hv-out { right: -8px; }
-}
+/* dashboard styles live in heroDashboard.css */
 
-.home-v2 .h-hero-illus {
-  position: absolute;
-  z-index: 3;
-  right: var(--h-gutter);
-  bottom: 22px;
+/* below laptop width the dashboard needs the full row: stack text, then dashboard */
+@media (max-width: 1100px) {
+  .home-v2 .h-hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 48px;
+  }
+  .home-v2 .h-hero-copy {
+    max-width: 680px;
+  }
+  .home-v2 .h-hero-vis {
+    margin: 0 auto 64px;
+    max-width: 760px;
+  }
 }
-
-.home-v2 .h-scroll-cue {
-  position: absolute;
-  left: 50%;
-  bottom: 22px;
-  z-index: 3;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  color: var(--h-muted);
-}
-.home-v2 .h-scroll-cue span {
-  width: 22px;
-  height: 36px;
-  border: 2px solid var(--h-line-strong);
-  border-radius: 14px;
-  position: relative;
-}
-.home-v2 .h-scroll-cue span::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 6px;
-  width: 4px;
-  height: 8px;
-  margin-left: -2px;
-  border-radius: 2px;
-  background: var(--h-pink);
-  animation: h-cue 1.8s infinite;
-}
-@keyframes h-cue {
-  0% { opacity: 0; transform: translateY(0); }
-  30% { opacity: 1; }
-  100% { opacity: 0; transform: translateY(12px); }
-}
-
 @media (max-width: 900px) {
   .home-v2 .h-hero {
     align-items: flex-start;
     padding-top: 96px;
   }
-  .home-v2 .h-hero-grid {
-    grid-template-columns: 1fr;
-  }
   .home-v2 .h-hero-copy {
     padding-bottom: 8px;
-  }
-  .home-v2 .h-hero-vis {
-    margin: 0 auto 64px;
-    max-width: 560px;
-  }
-  .home-v2 .h-scroll-cue {
-    display: none;
   }
 }
 @media (max-width: 600px) {
@@ -396,26 +185,11 @@
     font-size: 12px;
     padding: 7px 9px;
   }
-  .home-v2 .h-hv-chip i,
-  .home-v2 .h-hv-range {
+  .home-v2 .h-hv-chip i {
     display: none;
   }
   .home-v2 .h-hero-vis {
     padding-bottom: 0;
-  }
-  .home-v2 .h-hv-card {
-    position: relative;
-    left: auto;
-    right: auto;
-    bottom: auto;
-    width: auto;
-    margin-top: 12px;
-  }
-  .home-v2 .h-hv-mark {
-    font-size: 10.5px;
-  }
-  .home-v2 .h-hero-illus {
-    bottom: 14px;
   }
 }
 
@@ -426,10 +200,7 @@
   .home-v2 .h-hv-flow .pulse path {
     animation: none;
   }
-  .home-v2 .h-hv-live i {
-    animation: none;
-  }
-  .home-v2 .h-scroll-cue span::after {
+  .home-v2 .h-db-live i {
     animation: none;
   }
 }

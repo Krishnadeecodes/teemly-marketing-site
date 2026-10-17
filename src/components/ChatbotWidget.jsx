@@ -83,8 +83,7 @@ export default function ChatbotWidget() {
         <div className="chatbot-panel" role="dialog" aria-label="Teemly Guide chat">
           <div className="chatbot-head">
             <span className="chatbot-avatar">
-              {/* T mark spans x 2–46, y 4–62 in its 64-unit box; this viewBox centres it */}
-              <Logo withText={false} size={20} viewBox="-6 3 60 60" />
+              <Logo variant="mark" size={22} label={null} />
             </span>
             <div>
               <strong>Teemly Guide</strong>

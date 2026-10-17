@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="95 72 1750 486" width="1750" height="486">
+  <title>Teemly</title>
+  <defs>
+    <linearGradient id="t-bar" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0187E0"/><stop offset="1" stop-color="#07D7D9"/></linearGradient>
+    <linearGradient id="t-stem" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F62DA0"/><stop offset="1" stop-color="#E91E63"/></linearGradient>
+  </defs>
+  <path d="M257 212H389V484A66 66 0 0 1 257 484Z" fill="url(#t-stem)"/>
+  <path d="M257 212H389L257 300Z" fill="#032297"/>
+  <rect x="103" y="80" width="425" height="132" rx="66" fill="url(#t-bar)"/>
+  <g fill="none" stroke="#FFFFFF" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"><path transform="translate(0 0)" d="M603 201V372Q603 435 666 435H668M603 266H667"/><path transform="translate(20 0)" d="M716 344H880M880 347A82 85 0 1 0 864 410"/><path transform="translate(40 0)" d="M933 344H1097M1097 347A82 85 0 1 0 1081 410"/><path transform="translate(60 0)" d="M1156 265V435M1156 318A62.5 52 0 0 1 1281 318V435M1281 318A62.5 52 0 0 1 1406 318V435"/><path transform="translate(80 0)" d="M1480 180V435"/><path transform="translate(100 0)" d="M1554 268V365A75 70 0 0 0 1704 365M1704 268V455C1704 505 1665 527 1625 527C1605 527 1590 520 1575 512"/></g>
+</svg>

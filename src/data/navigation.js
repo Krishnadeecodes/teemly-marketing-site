@@ -7,7 +7,7 @@ export const platformLinks = [
   { to: '/platform/work-intelligence', label: 'Work Intelligence', desc: 'How work actually happens, app by app', icon: 'monitor', tone: 'pink' },
   { to: '/platform/workflow-intelligence', label: 'Workflow Intelligence', desc: 'Policy, timelines and tool-spend efficiency', icon: 'layers', tone: 'green' },
   { to: '/platform/ai-intelligence', label: 'AI Intelligence', desc: 'Auto-generated insight cards on every report', icon: 'sparkle', tone: 'amber' },
-  { to: '/platform/data-platform', label: 'Data Platform', desc: 'The EXE agent, signed payloads and storage', icon: 'server', tone: 'cyan' },
+  { to: '/platform/data-platform', label: 'Data Platform', desc: 'The desktop app, secure data transfer and storage', icon: 'server', tone: 'cyan' },
   { to: '/platform/integrations', label: 'Integrations', desc: 'API access and CSV export, by plan', icon: 'puzzle', tone: 'blue' },
   { to: '/platform/architecture', label: 'Platform Architecture', desc: 'How signals become decisions, end to end', icon: 'cpu', tone: 'purple' },
 ]
@@ -17,7 +17,7 @@ export const solutionsLinks = [
   { to: '/solutions/hr', label: 'HR Intelligence', desc: 'Workforce health, attendance and experience', icon: 'users', tone: 'purple' },
   { to: '/solutions/managers', label: 'Manager Intelligence', desc: 'Team capacity, bottlenecks and coaching', icon: 'target', tone: 'pink' },
   { to: '/solutions/operations', label: 'Enterprise Operations', desc: 'Workflow and process friction, surfaced', icon: 'gear', tone: 'green' },
-  { to: '/solutions/it', label: 'IT & Technology Intelligence', desc: 'Tool adoption, SaaS waste, agent architecture', icon: 'cpu', tone: 'cyan' },
+  { to: '/solutions/it', label: 'IT & Technology Intelligence', desc: 'Tool adoption, unused software and licence spend', icon: 'cpu', tone: 'cyan' },
   { to: '/solutions/finance', label: 'Capacity & Resource Planning', desc: 'Workforce cost and capacity planning', icon: 'dollar', tone: 'amber' },
   { to: '/solutions/productivity', label: 'Productivity Intelligence', desc: 'Focus, rhythm and distraction sources', icon: 'bolt', tone: 'blue' },
   { to: '/solutions/workforce', label: 'Workforce Optimization', desc: 'Right-sizing teams against real work patterns', icon: 'chart', tone: 'purple' },
@@ -28,7 +28,7 @@ export const solutionsLinks = [
 
 export const whyTeemlyLinks = [
   { to: '/why-teemly/problem', label: 'The Problem', desc: 'Why organisational data stays fragmented', icon: 'puzzle', tone: 'pink' },
-  { to: '/why-teemly/difference', label: 'How Teemly Is Different', desc: 'Our own agent, not a licensed plugin', icon: 'sparkle', tone: 'blue' },
+  { to: '/why-teemly/difference', label: 'How Teemly Is Different', desc: 'Our own software, not a licensed plugin', icon: 'sparkle', tone: 'blue' },
   { to: '/why-teemly/business-impact', label: 'Business Impact', desc: 'Where the value actually shows up', icon: 'trendingUp', tone: 'green' },
   { to: '/why-teemly/roi', label: 'ROI', desc: 'How to think about return before you buy', icon: 'dollar', tone: 'amber' },
   { to: '/resources/case-studies', label: 'Use Cases', desc: 'How teams put Teemly to work', icon: 'book', tone: 'purple' },

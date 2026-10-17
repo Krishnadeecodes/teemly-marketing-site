@@ -1,5 +1,6 @@
 import { Fragment } from 'react'
 import Icon from './Icon.jsx'
+import Logo from './Logo.jsx'
 import './mock.css'
 
 export function MockFrame({ title, children }) {
@@ -9,6 +10,7 @@ export function MockFrame({ title, children }) {
         <span className="mock-dot r" />
         <span className="mock-dot y" />
         <span className="mock-dot g" />
+        <Logo variant="mark" size={16} label={null} className="mock-chrome-logo" />
         <span className="mock-chrome-title">{title}</span>
       </div>
       <div className="mock-body">{children}</div>

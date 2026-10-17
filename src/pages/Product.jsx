@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom'
 import PageHero from '../components/PageHero.jsx'
+import { MODULES } from '../data/modules.js'
 import Icon from '../components/Icon.jsx'
 import ProductTour from '../sections/ProductTour.jsx'
 import Trust from '../sections/Trust.jsx'
@@ -6,14 +8,8 @@ import FinalCTA from '../sections/FinalCTA.jsx'
 import '../sections/sections.css'
 import './pages.css'
 
-const modules = [
-  { id: 'dashboard', label: 'Dashboard', icon: 'chart' },
-  { id: 'teams', label: 'Teams', icon: 'users' },
-  { id: 'screenshots', label: 'Screenshots', icon: 'camera' },
-  { id: 'attendance', label: 'Attendance', icon: 'clock' },
-  { id: 'reports', label: 'Reports', icon: 'layers' },
-  { id: 'settings', label: 'Settings', icon: 'gear' },
-]
+// Modules with a section in the walkthrough below link to it; the rest open their own page.
+const TOUR_IDS = ['dashboard', 'teams', 'screenshots', 'attendance', 'reports', 'settings']
 
 export default function Product() {
   return (
@@ -21,18 +17,25 @@ export default function Product() {
       <PageHero
         eyebrow="Product"
         title="Everything Teemly captures, in one place"
-        desc="Six modules, one underlying record. Jump to any of them below, or scroll through the full walkthrough."
+        desc={`${MODULES.length} modules, one shared record. Jump to any of them, or scroll through the walkthrough below.`}
       />
 
       <section className="section-tight">
         <div className="container">
           <div className="module-nav-strip">
-            {modules.map((m) => (
-              <a href={`#${m.id}`} key={m.id}>
-                <Icon name={m.icon} size={16} />
-                {m.label}
-              </a>
-            ))}
+            {MODULES.map((m) =>
+              TOUR_IDS.includes(m.slug) ? (
+                <a href={`#${m.slug}`} key={m.slug}>
+                  <Icon name={m.icon} size={16} />
+                  {m.label}
+                </a>
+              ) : (
+                <Link to={`/product/${m.slug}`} key={m.slug}>
+                  <Icon name={m.icon} size={16} />
+                  {m.label}
+                </Link>
+              ),
+            )}
           </div>
         </div>
       </section>

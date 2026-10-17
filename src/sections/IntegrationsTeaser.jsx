@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import Logo from '../components/Logo.jsx'
 import { Link } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import SplitHeading from '../home/SplitHeading.jsx'
@@ -10,7 +11,7 @@ const facts = [
   { icon: 'download', label: 'CSV export', angle: -90, radius: 'min(40vw,210px)' },
   { icon: 'fileText', label: 'Excel export', angle: -18, radius: 'min(40vw,210px)' },
   { icon: 'puzzle', label: 'API access', angle: 54, radius: 'min(40vw,210px)' },
-  { icon: 'lock', label: 'HMAC-signed payloads', angle: 126, radius: 'min(40vw,210px)' },
+  { icon: 'lock', label: 'Secure, signed data', angle: 126, radius: 'min(40vw,210px)' },
 ]
 
 export default function IntegrationsTeaser() {
@@ -40,7 +41,7 @@ export default function IntegrationsTeaser() {
           <SplitHeading as="h2" text="Your data, exportable — not locked in" />
           <Reveal as="div">
             <p className="h-integ-lede">
-              We're not publishing a partner logo wall until we have verified integrations to show. Here's what actually ships today.
+              Export your data whenever you need it, or connect it to the tools you already use. Here's what's available today.
             </p>
             <p style={{ marginTop: 24 }}>
               <Link to="/platform/integrations" className="h-textlink">
@@ -49,7 +50,7 @@ export default function IntegrationsTeaser() {
             </p>
           </Reveal>
         </div>
-        <div className="h-orbit" ref={orbitRef} role="img" aria-label="Data export capabilities: CSV export, Excel export, API access, HMAC-signed payloads">
+        <div className="h-orbit" ref={orbitRef} role="img" aria-label="Data export capabilities: CSV export, Excel export, API access, secure signed data">
           <div className="h-ringline h-r1" />
           <div className="h-ringline h-r2" />
           <div className="h-spin">
@@ -63,21 +64,7 @@ export default function IntegrationsTeaser() {
             ))}
           </div>
           <div className="h-hubcore">
-            <svg viewBox="0 0 64 64" aria-hidden="true">
-              <defs>
-                <linearGradient id="integBar" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0" stopColor="#0187E0" />
-                  <stop offset="1" stopColor="#07D7D9" />
-                </linearGradient>
-                <linearGradient id="integStem" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0" stopColor="#F62DA0" />
-                  <stop offset="1" stopColor="#E91E63" />
-                </linearGradient>
-              </defs>
-              <rect x="2" y="4" width="44" height="20" rx="10" fill="url(#integBar)" />
-              <path d="M13 20h20v30a10 10 0 0 1-20 0Z" fill="url(#integStem)" />
-              <path d="M13 20h20L13 36Z" fill="#032297" />
-            </svg>
+            <Logo variant="mark" size={40} label={null} />
           </div>
         </div>
       </div>

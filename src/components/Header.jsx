@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import teemlyLogo from '../assets/teemly-logo.jpg'
 
 import MegaMenu from './MegaMenu.jsx'
 import Icon from './Icon.jsx'
+import Logo from './Logo.jsx'
 import ModulePreview from './ModulePreview.jsx'
 import { DashboardMock, ReportsMock, TeamsMock } from './ProductMockups.jsx'
 import {
@@ -59,7 +59,7 @@ function WhyTeemlyFeature() {
       </div>
       <div>
         <span className="mega-feature-eyebrow">Built, not licensed</span>
-        <div className="mega-feature-title">Our own EXE agent, end to end</div>
+        <div className="mega-feature-title">Our own desktop app, end to end</div>
         <p className="mega-feature-desc">Not a monitoring plugin wrapped in a dashboard — Teemly owns the full stack.</p>
       </div>
       <Link to="/why-teemly/difference" className="mega-feature-cta">
@@ -238,8 +238,16 @@ export default function Header() {
   return (
     <header className={`site-header${scrolled ? ' is-scrolled' : ''}`}>
       <div className="container header-inner">
-        <Link to="/" className="header-logo" aria-label="Teemly home">
-          <img src={teemlyLogo} alt="Teemly" className="header-logo-img" />
+        <Link
+          to="/"
+          className="header-logo"
+          aria-label="Teemly home"
+          onClick={() => {
+            // already on the home page: a link to the same route does nothing, so go back to the top
+            if (location.pathname === '/') window.scrollTo({ top: 0, behavior: 'smooth' })
+          }}
+        >
+          <Logo size={34} label={null} />
         </Link>
 
         <div className="header-right" ref={navRef}>

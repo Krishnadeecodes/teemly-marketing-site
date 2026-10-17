@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "server": "node server/index.js",
     "start": "node server/index.js",
-    "admin:create": "node server/create-admin.js"
+    "admin:create": "node server/create-admin.js",
+    "brand": "node scripts/build-brand-assets.mjs"
   },
   "dependencies": {
     "@tiptap/extension-highlight": "^3.32.0",

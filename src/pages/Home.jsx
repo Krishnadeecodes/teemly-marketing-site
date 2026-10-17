@@ -25,7 +25,7 @@ import '../sections/sections.css'
 export default function Home() {
   useSEO({
     description:
-      "Teemly connects how your people, work and technology actually behave into one real-time record, captured by Teemly's own agent, then turned into reports your leaders can act on.",
+      'Teemly brings how your people, work and technology actually operate into one live view, then turns it into clear reports your leaders can act on.',
     path: '/',
   })
   useHomeScroll()

@@ -29,6 +29,7 @@ export function useSEO({ title, description, path }) {
     setMeta('og:title', fullTitle, 'property')
     setMeta('og:description', description, 'property')
     setMeta('og:type', 'website', 'property')
+    setMeta('og:image', `${window.location.origin}/brand/og-image.png`, 'property')
     setCanonical(path ?? window.location.pathname)
   }, [title, description, path])
 }

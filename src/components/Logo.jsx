@@ -1,49 +1,65 @@
-export default function Logo({ variant = 'dark', size = 28, withText = true, viewBox = '0 0 64 64' }) {
-  const textColor = variant === 'light' ? '#ffffff' : 'var(--navy)'
+import { useId } from 'react'
+import { BRAND_COLORS as C, MARK, VIEWBOX_FULL, VIEWBOX_MARK, WORDMARK, letterOffset } from '../brand/logo.js'
+
+// Height in px for each named size. The full logo is wider, so it gets a
+// little less height to sit at the same optical weight as the mark.
+const SIZES = {
+  full: { sm: 24, md: 32, lg: 44 },
+  mark: { sm: 20, md: 28, lg: 40 },
+}
+
+/**
+ * The one Teemly logo.
+ *  variant  'full' (T + wordmark) | 'mark' (T only)
+ *  size     'sm' | 'md' | 'lg' | a pixel height
+ *  tone     'dark' (navy wordmark, for light backgrounds) | 'light' (white wordmark)
+ *  label    accessible name; pass null when a parent link/button already names it
+ */
+export default function Logo({ variant = 'full', size = 'md', tone = 'dark', label = 'Teemly', className = '', ...rest }) {
+  const id = useId().replace(/:/g, '')
+  const full = variant === 'full'
+  const height = typeof size === 'number' ? size : SIZES[full ? 'full' : 'mark'][size] ?? SIZES.full.md
+  const [, , w, h] = (full ? VIEWBOX_FULL : VIEWBOX_MARK).split(' ').map(Number)
+  const a11y = label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': true }
 
   return (
-    <span
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: size * 0.36,
-        lineHeight: 1,
-      }}
+    <svg
+      className={`t-logo t-logo-${variant} ${className}`.trim()}
+      viewBox={full ? VIEWBOX_FULL : VIEWBOX_MARK}
+      height={height}
+      width={Math.round((height * w) / h)}
+      focusable="false"
+      {...a11y}
+      {...rest}
     >
-      <svg width={size} height={size} viewBox={viewBox} aria-hidden="true">
-        <defs>
-          <linearGradient id="logoBar" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0" stopColor="#0aa1e8" />
-            <stop offset="1" stopColor="#04dcd9" />
-          </linearGradient>
-          <linearGradient id="logoLeg" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stopColor="#7a2cc7" />
-            <stop offset="0.45" stopColor="#f52998" />
-            <stop offset="1" stopColor="#eb214f" />
-          </linearGradient>
-          <clipPath id="legClip">
-            <rect x="13" y="20" width="20" height="42" rx="10" />
-          </clipPath>
-        </defs>
-        <rect x="2" y="4" width="44" height="20" rx="10" fill="url(#logoBar)" />
-        <g clipPath="url(#legClip)">
-          <rect x="13" y="20" width="20" height="42" fill="url(#logoLeg)" />
-          <polygon points="13,20 33,20 13,40" fill="#0b1f8a" />
-        </g>
-      </svg>
-      {withText && (
-        <span
-          style={{
-            fontFamily: 'var(--font-head)',
-            fontWeight: 700,
-            fontSize: size * 0.86,
-            color: textColor,
-            letterSpacing: '-0.02em',
-          }}
+      <defs>
+        <linearGradient id={`${id}-bar`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor={C.barFrom} />
+          <stop offset="1" stopColor={C.barTo} />
+        </linearGradient>
+        <linearGradient id={`${id}-stem`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor={C.stemFrom} />
+          <stop offset="1" stopColor={C.stemTo} />
+        </linearGradient>
+      </defs>
+      <g className="t-logo-stem">
+        <path d={MARK.stem} fill={`url(#${id}-stem)`} />
+        <path d={MARK.fold} fill={C.fold} />
+      </g>
+      <rect className="t-logo-bar" {...MARK.bar} fill={`url(#${id}-bar)`} />
+      {full && (
+        <g
+          fill="none"
+          stroke={tone === 'light' ? '#fff' : C.ink}
+          strokeWidth={WORDMARK.strokeWidth}
+          strokeLinecap="round"
+          strokeLinejoin="round"
         >
-          teemly
-        </span>
+          {WORDMARK.paths.map((d, i) => (
+            <path key={d} d={d} transform={`translate(${letterOffset(i)} 0)`} />
+          ))}
+        </g>
       )}
-    </span>
+    </svg>
   )
 }
