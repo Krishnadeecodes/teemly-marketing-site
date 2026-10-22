@@ -120,17 +120,13 @@ export default function Problem() {
       return undefined
     })
 
+    // Phones show the finished state straight away: the staggered build-up
+    // made the three cards lag behind the scroll.
     mm.add('(max-width: 900px)', () => {
-      const tl = gsap.timeline({
-        defaults: { ease: 'power3.out' },
-        scrollTrigger: { trigger: stageRef.current, start: 'top 75%', once: true },
-      })
-      tl.from(silos, { y: 24, opacity: 0, stagger: 0.1, duration: 0.6 })
-        .fromTo(coreRef.current, { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.6)' }, '-=0.2')
-        .fromTo(lines, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.6, stagger: 0.08 }, '-=0.2')
-        .fromTo(pulses, { opacity: 0 }, { opacity: 1, duration: 0.3 })
-        .to(cap1Ref.current, { opacity: 0, duration: 0.3 }, '+=0.3')
-        .fromTo(cap2Ref.current, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4 })
+      gsap.set(lines, { strokeDashoffset: 0 })
+      gsap.set(pulses, { opacity: 1 })
+      gsap.set(cap1Ref.current, { opacity: 0 })
+      gsap.set(cap2Ref.current, { opacity: 1, y: 0 })
       return undefined
     })
 
