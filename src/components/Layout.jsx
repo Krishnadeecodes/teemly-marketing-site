@@ -6,10 +6,15 @@ import ChatbotWidget from './ChatbotWidget.jsx'
 import { prefetchResourcePage } from '../lib/resourcesApi.js'
 
 export default function Layout() {
-  const { pathname, hash } = useLocation()
+  const { pathname, hash, key } = useLocation()
+
+  // The app decides where each page starts; the browser's own restoration
+  // could re-apply the previous page's scroll position after we jump.
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual'
+  }, [])
 
   // Before paint, so the new page never shows at the old scroll position.
-  // 'instant' overrides the global smooth scrolling, which is for in-page anchors.
   useLayoutEffect(() => {
     if (hash) {
       const el = document.getElementById(hash.replace('#', ''))
@@ -18,8 +23,20 @@ export default function Layout() {
         return
       }
     }
+    // Jump without animation. 'instant' overrides the global smooth scrolling
+    // (meant for in-page anchors), but some mobile browsers don't honour it
+    // and glide up from the old position instead, starting at the new page's
+    // footer. So smooth scrolling is also switched off for this one jump;
+    // reading the computed style makes the browser apply that before it scrolls.
+    const root = document.documentElement
+    const prev = root.style.scrollBehavior
+    root.style.scrollBehavior = 'auto'
+    void getComputedStyle(root).scrollBehavior
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
-  }, [pathname, hash])
+    root.style.scrollBehavior = prev
+    // key: a link to the page already open is a navigation too, so it also
+    // returns to the top instead of doing nothing
+  }, [pathname, hash, key])
 
   // Start loading a Resource Center page as soon as its link is pointed at,
   // focused or touched, so it's usually ready by the time it's clicked.
