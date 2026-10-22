@@ -1,6 +1,4 @@
 .home-v2 .h-hero {
-  /* the hero uses more of the screen width than other sections */
-  --h-wrap: 1480px;
   position: relative;
   padding: clamp(40px, 6vh, 96px) 0 clamp(32px, 5vh, 80px);
   min-height: calc(100vh - 76px);
@@ -82,7 +80,7 @@
    ========================================================= */
 .home-v2 .h-hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, clamp(520px, 32vw, 600px)) minmax(0, 1fr);
+  grid-template-columns: minmax(0, clamp(440px, 34vw, 480px)) minmax(0, 1fr);
   gap: clamp(32px, 3.4vw, 56px);
   align-items: center;
 }
@@ -100,12 +98,6 @@
   }
   .home-v2 .h-hv-flow {
     height: 32px;
-  }
-}
-/* on wide screens the dashboard runs into the right margin, like a product screenshot */
-@media (min-width: 1241px) {
-  .home-v2 .h-hero-vis {
-    width: calc(100% + clamp(0px, (100vw - var(--h-wrap)) / 2, 120px));
   }
 }
 .home-v2 .h-hv-sources {

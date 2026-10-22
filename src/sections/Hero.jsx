@@ -153,8 +153,9 @@ export default function Hero() {
           role="img"
           aria-label="Illustrative example of the Teemly dashboard. Signals from people, work, apps, workflows and AI feed one dashboard showing time worked, idle time, productivity, people online, activity by month, top apps, hours this week and live activity, with an AI insight: focus time is down 18% in Sales since a new review cadence."
         >
-          {/* phones see the full desktop visual, scaled down like a screenshot */}
-          <FitScale width={720} media="(max-width: 760px)">
+          {/* the dashboard is laid out at its design width and scaled to fit
+              the column, so it looks the same at every screen size */}
+          <FitScale width={780} media="all">
             <div className="h-hv-sources" aria-hidden="true">
               {CHIPS.map((c) => (
                 <span className="h-hv-chip" key={c.label}>

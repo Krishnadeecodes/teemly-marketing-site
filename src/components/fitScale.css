@@ -13,8 +13,9 @@
     margin-inline: auto;
   }
 }
+/* no overflow clipping: the scaled screen already fits the wrapper exactly
+   (scrollable overflow counts its scaled size), and clipping cut off its shadow */
 .fit-scale.is-scaled {
-  overflow: hidden;
   /* the full-size inner screen must not widen the wrapper in flex/grid parents */
   contain: inline-size;
 }
