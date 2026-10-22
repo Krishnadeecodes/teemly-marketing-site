@@ -12,7 +12,9 @@ export function prefersReducedMotion() {
 /**
  * Mounts Lenis smooth scroll + wires it to GSAP ScrollTrigger for the
  * lifetime of the Home page only. Fully tears down on unmount so every
- * other route keeps native scrolling untouched.
+ * other route keeps native scrolling untouched. Each section removes its own
+ * ScrollTriggers; killing them all here also took out triggers that belong
+ * to components outside the home page.
  *
  * Lenis only smooths mouse-wheel scrolling, so on touch devices it would
  * just add a per-frame callback; phones and tablets keep native scrolling.
@@ -80,7 +82,6 @@ export function useHomeScroll() {
         lenis.destroy()
         lenisRef.current = null
       }
-      ScrollTrigger.getAll().forEach((t) => t.kill())
     }
   }, [])
 

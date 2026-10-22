@@ -8,6 +8,19 @@ html {
   scroll-behavior: smooth;
 }
 
+/* one brand focus ring for keyboard users, instead of each browser's own;
+   fields that show focus with a border colour keep theirs */
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+/* anchor jumps stop below the 76px sticky header instead of under it;
+   :where keeps this at zero specificity so components can set their own */
+:where([id]) {
+  scroll-margin-top: 88px;
+}
+
 body {
   margin: 0;
   font-family: var(--font-body);
@@ -70,8 +83,8 @@ p {
 }
 
 .section-tight {
-  padding-top: calc(var(--section-pad) * 0.6);
-  padding-bottom: calc(var(--section-pad) * 0.6);
+  padding-top: var(--section-pad-tight);
+  padding-bottom: var(--section-pad-tight);
 }
 
 .stack {
@@ -110,7 +123,7 @@ p {
 
 .section-head {
   max-width: 640px;
-  margin-bottom: clamp(32px, 5vw, 56px);
+  margin-bottom: var(--head-gap);
 }
 
 .section-head.center {

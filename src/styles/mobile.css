@@ -70,12 +70,16 @@
      extends the tappable area to 44px tall */
   .home-v2 .h-textlink,
   .tour-link,
-  .tile-link {
+  .tile-link,
+  .rt-link,
+  .rt-crumbs a {
     position: relative;
   }
   .home-v2 .h-textlink::after,
   .tour-link::after,
-  .tile-link::after {
+  .tile-link::after,
+  .rt-link::after,
+  .rt-crumbs a::after {
     content: '';
     position: absolute;
     left: -4px;
@@ -90,6 +94,28 @@
     content: '';
     position: absolute;
     inset: -10px -4px;
+  }
+
+  /* short footer legal links ("DPA", "Terms"): widen the hit area into the
+     20px gap between them, without changing how they look */
+  .footer-legal a {
+    position: relative;
+  }
+  .footer-legal a::after {
+    content: '';
+    position: absolute;
+    left: -10px;
+    right: -10px;
+    top: 50%;
+    height: 44px;
+    transform: translateY(-50%);
+  }
+
+  /* blog share buttons */
+  .rt-share a,
+  .rt-share button {
+    width: 44px;
+    height: 44px;
   }
 
   /* footer: comfortable rows instead of tightly packed 18px lines */
@@ -144,5 +170,44 @@
   .btn-lg {
     padding: 14px 24px;
     font-size: var(--fs-base);
+  }
+}
+
+/* ---------- Readable labels (12px minimum on phones) ---------- */
+@media (max-width: 900px) {
+  .module-nav-label,
+  .related-sub,
+  .res-chip,
+  .rt-badge,
+  .rt-share-label,
+  .rt-facts dt,
+  .price-badge,
+  .save-badge,
+  .seat-slider-ticks span,
+  .roi-output-grid span {
+    font-size: 0.75rem;
+  }
+  .home-v2 .h-illus {
+    font-size: 12px;
+  }
+}
+
+/* ---------- Press feedback on touch screens ---------- */
+/* A tap shows a light brand tint instead of the system's grey or blue box,
+   and buttons and card links press in slightly, so every tap is answered. */
+@media (hover: none) {
+  a,
+  button,
+  summary,
+  label,
+  [role='button'] {
+    -webkit-tap-highlight-color: rgba(10, 161, 232, 0.14);
+  }
+  .btn:active,
+  .home-v2 .h-btn:active {
+    transform: scale(0.97);
+  }
+  a[class*='card']:active {
+    transform: scale(0.985);
   }
 }

@@ -29,6 +29,7 @@
   bottom: 68px;
   width: min(360px, calc(100vw - 40px));
   height: min(560px, calc(100vh - 120px));
+  height: min(560px, calc(100dvh - 120px));
   display: flex;
   flex-direction: column;
   background: #fff;

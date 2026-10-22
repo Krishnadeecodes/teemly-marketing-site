@@ -79,6 +79,7 @@ export default function ResourcesHub() {
               <input
                 id="hub-search"
                 type="search"
+                enterKeyHint="search"
                 placeholder="Search research, guides, webinars…"
                 value={query}
                 onChange={(e) => {

@@ -153,6 +153,8 @@ export default function ChatbotWidget() {
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask a question…"
               maxLength={300}
+              enterKeyHint="send"
+              autoComplete="off"
               aria-label="Type your question"
             />
             <button type="submit" disabled={!input.trim() || typing} aria-label="Send">

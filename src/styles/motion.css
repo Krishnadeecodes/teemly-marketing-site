@@ -1,15 +1,11 @@
-/* Motion budget for phones, tablets and reduced-motion users.
-   Loaded last (see main.jsx) so it can switch off purely decorative,
-   always-running animations site-wide. Functional motion stays: the
-   marquee scroll, loading spinners, chat typing dots, menus and the
-   one-off reveal animations. The Problem connectors and the
-   Integrations orbit also keep running on phones: they only move small
-   elements, and their own stylesheets stop them for reduced motion.
+/* Motion budget for phones and reduced-motion users. Loaded last (see
+   main.jsx) so it can override the component stylesheets.
 
-   Most of what is stopped here animated paint-heavy properties
-   (box-shadow, background-position, stroke-dashoffset) or moved large
-   blurred layers, which repaints on every frame and is what made
-   low-end phones stutter while scrolling. */
+   Looping animations keep running on phones and tablets when they only move
+   or fade elements: that is cheap now that sections scrolled out of view
+   pause theirs (below). Phones skip the aurora (large blobs blurred by 70px,
+   re-blurred on every frame they move) and three shimmer loops that repaint
+   on every frame. */
 
 /* Blocks scrolled out of view (see usePauseOffscreen.js) pause their CSS
    animations, so nothing off screen keeps repainting. */
@@ -20,34 +16,39 @@
   animation-play-state: paused !important;
 }
 
-@media (max-width: 900px), (hover: none), (prefers-reduced-motion: reduce) {
-  /* floating aurora blobs (home hero, AI section, final CTA) */
+/* phones: the aurora blobs hold still, smaller and lighter, so their one-off
+   rasterisation is cheap and they are never re-blurred during scroll. The
+   three shimmer loops below animate background-position / stroke-dashoffset,
+   which repaint on every frame; together they doubled the hero's CPU use. */
+@media (max-width: 900px) {
   .home-v2 .h-aurora i,
-  /* hero: gradient sheen on the headline and the flowing signal lines */
   .home-v2 .h-hero h1 .h-l2,
   .home-v2 .h-hv-flow .pulse path,
-  /* "live" status pulses */
-  .home-v2 .h-db-live i,
-  .home-v2 .h-scr-status.live::before,
-  .home-v2 .h-live i,
-  /* marquee: per-word shimmer and the bobbing / glowing T marks */
-  .home-v2 .h-marquee-word.g,
-  .home-v2 .h-marquee-sep,
-  .home-v2 .h-marquee-sep::before,
-  /* inner-page hero orbit particles */
-  .orbit-track,
-  /* resource templates: decorative spin / float / bob */
-  .rt-hero-art::before,
-  .rt-hero-orb,
-  .rt-hub-float {
+  .home-v2 .h-marquee-word.g {
     animation: none !important;
   }
-
-  /* blurred blobs: smaller and lighter, so the one-off rasterisation
-     is cheap and they never get re-blurred during scroll */
   .home-v2 .h-aurora i,
   .glow-blob {
     filter: blur(48px);
     will-change: auto;
+  }
+}
+
+/* reduced motion: no decorative loops at all */
+@media (prefers-reduced-motion: reduce) {
+  .home-v2 .h-aurora i,
+  .home-v2 .h-hero h1 .h-l2,
+  .home-v2 .h-hv-flow .pulse path,
+  .home-v2 .h-db-live i::after,
+  .home-v2 .h-scr-status.live::after,
+  .home-v2 .h-live i::after,
+  .home-v2 .h-marquee-word.g,
+  .home-v2 .h-marquee-sep,
+  .home-v2 .h-marquee-sep::before,
+  .orbit-track,
+  .rt-hero-art::before,
+  .rt-hero-orb,
+  .rt-hub-float {
+    animation: none !important;
   }
 }

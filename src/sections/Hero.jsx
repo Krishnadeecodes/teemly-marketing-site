@@ -59,16 +59,12 @@ export default function Hero() {
 
     // The dashboard arrives as one finished screen alongside the headline:
     // every card, number and row is present at once (no per-item stagger).
-    // Only the charts get a quick, simultaneous draw-in on wider screens.
+    // Only the charts get a quick, simultaneous draw-in.
     tl.from(pulseRef.current, { y: 24, opacity: 0, duration: 0.8, ease: 'power3.out' }, 0.2)
-    if (window.matchMedia('(min-width: 901px)').matches) {
-      tl.fromTo(line, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.9, ease: 'power2.out' }, 0.3)
-        .from(fills, { scaleX: 0, transformOrigin: '0 50%', duration: 0.9, ease: 'power3.out' }, 0.3)
-        .from(stacks, { scaleY: 0, transformOrigin: '50% 100%', duration: 0.9, ease: 'power3.out' }, 0.3)
-        .from(peak, { opacity: 0, duration: 0.4 }, 0.8)
-    } else {
-      gsap.set(line, { strokeDashoffset: 0 })
-    }
+      .fromTo(line, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.9, ease: 'power2.out' }, 0.3)
+      .from(fills, { scaleX: 0, transformOrigin: '0 50%', duration: 0.9, ease: 'power3.out' }, 0.3)
+      .from(stacks, { scaleY: 0, transformOrigin: '50% 100%', duration: 0.9, ease: 'power3.out' }, 0.3)
+      .from(peak, { opacity: 0, duration: 0.4 }, 0.8)
 
     let moveHandler
     let leaveHandler

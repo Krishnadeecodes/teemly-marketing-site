@@ -104,23 +104,23 @@ export default function ROICalculator() {
 
             <div className="roi-field">
               <label>Number of employees</label>
-              <input type="number" min="1" value={v.employees} onChange={update('employees')} />
+              <input type="number" inputMode="numeric" min="1" value={v.employees} onChange={update('employees')} />
             </div>
             <div className="roi-field">
               <label>Average employee cost / year</label>
-              <input type="number" min="0" value={v.avgEmployeeCost} onChange={update('avgEmployeeCost')} />
+              <input type="number" inputMode="numeric" min="0" value={v.avgEmployeeCost} onChange={update('avgEmployeeCost')} />
             </div>
             <div className="roi-field">
               <label>Annual technology / SaaS spend</label>
-              <input type="number" min="0" value={v.techSpend} onChange={update('techSpend')} />
+              <input type="number" inputMode="numeric" min="0" value={v.techSpend} onChange={update('techSpend')} />
             </div>
             <div className="roi-field">
               <label>Number of managers</label>
-              <input type="number" min="0" value={v.managerCount} onChange={update('managerCount')} />
+              <input type="number" inputMode="numeric" min="0" value={v.managerCount} onChange={update('managerCount')} />
             </div>
             <div className="roi-field">
               <label>Average manager cost / year</label>
-              <input type="number" min="0" value={v.avgManagerCost} onChange={update('avgManagerCost')} />
+              <input type="number" inputMode="numeric" min="0" value={v.avgManagerCost} onChange={update('avgManagerCost')} />
             </div>
 
             <div className="roi-sliders">

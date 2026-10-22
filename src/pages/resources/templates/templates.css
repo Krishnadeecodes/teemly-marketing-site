@@ -1680,6 +1680,7 @@ a:hover .rt-book .rt-cover {
   display: grid;
   gap: 24px;
   max-height: calc(100vh - 120px);
+  max-height: calc(100dvh - 120px);
   overflow-y: auto;
 }
 
@@ -2443,6 +2444,7 @@ a:hover .rt-book .rt-cover {
 /* Loading placeholder: same shape as the page, with a soft shimmer. */
 .rt-skeleton {
   min-height: 100vh;
+  min-height: 100svh;
 }
 
 .sk {
@@ -2594,7 +2596,7 @@ a:hover .rt-book .rt-cover {
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 600px) {
   .rt-section-title {
     flex-direction: column;
     align-items: flex-start;

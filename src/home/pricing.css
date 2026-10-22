@@ -87,7 +87,7 @@
     grid-template-columns: 1fr 1fr;
   }
 }
-@media (max-width: 620px) {
+@media (max-width: 600px) {
   .home-v2 .h-price-grid {
     grid-template-columns: 1fr;
   }

@@ -37,9 +37,12 @@
   inset: 0;
   animation: h-spin 50s linear infinite;
 }
-.home-v2 .h-orbit:hover .h-spin,
-.home-v2 .h-orbit:hover .h-orb span {
-  animation-play-state: paused;
+/* mouse only: on touch screens a tap leaves :hover stuck and froze the orbit */
+@media (hover: hover) {
+  .home-v2 .h-orbit:hover .h-spin,
+  .home-v2 .h-orbit:hover .h-orb span {
+    animation-play-state: paused;
+  }
 }
 .home-v2 .h-orb {
   position: absolute;

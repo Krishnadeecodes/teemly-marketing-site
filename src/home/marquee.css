@@ -15,8 +15,11 @@
   width: max-content;
   animation: h-marq 42s linear infinite;
 }
-.home-v2 .h-marquee:hover .h-marquee-track {
-  animation-play-state: paused;
+/* mouse only: on touch screens a tap leaves :hover stuck and froze the scroll */
+@media (hover: hover) {
+  .home-v2 .h-marquee:hover .h-marquee-track {
+    animation-play-state: paused;
+  }
 }
 .home-v2 .h-marquee-item {
   display: flex;

@@ -431,7 +431,7 @@
     display: flex;
   }
 }
-@media (max-width: 640px) {
+@media (max-width: 600px) {
   .home-v2 .h-pl-list {
     padding-left: 16px;
   }

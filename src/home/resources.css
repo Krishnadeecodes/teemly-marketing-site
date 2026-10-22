@@ -41,7 +41,7 @@
   margin-top: 30px;
 }
 
-@media (max-width: 560px) {
+@media (max-width: 600px) {
   .home-v2 .h-res-card {
     flex-direction: column;
     text-align: center;

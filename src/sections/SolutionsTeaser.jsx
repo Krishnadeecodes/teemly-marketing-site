@@ -52,7 +52,7 @@ export default function SolutionsTeaser() {
     if (!reduced) {
       cardRefs.current.forEach((c) => {
         const move = (e) => {
-          if (drag) return
+          if (drag || e.pointerType !== 'mouse') return
           const r = c.getBoundingClientRect()
           const x = (e.clientX - r.left) / r.width - 0.5
           const y = (e.clientY - r.top) / r.height - 0.5
@@ -169,7 +169,12 @@ export default function SolutionsTeaser() {
     const userScroll = () => hold(2000)
     rail.addEventListener('pointerenter', enter)
     rail.addEventListener('pointerleave', leave)
-    rail.addEventListener('focusin', enter)
+    // a tap also focuses the rail (it is tabbable), which used to stop the
+    // drift until the visitor tapped elsewhere; only keyboard focus pauses it
+    const focusIn = (e) => {
+      if (e.target.matches(':focus-visible')) enter()
+    }
+    rail.addEventListener('focusin', focusIn)
     rail.addEventListener('focusout', leave)
     rail.addEventListener('wheel', userScroll, { passive: true })
     rail.addEventListener('touchstart', userScroll, { passive: true })
@@ -183,7 +188,7 @@ export default function SolutionsTeaser() {
       rail.removeEventListener('scroll', onScroll)
       rail.removeEventListener('pointerenter', enter)
       rail.removeEventListener('pointerleave', leave)
-      rail.removeEventListener('focusin', enter)
+      rail.removeEventListener('focusin', focusIn)
       rail.removeEventListener('focusout', leave)
       rail.removeEventListener('wheel', userScroll)
       rail.removeEventListener('touchstart', userScroll)

@@ -60,7 +60,20 @@
   /* ---- Spacing / layout ---- */
   --page-max: 1280px;
   --page-pad: clamp(20px, 5vw, 64px);
-  --section-pad: clamp(64px, 10vw, 120px);
+  --section-pad: clamp(48px, 10vw, 120px);
+  --section-pad-tight: calc(var(--section-pad) * 0.6);
+  /* space between a section heading and the content under it */
+  --head-gap: clamp(24px, 5vw, 56px);
+
+  /* ---- Breakpoints ----
+     Custom properties can't be used inside @media, so this is the scale every
+     stylesheet sticks to (max-width unless noted):
+       400  narrow phones          700   two-column card grids collapse
+       480  small phones           768   large phones / small tablets
+       600  phones                 900   main mobile switch (min-width: 901)
+                                   1100  small laptops
+     Also in use: 340 (narrowest-phone fixes), and 1000, 1080, 1180, 1200,
+     1240 and 1500 for specific desktop layouts. */
 
   /* ---- Radii ---- */
   --r-sm: 10px;

@@ -22,6 +22,8 @@ export default function FitScale({ width, height, media = '(max-width: 900px)', 
 
     const mq = window.matchMedia(media)
     const fit = () => {
+      // measured while hidden (0 wide): keep the last state instead of scale(0)
+      if (!outer.clientWidth) return
       const scale = outer.clientWidth / width
       if (scale >= 1 || !mq.matches) {
         outer.classList.remove('is-scaled')

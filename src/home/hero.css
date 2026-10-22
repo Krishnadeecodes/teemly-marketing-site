@@ -172,9 +172,15 @@
   }
 }
 @media (max-width: 900px) {
+  /* the sticky header already sits above the hero, so no full-screen
+     height and a short top padding: the dashboard starts on the first screen */
   .home-v2 .h-hero {
     align-items: flex-start;
-    padding-top: 96px;
+    min-height: 0;
+    padding-top: 40px;
+  }
+  .home-v2 .h-hero-vis {
+    margin-bottom: 8px;
   }
   .home-v2 .h-hero-copy {
     padding-bottom: 8px;

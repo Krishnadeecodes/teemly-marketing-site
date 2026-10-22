@@ -28,6 +28,9 @@
   --h-radius-md: 14px;
   --h-wrap: 1240px;
   --h-gutter: clamp(20px, 4vw, 44px);
+  /* vertical rhythm: section padding and heading-to-content gap */
+  --h-section-pad: clamp(44px, 7vw, 108px);
+  --h-head-gap: clamp(24px, 4vw, 52px);
   --h-font-display: 'Bricolage Grotesque', 'Space Grotesk', system-ui, sans-serif;
   --h-font-body: 'Hanken Grotesk', 'Inter', system-ui, sans-serif;
   --h-shadow-sm: 0 1px 2px rgba(11, 20, 66, 0.06), 0 4px 14px -6px rgba(11, 20, 66, 0.12);
@@ -52,7 +55,7 @@
 
 .home-v2 section {
   position: relative;
-  padding: clamp(60px, 7vw, 108px) 0;
+  padding: var(--h-section-pad) 0;
 }
 
 .home-v2 .h-wrap {
@@ -64,7 +67,7 @@
 
 .home-v2 .h-sec-head {
   max-width: 780px;
-  margin-bottom: clamp(32px, 4vw, 52px);
+  margin-bottom: var(--h-head-gap);
 }
 .home-v2 .h-sec-head.center {
   margin-left: auto;
@@ -205,8 +208,10 @@
   pointer-events: none;
   z-index: -1;
 }
-.home-v2 .h-spot:hover::after {
-  opacity: 1;
+@media (hover: hover) {
+  .home-v2 .h-spot:hover::after {
+    opacity: 1;
+  }
 }
 
 /* Floating pastel aurora blobs */

@@ -89,9 +89,12 @@
   height: 3px;
   background: var(--accent);
 }
-.home-v2 .h-panel:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 1px 2px rgba(4, 14, 69, 0.08), 0 34px 60px -24px rgba(4, 14, 69, 0.7);
+/* mouse only: a tap would leave the card stuck in its raised state */
+@media (hover: hover) {
+  .home-v2 .h-panel:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 1px 2px rgba(4, 14, 69, 0.08), 0 34px 60px -24px rgba(4, 14, 69, 0.7);
+  }
 }
 .home-v2 .h-panel-top {
   display: flex;
@@ -192,12 +195,29 @@
   color: #13875c;
   background: rgba(31, 184, 127, 0.12);
 }
+.home-v2 .h-scr-status.live {
+  position: relative;
+}
 .home-v2 .h-scr-status.live::before {
   content: '';
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: var(--status-productive);
+}
+/* the pulse is a ring that grows and fades (transform + opacity only), so it
+   runs on the GPU instead of repainting a box-shadow on every frame */
+.home-v2 .h-scr-status.live::after {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin-top: -3px;
+  border-radius: 50%;
+  background: var(--status-productive);
+  opacity: 0;
   animation: h-scr-pulse 1.8s infinite;
 }
 .home-v2 .h-scr-status.pink {
@@ -205,8 +225,8 @@
   background: rgba(233, 30, 99, 0.1);
 }
 @keyframes h-scr-pulse {
-  0% { box-shadow: 0 0 0 0 rgba(31, 184, 127, 0.5); }
-  100% { box-shadow: 0 0 0 6px rgba(31, 184, 127, 0); }
+  from { transform: scale(1); opacity: 0.5; }
+  to { transform: scale(3); opacity: 0; }
 }
 .home-v2 .h-scr-body {
   flex: 1;
@@ -631,7 +651,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .home-v2 .h-scr-status.live::before {
+  .home-v2 .h-scr-status.live::after {
     animation: none;
   }
   .home-v2 .h-panel,

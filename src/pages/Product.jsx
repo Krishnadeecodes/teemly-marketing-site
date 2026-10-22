@@ -41,7 +41,10 @@ export default function Product() {
       </section>
 
       <ProductTour />
-      <Trust />
+      {/* Trust is a home-page section: its styles are scoped to .home-v2 */}
+      <div className="home-v2">
+        <Trust />
+      </div>
       <FinalCTA />
     </>
   )
