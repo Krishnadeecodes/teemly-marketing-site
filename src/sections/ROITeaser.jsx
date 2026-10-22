@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import SplitHeading from '../home/SplitHeading.jsx'
 import Reveal from '../home/Reveal.jsx'
-import { gsap, prefersReducedMotion } from '../home/useHomeScroll.js'
+import { gsap, isPhone, prefersReducedMotion } from '../home/useHomeScroll.js'
 import '../home/roi.css'
 
 const DEMO = { employees: 250, cost: 45000, pct: 3 }
@@ -23,14 +23,15 @@ export default function ROITeaser() {
       return undefined
     }
     const obj = { v: 0 }
+    const phone = isPhone()
     const tween = gsap.to(obj, {
       v: TARGET,
-      duration: 1.4,
+      duration: phone ? 1 : 1.4,
       ease: 'power2.out',
       onUpdate: () => {
         if (numRef.current) numRef.current.textContent = fmt(obj.v)
       },
-      scrollTrigger: { trigger: numRef.current, start: 'top 85%', once: true },
+      scrollTrigger: { trigger: numRef.current, start: phone ? 'top 98%' : 'top 85%', once: true },
     })
     return () => tween.scrollTrigger && tween.scrollTrigger.kill()
   }, [])

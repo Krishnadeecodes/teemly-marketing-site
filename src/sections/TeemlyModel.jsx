@@ -267,7 +267,7 @@ export default function TeemlyModel() {
     mm.add('(max-width: 900px)', () => {
       const panels = trackRef.current ? trackRef.current.querySelectorAll('.h-panel') : []
       panels.forEach((p) => {
-        gsap.from(p, { y: 50, opacity: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: p, start: 'top 88%', once: true } })
+        gsap.from(p, { y: 14, opacity: 0, duration: 0.45, ease: 'power2.out', scrollTrigger: { trigger: p, start: 'top 98%', once: true } })
       })
       return undefined
     })

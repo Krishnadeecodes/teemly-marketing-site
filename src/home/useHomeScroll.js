@@ -10,6 +10,16 @@ export function prefersReducedMotion() {
 }
 
 /**
+ * Phones scroll past content faster than slow, staggered reveals finish, so
+ * there scroll reveals are quick and subtle: they start as content enters the
+ * screen, run ~0.45s and don't wait on each other, so whatever arrives
+ * together animates together.
+ */
+export function isPhone() {
+  return typeof window !== 'undefined' && window.matchMedia('(max-width: 900px)').matches
+}
+
+/**
  * Mounts Lenis smooth scroll + wires it to GSAP ScrollTrigger for the
  * lifetime of the Home page only. Fully tears down on unmount so every
  * other route keeps native scrolling untouched. Each section removes its own

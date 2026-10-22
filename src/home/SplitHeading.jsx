@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { gsap, prefersReducedMotion } from './useHomeScroll.js'
+import { gsap, isPhone, prefersReducedMotion } from './useHomeScroll.js'
 import './splitHeading.css'
 
 /**
@@ -17,6 +17,20 @@ export default function SplitHeading({ as: Tag = 'h2', text, className = '', mod
     if (prefersReducedMotion()) {
       gsap.set(words, { yPercent: 0, opacity: 1 })
       return undefined
+    }
+    if (mode === 'scroll' && isPhone()) {
+      // phones: the whole heading fades up at once
+      const fade = gsap.from(el, {
+        y: 12,
+        opacity: 0,
+        duration: 0.45,
+        ease: 'power2.out',
+        scrollTrigger: { trigger: el, start: 'top 98%', once: true },
+      })
+      return () => {
+        fade.scrollTrigger && fade.scrollTrigger.kill()
+        fade.revert()
+      }
     }
     gsap.set(words, { yPercent: 110 })
     const tween = gsap.to(words, {

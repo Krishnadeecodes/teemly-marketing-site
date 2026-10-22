@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import Icon from '../components/Icon.jsx'
 import SplitHeading from '../home/SplitHeading.jsx'
 import Reveal from '../home/Reveal.jsx'
-import { gsap, prefersReducedMotion } from '../home/useHomeScroll.js'
+import { gsap, isPhone, prefersReducedMotion } from '../home/useHomeScroll.js'
 import '../home/outcomes.css'
 
 export default function BusinessOutcomes() {
@@ -18,13 +18,14 @@ export default function BusinessOutcomes() {
       return undefined
     }
     const tweens = []
+    const phone = isPhone()
     if (ringRef.current) {
       tweens.push(
         gsap.to(ringRef.current, {
           strokeDashoffset: 28,
-          duration: 1.4,
+          duration: phone ? 0.7 : 1.4,
           ease: 'power3.out',
-          scrollTrigger: { trigger: ringRef.current, start: 'top 90%', once: true },
+          scrollTrigger: { trigger: ringRef.current, start: phone ? 'top 98%' : 'top 90%', once: true },
         })
       )
     }
@@ -32,10 +33,10 @@ export default function BusinessOutcomes() {
       tweens.push(
         gsap.to(s, {
           width: s.dataset.w,
-          duration: 1.1,
-          delay: i * 0.12,
+          duration: phone ? 0.7 : 1.1,
+          delay: phone ? 0 : i * 0.12,
           ease: 'power3.out',
-          scrollTrigger: { trigger: s, start: 'top 92%', once: true },
+          scrollTrigger: { trigger: s, start: phone ? 'top 98%' : 'top 92%', once: true },
         })
       )
     })
