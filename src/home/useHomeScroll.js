@@ -46,7 +46,18 @@ export function useHomeScroll() {
       gsap.ticker.lagSmoothing(0)
     }
 
-    const resizeHandle = () => ScrollTrigger.refresh()
+    // On phones the address bar shows and hides while scrolling, firing a
+    // height-only resize each time; a full refresh then stalls the scroll.
+    // Only a width change (rotation, window resize) needs one, debounced.
+    ScrollTrigger.config({ ignoreMobileResize: true })
+    let lastWidth = window.innerWidth
+    let resizeTimer = 0
+    const resizeHandle = () => {
+      if (window.innerWidth === lastWidth) return
+      lastWidth = window.innerWidth
+      clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(() => ScrollTrigger.refresh(), 200)
+    }
     window.addEventListener('resize', resizeHandle)
     const raf = requestAnimationFrame(() => ScrollTrigger.refresh())
 
@@ -60,6 +71,7 @@ export function useHomeScroll() {
     return () => {
       cancelled = true
       cancelAnimationFrame(raf)
+      clearTimeout(resizeTimer)
       window.removeEventListener('resize', resizeHandle)
       window.removeEventListener('load', onLoad)
       if (lenis) {

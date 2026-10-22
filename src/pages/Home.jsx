@@ -1,5 +1,7 @@
+import { useRef } from 'react'
 import { useSEO } from '../lib/useSEO.js'
 import { useHomeScroll } from '../home/useHomeScroll.js'
+import { usePauseOffscreen } from '../home/usePauseOffscreen.js'
 import ScrollProgress from '../home/ScrollProgress.jsx'
 import Hero from '../sections/Hero.jsx'
 import Marquee from '../sections/Marquee.jsx'
@@ -29,9 +31,11 @@ export default function Home() {
     path: '/',
   })
   useHomeScroll()
+  const rootRef = useRef(null)
+  usePauseOffscreen(rootRef)
 
   return (
-    <div className="home-v2">
+    <div className="home-v2" ref={rootRef}>
       <ScrollProgress />
       <Hero />
       <Marquee />

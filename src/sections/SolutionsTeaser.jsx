@@ -110,6 +110,11 @@ export default function SolutionsTeaser() {
     let last = performance.now()
     let raf = 0
     let loopW = 0
+    // the rail's scroll position, cached from scroll events: reading
+    // scrollLeft inside the frame loop would force a layout on every frame
+    let scrollX = rail.scrollLeft
+    const onScroll = () => (scrollX = rail.scrollLeft)
+    rail.addEventListener('scroll', onScroll, { passive: true })
 
     const measure = () => {
       const first = track.querySelector('.h-sol-card')
@@ -134,9 +139,11 @@ export default function SolutionsTeaser() {
       offset += speed * dt
       if (loopW > 0) {
         // keep (manual scroll + drift) inside one set of cards
-        if (rail.scrollLeft + offset >= loopW) {
-          if (rail.scrollLeft >= loopW) rail.scrollLeft -= loopW
-          else offset -= loopW
+        if (scrollX + offset >= loopW) {
+          if (scrollX >= loopW) {
+            scrollX -= loopW
+            rail.scrollLeft = scrollX
+          } else offset -= loopW
         }
       }
       track.style.transform = `translate3d(${-offset.toFixed(2)}px, 0, 0)`
@@ -173,6 +180,7 @@ export default function SolutionsTeaser() {
       ro.disconnect()
       track.style.transform = ''
       rail.classList.remove('drift')
+      rail.removeEventListener('scroll', onScroll)
       rail.removeEventListener('pointerenter', enter)
       rail.removeEventListener('pointerleave', leave)
       rail.removeEventListener('focusin', enter)

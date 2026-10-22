@@ -11,6 +11,15 @@
    blurred layers, which repaints on every frame and is what made
    low-end phones stutter while scrolling. */
 
+/* Blocks scrolled out of view (see usePauseOffscreen.js) pause their CSS
+   animations, so nothing off screen keeps repainting. */
+.home-v2 > .is-offscreen,
+.home-v2 > .is-offscreen *,
+.home-v2 > .is-offscreen *::before,
+.home-v2 > .is-offscreen *::after {
+  animation-play-state: paused !important;
+}
+
 @media (max-width: 900px), (hover: none), (prefers-reduced-motion: reduce) {
   /* floating aurora blobs (home hero, AI section, final CTA) */
   .home-v2 .h-aurora i,
