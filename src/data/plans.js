@@ -1,3 +1,5 @@
+// `limits` restates the feature list in a form the chatbot can calculate and
+// compare with (src/lib/chatbotPlans.js). Keep the two in step.
 export const plans = [
   {
     name: 'Starter',
@@ -12,6 +14,15 @@ export const plans = [
       'Video Recording & Location Tracking not included',
       'Email support',
     ],
+    limits: {
+      employees: 50,
+      screenshots: 'every 5 minutes',
+      retention: '30 days',
+      video: null,
+      location: null,
+      roles: null,
+      support: 'email support',
+    },
   },
   {
     name: 'Professional',
@@ -27,6 +38,15 @@ export const plans = [
       'Work Pulse, Tool Intelligence & AI-generated insights',
       'Up to 5 custom roles · 48-hour support SLA',
     ],
+    limits: {
+      employees: 200,
+      screenshots: 'every 2 minutes',
+      retention: '90 days',
+      video: '7 days',
+      location: '30 days',
+      roles: 'up to 5 custom roles',
+      support: 'a 48-hour support SLA',
+    },
   },
   {
     name: 'Premium',
@@ -41,6 +61,15 @@ export const plans = [
       'Unlimited custom roles',
       '24-hour support SLA',
     ],
+    limits: {
+      employees: 500,
+      screenshots: 'every 1 minute',
+      retention: '180 days',
+      video: '30 days',
+      location: '90 days',
+      roles: 'unlimited custom roles',
+      support: 'a 24-hour support SLA',
+    },
   },
   {
     name: 'Enterprise',
@@ -55,5 +84,14 @@ export const plans = [
       'Dedicated account manager',
       '4-hour support SLA',
     ],
+    limits: {
+      employees: null,
+      screenshots: 'at a custom interval',
+      retention: 'a custom period',
+      video: 'a custom period',
+      location: 'a custom period',
+      roles: 'unlimited custom roles with module-level permissions',
+      support: 'a 4-hour support SLA and a dedicated account manager',
+    },
   },
 ]

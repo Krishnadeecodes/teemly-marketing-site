@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Icon from './Icon.jsx'
 import Logo from './Logo.jsx'
 import { welcome } from '../data/chatbotKnowledge.js'
-import { getIntent, matchIntent } from '../lib/chatbot.js'
+import { getIntent, respond } from '../lib/chatbot.js'
 import './chatbot.css'
 
 const TYPING_MS = 550
@@ -26,9 +26,14 @@ export default function ChatbotWidget() {
   const [input, setInput] = useState('')
   const [typing, setTyping] = useState(false)
   const navigate = useNavigate()
+  const { pathname } = useLocation()
+  const rootRef = useRef(null)
   const listRef = useRef(null)
   const inputRef = useRef(null)
   const timerRef = useRef(null)
+  // the last plan, team size and billing asked about, for follow-ups like
+  // "what about yearly?"
+  const contextRef = useRef({})
 
   // Keep the latest message in view.
   useEffect(() => {
@@ -46,6 +51,21 @@ export default function ChatbotWidget() {
 
   useEffect(() => () => clearTimeout(timerRef.current), [])
 
+  // Close when the visitor clicks or taps anywhere outside the chat.
+  useEffect(() => {
+    if (!open) return undefined
+    const onPointerDown = (e) => {
+      if (rootRef.current && !rootRef.current.contains(e.target)) setOpen(false)
+    }
+    document.addEventListener('pointerdown', onPointerDown)
+    return () => document.removeEventListener('pointerdown', onPointerDown)
+  }, [open])
+
+  // ...and when another page opens.
+  useEffect(() => {
+    setOpen(false)
+  }, [pathname])
+
   function reply(userText, answer) {
     if (typing) return
     setMessages((m) => [...m, { id: nextId++, from: 'user', text: userText }])
@@ -61,7 +81,9 @@ export default function ChatbotWidget() {
     const text = input.trim()
     if (!text) return
     setInput('')
-    reply(text, matchIntent(text))
+    const { answer, context } = respond(text, contextRef.current)
+    contextRef.current = context
+    reply(text, answer)
   }
 
   function go(to) {
@@ -72,13 +94,14 @@ export default function ChatbotWidget() {
   function restart() {
     clearTimeout(timerRef.current)
     setTyping(false)
+    contextRef.current = {}
     setMessages([botMessage(welcome)])
   }
 
   const last = messages[messages.length - 1]
 
   return (
-    <div className="chatbot-root">
+    <div className="chatbot-root" ref={rootRef}>
       {open && (
         <div className="chatbot-panel" role="dialog" aria-label="Teemly Guide chat">
           <div className="chatbot-head">
@@ -151,7 +174,7 @@ export default function ChatbotWidget() {
               ref={inputRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask a question…"
+              placeholder="e.g. price for 25 people on Professional"
               maxLength={300}
               enterKeyHint="send"
               autoComplete="off"

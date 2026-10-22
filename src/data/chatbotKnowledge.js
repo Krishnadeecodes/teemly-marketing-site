@@ -67,6 +67,30 @@ export const intents = [
     followUps: ['pricing', 'trial', 'demo'],
   },
   {
+    id: 'setup',
+    label: 'How long does setup take?',
+    keywords: ['setup', 'set up', 'install', 'installation', 'onboard', 'onboarding', 'get started', 'getting started', 'go live', 'implementation', 'implement', 'roll out', 'rollout', 'deploy', 'how long does it take', 'how long to', 'how long does setup', 'setup take', 'set up take', 'take to set', 'take to install', 'up and running', 'time to set'],
+    text:
+      'Most teams are live in a day: install Teemly’s lightweight desktop agent, invite your team, and Teemly starts reporting from day one. Every plan starts with a free trial, no credit card required.',
+    links: [
+      { label: 'How the agent works', to: '/platform/architecture' },
+      { label: 'Book a demo', to: '/book-a-demo' },
+    ],
+    followUps: ['agent', 'trial', 'pricing'],
+  },
+  {
+    id: 'discount',
+    label: 'Do you offer discounts?',
+    keywords: ['discount', 'coupon', 'promo', 'promotion', 'offer code', 'nonprofit', 'non-profit', 'ngo', 'charity', 'education', 'student', 'startup discount', 'special price', 'negotiate'],
+    text:
+      'The published discount is yearly billing, which saves 15% on every plan. For anything else — non-profits, education or a large rollout — our team will talk it through with you.',
+    links: [
+      { label: 'See pricing', to: '/pricing' },
+      { label: 'Talk to sales', to: '/company/contact' },
+    ],
+    followUps: ['pricing', 'enterprise'],
+  },
+  {
     id: 'trial',
     label: 'Is there a free trial?',
     keywords: ['trial', 'free', 'try', 'credit card', 'test it', 'try it'],
@@ -375,7 +399,7 @@ export const intents = [
 ]
 
 export const welcome = {
-  text: "Hi, I'm the Teemly Guide. Ask me about pricing, privacy, features or how the agent works — or pick a question below.",
+  text: "Hi, I'm the Teemly Guide. Ask me about pricing — I can work out the cost for your team size — or about privacy, features and how the agent works. Or pick a question below.",
   followUps: ['what-is-teemly', 'pricing', 'privacy', 'trial', 'demo'],
 }
 

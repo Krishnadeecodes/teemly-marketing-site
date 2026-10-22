@@ -1,5 +1,7 @@
-// Keyword matcher for the rule-based Teemly Guide chatbot.
+// Rule-based Teemly Guide chatbot: plan and pricing questions are calculated
+// (chatbotPlans.js); everything else is matched to a written answer by keyword.
 import { intents, fallback } from '../data/chatbotKnowledge.js'
+import { answerPlans, editDistance } from './chatbotPlans.js'
 
 const byId = Object.fromEntries(intents.map((i) => [i.id, i]))
 
@@ -22,12 +24,14 @@ const compiled = intents.map((intent) => ({
 }))
 
 // A single word matches a token exactly, or as a prefix when it is 4+ chars
-// ('pric' -> pricing). A phrase matches when it appears in the text, with the
-// last word also allowed to be a prefix ('screen record' -> screen recording).
+// ('pric' -> pricing), or with one typo when both are 5+ chars ('priveacy').
+// A phrase matches when it appears in the text, with the last word also
+// allowed to be a prefix ('screen record' -> screen recording).
 function keywordScore({ norm, words }, tokens, padded) {
   if (words === 1) {
-    const hit = tokens.some((t) => t === norm || (norm.length >= 4 && t.startsWith(norm)))
-    return hit ? 2 : 0
+    if (tokens.some((t) => t === norm || (norm.length >= 4 && t.startsWith(norm)))) return 2
+    if (norm.length >= 5 && tokens.some((t) => t.length >= 5 && Math.abs(t.length - norm.length) <= 1 && editDistance(t, norm) <= 1)) return 1
+    return 0
   }
   return padded.includes(` ${norm}`) ? words * 3 : 0
 }
@@ -53,4 +57,15 @@ export function matchIntent(input) {
     }
   }
   return best || fallback
+}
+
+/**
+ * Answers one message. `context` carries the last plan, team size and billing
+ * between messages, so follow-ups like "what about yearly?" work; pass back
+ * the returned context with the next message.
+ */
+export function respond(input, context = {}) {
+  const planned = answerPlans(input, context)
+  if (planned) return planned
+  return { answer: matchIntent(input), context: { ...context, last: null } }
 }

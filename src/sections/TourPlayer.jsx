@@ -54,6 +54,88 @@ function writeUrl(role, step, done) {
   window.history.replaceState(window.history.state, '', url)
 }
 
+const BUBBLE_GAP = 16
+
+/**
+ * Where the step bubble goes. On wide screens it sits in the lane beside the
+ * product screen, level with the highlighted part, so the layout stays
+ * balanced and the screen is never covered; a connector line bridges any gap
+ * to the highlight. Without a lane it goes beside the highlight (right, then
+ * left), else below or above it, else over its lower edge. Always inside
+ * `canvasRef`; re-measured when the step, the bubble or the size changes.
+ */
+function useBubble(canvasRef, layerRef, bubbleRef, target, enabled) {
+  const [pos, setPos] = useState(null)
+
+  const place = useCallback(() => {
+    const canvas = canvasRef.current
+    const layer = layerRef.current
+    const bubble = bubbleRef.current
+    if (!enabled || !canvas || !layer || !bubble || !target) return
+    const el = layer.querySelectorAll(target.sel)[target.index || 0]
+    if (!el) return
+    const c = canvas.getBoundingClientRect()
+    const r = el.getBoundingClientRect()
+    const t = { left: r.left - c.left, top: r.top - c.top, right: r.right - c.left, bottom: r.bottom - c.top }
+    const cx = (t.left + t.right) / 2
+    const cy = (t.top + t.bottom) / 2
+    const bw = bubble.offsetWidth
+    const bh = bubble.offsetHeight
+    const clamp = (v, min, max) => Math.max(min, Math.min(v, max))
+    const g = BUBBLE_GAP
+    const fitY = (y) => clamp(y, 0, Math.max(0, c.height - bh))
+    const fitX = (x) => clamp(x, 0, Math.max(0, c.width - bw))
+    let side
+    let left
+    let top
+    let link = null
+    const screen = canvas.querySelector('.tour-screen')?.getBoundingClientRect()
+    const lane = screen ? screen.right - c.left + g : Infinity
+    if (lane + bw <= c.width) {
+      side = 'right'
+      left = lane
+      top = fitY(cy - bh / 2)
+      // bridge from the highlight's right edge to the bubble's arrow
+      if (left - t.right > g + 4) link = { left: t.right, width: left - t.right, top: cy }
+    } else if (c.width - t.right >= bw + g) {
+      side = 'right'
+      left = t.right + g
+      top = fitY(cy - bh / 2)
+    } else if (t.left >= bw + g) {
+      side = 'left'
+      left = t.left - g - bw
+      top = fitY(cy - bh / 2)
+    } else if (c.height - t.bottom >= bh + g) {
+      side = 'bottom'
+      top = t.bottom + g
+      left = fitX(cx - bw / 2)
+    } else if (t.top >= bh + g) {
+      side = 'top'
+      top = t.top - g - bh
+      left = fitX(cx - bw / 2)
+    } else {
+      side = 'over'
+      top = fitY(t.bottom - bh - g)
+      left = fitX(cx - bw / 2)
+    }
+    // the arrow sits on the edge facing the target, lined up with its centre
+    const arrow = side === 'left' || side === 'right' ? clamp(cy - top, 22, bh - 22) : clamp(cx - left, 22, bw - 22)
+    setPos({ side, left: Math.round(left), top: Math.round(top), arrow: Math.round(arrow), link })
+  }, [canvasRef, layerRef, bubbleRef, target, enabled])
+
+  useLayoutEffect(() => {
+    place()
+    if (!enabled) return undefined
+    const ro = new ResizeObserver(place)
+    if (canvasRef.current) ro.observe(canvasRef.current)
+    if (bubbleRef.current) ro.observe(bubbleRef.current)
+    document.fonts?.ready?.then(place)
+    return () => ro.disconnect()
+  }, [place, enabled, canvasRef, bubbleRef])
+
+  return enabled ? pos : null
+}
+
 /** A step's label, count, title and description. */
 function StepText({ s, n, total, headingRef }) {
   return (
@@ -155,6 +237,8 @@ export default function TourPlayer({ onSeeAll }) {
   const focusNext = useRef(null)
   const touch = useRef(null)
   const fullRef = useRef(null)
+  const canvasRef = useRef(null)
+  const bubbleRef = useRef(null)
   const historyEntry = useRef(false)
   const leaving = useRef(false)
 
@@ -167,6 +251,10 @@ export default function TourPlayer({ onSeeAll }) {
   // screen, the explanation and Back / Next are all visible together.
   const phone = useMedia('(max-width: 760px)')
   const full = phone && !!path
+  // Wide screens: the step is a speech bubble pointing at the highlight.
+  // Tablets keep the explanation in a panel under the screen.
+  const wide = useMedia('(min-width: 1001px)')
+  const bubble = useBubble(canvasRef, stageRef, bubbleRef, current?.target, wide && !!path && !done)
 
   // address bar and resume point follow the tour
   useEffect(() => {
@@ -479,13 +567,38 @@ export default function TourPlayer({ onSeeAll }) {
 
   /* ---------- 2. the step-by-step player ---------- */
   // Every screen of the path sits in the same grid cell with only the current
-  // one shown, and every step's text likewise, so both areas keep the height
-  // of their largest item and Back / Next never move between steps.
+  // one shown (and, in the panel, every step's text likewise), so the screen
+  // area keeps one size for the whole tour.
   const pathScreens = [...new Set(path.steps.map((id) => STEPS[id].screen))]
+  const progress = (
+    <div
+      className="tour-progress"
+      role="progressbar"
+      aria-label={`${path.label} tour progress`}
+      aria-valuemin={1}
+      aria-valuemax={total}
+      aria-valuenow={step + 1}
+    >
+      <i style={{ width: `${((step + 1) / total) * 100}%` }} />
+    </div>
+  )
+  const navButtons = (
+    <div className="tour-nav">
+      <button type="button" className="btn btn-outline" onClick={back} disabled={step === 0}>
+        <Icon name="arrowRight" size={16} className="tour-flip" />
+        Back
+      </button>
+      <button type="button" className="btn btn-primary" onClick={next}>
+        {step === total - 1 ? 'Finish' : 'Next'}
+        <Icon name="arrowRight" size={16} />
+      </button>
+    </div>
+  )
   return frame(
     <div className="tour-guide" ref={rootRef}>
-      <div className="tour-player">
-        <div className="tour-screen" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+      <div className={`tour-player${wide ? ' bubble-mode' : ''}`}>
+        <div className="tour-canvas" ref={canvasRef}>
+          <div className="tour-screen" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
           <FitScale width={900} media="all">
             <div className="tour-stage" aria-hidden="true">
               {pathScreens.map((id) => {
@@ -500,9 +613,48 @@ export default function TourPlayer({ onSeeAll }) {
               })}
             </div>
           </FitScale>
-          <span className="tour-illus">Illustrative data — sample organisation</span>
+          </div>
+
+          {bubble?.link && (
+            <span
+              className="tour-connector"
+              aria-hidden="true"
+              style={{ left: bubble.link.left, top: bubble.link.top, width: bubble.link.width }}
+            />
+          )}
+
+          {wide && (
+            <div
+              className={`tour-bubble side-${bubble?.side || 'right'}`}
+              ref={bubbleRef}
+              role="group"
+              aria-label={`${path.label} tour, step ${step + 1} of ${total}`}
+              style={bubble ? { left: bubble.left, top: bubble.top } : { visibility: 'hidden' }}
+            >
+              <button type="button" className="tour-bubble-close" onClick={close} aria-label="Close the tour">
+                <CloseIcon />
+              </button>
+              <div aria-live="polite">
+                <StepText s={current} n={step + 1} total={total} headingRef={headingRef} />
+              </div>
+              {progress}
+              <div className="tour-bubble-foot">
+                <button type="button" className="tour-textbtn" onClick={exit}>
+                  Change role
+                </button>
+                {navButtons}
+              </div>
+              {bubble && bubble.side !== 'over' && (
+                <span
+                  className="tour-arrow"
+                  style={bubble.side === 'left' || bubble.side === 'right' ? { top: bubble.arrow } : { left: bubble.arrow }}
+                />
+              )}
+            </div>
+          )}
         </div>
 
+        {!wide && (
         <div className="tour-panel">
           <div className="tour-text">
             <div aria-live="polite">
@@ -515,27 +667,9 @@ export default function TourPlayer({ onSeeAll }) {
             ))}
           </div>
 
-          <div
-            className="tour-progress"
-            role="progressbar"
-            aria-label={`${path.label} tour progress`}
-            aria-valuemin={1}
-            aria-valuemax={total}
-            aria-valuenow={step + 1}
-          >
-            <i style={{ width: `${((step + 1) / total) * 100}%` }} />
-          </div>
+          {progress}
 
-          <div className="tour-nav">
-            <button type="button" className="btn btn-outline" onClick={back} disabled={step === 0}>
-              <Icon name="arrowRight" size={16} className="tour-flip" />
-              Back
-            </button>
-            <button type="button" className="btn btn-primary" onClick={next}>
-              {step === total - 1 ? 'Finish' : 'Next'}
-              <Icon name="arrowRight" size={16} />
-            </button>
-          </div>
+          {navButtons}
 
           <ol className="tour-dots" aria-label="Steps">
             {path.steps.map((id, i) => (
@@ -558,6 +692,7 @@ export default function TourPlayer({ onSeeAll }) {
             <span className="tour-hint">Use ← → keys or swipe</span>
           </div>
         </div>
+        )}
       </div>
     </div>
   )
