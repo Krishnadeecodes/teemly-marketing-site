@@ -158,8 +158,27 @@
 }
 
 @media (max-width: 560px) {
+  .footer-top {
+    padding-top: 48px;
+    padding-bottom: 32px;
+  }
+  .footer-cols {
+    gap: 28px 16px;
+  }
+  .footer-col h4 {
+    margin-bottom: 6px;
+  }
+  .footer-col a {
+    font-size: 0.86rem;
+  }
+  .foot-big {
+    margin-top: 32px;
+  }
+}
+
+/* the narrowest phones: one column so link labels never wrap mid-word */
+@media (max-width: 340px) {
   .footer-cols {
     grid-template-columns: 1fr;
-    gap: 28px;
   }
 }

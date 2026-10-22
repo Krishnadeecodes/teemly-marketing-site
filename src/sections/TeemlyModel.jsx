@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import Icon from '../components/Icon.jsx'
 import Logo from '../components/Logo.jsx'
+import FitScale from '../components/FitScale.jsx'
 import SplitHeading from '../home/SplitHeading.jsx'
 import { gsap, prefersReducedMotion } from '../home/useHomeScroll.js'
 import '../home/model.css'
@@ -300,7 +301,10 @@ export default function TeemlyModel() {
             </div>
             <h3>{s.title}</h3>
             <p>{s.desc}</p>
-            <s.Screen />
+            {/* on phones the screen keeps its desktop layout, scaled to fit */}
+            <FitScale width={344} height={290} className="h-panel-shot">
+              <s.Screen />
+            </FitScale>
           </article>
         ))}
       </div>

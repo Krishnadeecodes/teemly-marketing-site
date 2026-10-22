@@ -41,6 +41,38 @@ const QA = [
   },
 ]
 
+function Answer({ item, barsOn, animate = false }) {
+  const fade = animate ? 'h-fadein' : undefined
+  return (
+    <div className="h-msg-a">
+      <div className="h-av">
+        <Icon name="sparkle" size={16} />
+      </div>
+      <div className="h-msg-body">
+        <p className={fade}>{item.a}</p>
+        <div className={fade}>
+          <small>{item.label}</small>
+          <div className="h-bars-a">
+            {item.bars.map(([label, val, hot]) => (
+              <div className="h-bar-row" key={label}>
+                <span>{label}</span>
+                <span className="h-bar-track">
+                  <span className={`h-fill${hot ? ' hot' : ''}`} style={{ width: barsOn ? `${val}%` : '0%' }} />
+                </span>
+                <b>{val}%</b>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className={`h-src${animate ? ' h-fadein' : ''}`}>
+          <span>Sources: work activity, team structure</span>
+          <span className="h-illus">Illustrative</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function TeemlyAISection() {
   const [active, setActive] = useState(0)
   const [typed, setTyped] = useState('')
@@ -50,9 +82,12 @@ export default function TeemlyAISection() {
   const started = useRef(false)
   const autoRef = useRef(null)
   const tokenRef = useRef(0)
+  const inViewRef = useRef(false)
+  const pendingRef = useRef(null)
 
   function play(i) {
     const token = ++tokenRef.current
+    pendingRef.current = null
     setActive(i)
     setTyped('')
     setBarsOn(false)
@@ -81,7 +116,12 @@ export default function TeemlyAISection() {
           if (tokenRef.current !== token) return
           setPhase('answered')
           requestAnimationFrame(() => requestAnimationFrame(() => setBarsOn(true)))
-          autoRef.current = setTimeout(() => play((i + 1) % QA.length), 7000)
+          autoRef.current = setTimeout(() => {
+            // only move on to the next question while the section is on
+            // screen; otherwise resume when the visitor scrolls back
+            if (inViewRef.current) play((i + 1) % QA.length)
+            else pendingRef.current = (i + 1) % QA.length
+          }, 7000)
         }, 900)
       }
     }
@@ -110,8 +150,22 @@ export default function TeemlyAISection() {
         }
       },
     })
+    const visibility = ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: 'top bottom',
+      end: 'bottom top',
+      onToggle: (self) => {
+        inViewRef.current = self.isActive
+        if (self.isActive && pendingRef.current !== null) {
+          const next = pendingRef.current
+          pendingRef.current = null
+          play(next)
+        }
+      },
+    })
     return () => {
       trigger.kill()
+      visibility.kill()
       clearTimeout(autoRef.current)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -160,52 +214,37 @@ export default function TeemlyAISection() {
               <i /> Live demo
             </span>
           </div>
-          <div className="h-console-body" aria-live="polite">
-            <div className="h-msg-u">
-              {typed}
-              {phase === 'typing' && <span className="h-caret" />}
-            </div>
-            {(phase === 'thinking' || phase === 'answered') && (
-              <div className="h-msg-a">
-                <div className="h-av">
-                  <Icon name="sparkle" size={16} />
-                </div>
-                <div className="h-msg-body">
-                  {phase === 'thinking' ? (
+          <div className="h-console-body">
+            {/* Invisible copies of every finished answer share the live
+                answer's grid cell, so the console is always as tall as the
+                longest one and the page below never jumps as it cycles. */}
+            {QA.map((item) => (
+              <div className="h-console-layer h-console-sizer" aria-hidden="true" key={item.q}>
+                <div className="h-msg-u">{item.q}</div>
+                <Answer item={item} barsOn />
+              </div>
+            ))}
+            <div className="h-console-layer" aria-live="polite">
+              <div className="h-msg-u">
+                {typed}
+                {phase === 'typing' && <span className="h-caret" />}
+              </div>
+              {phase === 'thinking' && (
+                <div className="h-msg-a">
+                  <div className="h-av">
+                    <Icon name="sparkle" size={16} />
+                  </div>
+                  <div className="h-msg-body">
                     <div className="h-thinking">
                       <i />
                       <i />
                       <i />
                     </div>
-                  ) : (
-                    <>
-                      <p className="h-fadein">{current.a}</p>
-                      <div className="h-fadein">
-                        <small>{current.label}</small>
-                        <div className="h-bars-a">
-                          {current.bars.map(([label, val, hot]) => (
-                            <div className="h-bar-row" key={label}>
-                              <span>{label}</span>
-                              <span className="h-bar-track">
-                                <span
-                                  className={`h-fill${hot ? ' hot' : ''}`}
-                                  style={{ width: barsOn ? `${val}%` : '0%' }}
-                                />
-                              </span>
-                              <b>{val}%</b>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                      <div className="h-src h-fadein">
-                        <span>Sources: work activity, team structure</span>
-                        <span className="h-illus">Illustrative</span>
-                      </div>
-                    </>
-                  )}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+              {phase === 'answered' && <Answer item={current} barsOn={barsOn} animate />}
+            </div>
           </div>
         </div>
       </div>

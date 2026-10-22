@@ -132,6 +132,25 @@
 }
 
 /* ---- Product screen inside each card ---- */
+/* FitScale wrapper: passes the card's remaining height through to the screen */
+.home-v2 .h-panel-shot {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+}
+.home-v2 .h-panel-shot > .fit-scale-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+/* scaled: the screen keeps its fixed design size; the wrapper follows it */
+.home-v2 .h-panel-shot.is-scaled {
+  display: block;
+}
+.home-v2 .h-panel-shot.is-scaled > .fit-scale-inner {
+  flex: none;
+}
 .home-v2 .h-scr {
   margin-top: auto;
   height: 186px;
@@ -559,6 +578,10 @@
     height: 100%;
     padding: clamp(16px, 2.4vh, 22px) 22px;
   }
+  .home-v2 .h-panel-shot {
+    flex: 1;
+    min-height: 0;
+  }
   .home-v2 .h-scr {
     height: auto;
     flex: 1;
@@ -583,8 +606,13 @@
   .home-v2 .h-rail {
     display: none;
   }
+  /* one card per row on phones, two on tablets, never wider than the
+     desktop card, so the screens keep their desktop proportions instead of
+     stretching across the row */
   .home-v2 .h-track {
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 390px));
+    justify-content: center;
     width: auto;
     padding: 0 var(--h-gutter) clamp(56px, 8vw, 80px);
   }
@@ -593,6 +621,12 @@
   }
   .home-v2 .h-panel > p {
     min-height: 0;
+  }
+  .home-v2 .h-scr {
+    height: 290px;
+  }
+  .home-v2 .fit-scale.is-scaled .h-scr {
+    height: 100%;
   }
 }
 

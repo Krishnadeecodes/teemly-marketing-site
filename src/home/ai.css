@@ -118,9 +118,19 @@
 .home-v2 .h-console-body {
   padding: clamp(18px, 2.4vw, 26px);
   min-height: 380px;
+  display: grid;
+}
+/* every layer sits in the same cell; the hidden sizers set the height */
+.home-v2 .h-console-layer {
+  grid-area: 1 / 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+.home-v2 .h-console-sizer {
+  visibility: hidden;
+  pointer-events: none;
 }
 .home-v2 .h-msg-u {
   align-self: flex-end;

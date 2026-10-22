@@ -2,6 +2,7 @@ import { useParams, Link, Navigate } from 'react-router-dom'
 import PageHero from '../components/PageHero.jsx'
 import SectionHead from '../components/SectionHead.jsx'
 import Icon from '../components/Icon.jsx'
+import FitScale from '../components/FitScale.jsx'
 import FinalCTA from '../sections/FinalCTA.jsx'
 import { modules, getModule } from '../data/moduleContent.js'
 import '../sections/sections.css'
@@ -23,7 +24,10 @@ export default function ModulePage() {
 
       <section className="section-tight">
         <div className="container">
-          <mod.Comp />
+          {/* on phones the screen keeps its desktop layout, scaled to fit */}
+          <FitScale width={900}>
+            <mod.Comp />
+          </FitScale>
         </div>
       </section>
 

@@ -107,6 +107,12 @@
     padding: 8px 11px;
   }
 }
+@media (max-width: 400px) {
+  .home-v2 .h-orb span {
+    gap: 6px;
+    padding: 7px 10px;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .home-v2 .h-spin,

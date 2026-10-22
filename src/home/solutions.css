@@ -63,6 +63,10 @@
   flex: 0 0 auto;
   will-change: transform;
 }
+/* the looping copies only exist for the drift; a still rail ends at the last card */
+.home-v2 .h-sol-rail:not(.drift) .h-sol-card.clone {
+  display: none;
+}
 /* while drifting, snapping would fight the movement */
 .home-v2 .h-sol-rail.drift {
   scroll-snap-type: none;

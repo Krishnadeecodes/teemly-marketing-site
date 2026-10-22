@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import SplitHeading from '../home/SplitHeading.jsx'
 import Reveal from '../home/Reveal.jsx'
+import FitScale from '../components/FitScale.jsx'
 import {
   DashboardMock,
   TeamsMock,
@@ -174,7 +175,10 @@ export default function ProductExplorer() {
             </Link>
           </div>
           <div className="h-explorer-visual">
-            <mod.Comp />
+            {/* on phones the screen keeps its desktop layout, scaled to fit */}
+            <FitScale width={560}>
+              <mod.Comp />
+            </FitScale>
           </div>
         </Reveal>
       </div>

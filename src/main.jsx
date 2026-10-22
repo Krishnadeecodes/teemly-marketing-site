@@ -5,6 +5,8 @@ import App from './App.jsx'
 import { captureAttribution } from './lib/attribution.js'
 import './styles/tokens.css'
 import './styles/global.css'
+import './styles/motion.css'
+import './styles/mobile.css'
 
 captureAttribution()
 

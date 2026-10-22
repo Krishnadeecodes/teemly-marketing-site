@@ -806,26 +806,28 @@
   flex-shrink: 0;
 }
 
+/* Mocks inside a FitScale keep their desktop layout (it scales them down
+   instead), so these reflow rules skip them. */
 @media (max-width: 900px) {
-  .mock-main-grid,
-  .team-grid,
-  .insight-row {
+  .mock-main-grid:not(.fit-scale *),
+  .team-grid:not(.fit-scale *),
+  .insight-row:not(.fit-scale *) {
     grid-template-columns: 1fr;
   }
-  .mstat-row {
+  .mstat-row:not(.fit-scale *) {
     grid-template-columns: 1fr 1fr;
   }
-  .shot-layout,
-  .settings-layout {
+  .shot-layout:not(.fit-scale *),
+  .settings-layout:not(.fit-scale *) {
     grid-template-columns: 1fr;
   }
-  .shot-side {
+  .shot-side:not(.fit-scale *) {
     display: none;
   }
-  .shot-grid {
+  .shot-grid:not(.fit-scale *) {
     grid-template-columns: repeat(2, 1fr);
   }
-  .heatmap {
+  .heatmap:not(.fit-scale *) {
     grid-template-columns: 44px repeat(10, 1fr);
   }
 }

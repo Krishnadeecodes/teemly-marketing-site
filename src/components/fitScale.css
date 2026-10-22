@@ -1,0 +1,25 @@
+/* FitScale.jsx: below its design width, the content keeps its desktop layout
+   and is scaled down as one picture. */
+.fit-scale {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+/* small screens: never wider than the design width, so a screen with room
+   to spare is shown at its desktop size instead of stretched */
+@media (max-width: 900px) {
+  .fit-scale {
+    max-width: var(--fit-w);
+    margin-inline: auto;
+  }
+}
+.fit-scale.is-scaled {
+  overflow: hidden;
+  /* the full-size inner screen must not widen the wrapper in flex/grid parents */
+  contain: inline-size;
+}
+.fit-scale.is-scaled > .fit-scale-inner {
+  width: var(--fit-w);
+  height: var(--fit-h);
+  transform-origin: 0 0;
+}

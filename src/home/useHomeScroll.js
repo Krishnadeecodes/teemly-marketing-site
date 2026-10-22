@@ -13,6 +13,9 @@ export function prefersReducedMotion() {
  * Mounts Lenis smooth scroll + wires it to GSAP ScrollTrigger for the
  * lifetime of the Home page only. Fully tears down on unmount so every
  * other route keeps native scrolling untouched.
+ *
+ * Lenis only smooths mouse-wheel scrolling, so on touch devices it would
+ * just add a per-frame callback; phones and tablets keep native scrolling.
  */
 export function useHomeScroll() {
   const lenisRef = useRef(null)
@@ -24,20 +27,24 @@ export function useHomeScroll() {
       return undefined
     }
 
-    const lenis = new Lenis({
-      duration: 1.1,
-      smoothWheel: true,
-      syncTouch: false,
-    })
-    lenisRef.current = lenis
+    let lenis = null
+    let tick = null
+    if (window.matchMedia('(pointer: fine)').matches) {
+      lenis = new Lenis({
+        duration: 1.1,
+        smoothWheel: true,
+        syncTouch: false,
+      })
+      lenisRef.current = lenis
 
-    lenis.on('scroll', ScrollTrigger.update)
+      lenis.on('scroll', ScrollTrigger.update)
 
-    const tick = (time) => {
-      lenis.raf(time * 1000)
+      tick = (time) => {
+        lenis.raf(time * 1000)
+      }
+      gsap.ticker.add(tick)
+      gsap.ticker.lagSmoothing(0)
     }
-    gsap.ticker.add(tick)
-    gsap.ticker.lagSmoothing(0)
 
     const resizeHandle = () => ScrollTrigger.refresh()
     window.addEventListener('resize', resizeHandle)
@@ -55,9 +62,12 @@ export function useHomeScroll() {
       cancelAnimationFrame(raf)
       window.removeEventListener('resize', resizeHandle)
       window.removeEventListener('load', onLoad)
-      gsap.ticker.remove(tick)
-      lenis.destroy()
-      lenisRef.current = null
+      if (lenis) {
+        gsap.ticker.remove(tick)
+        gsap.ticker.lagSmoothing(500, 33)
+        lenis.destroy()
+        lenisRef.current = null
+      }
       ScrollTrigger.getAll().forEach((t) => t.kill())
     }
   }, [])

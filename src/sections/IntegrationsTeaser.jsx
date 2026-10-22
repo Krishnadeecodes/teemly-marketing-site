@@ -8,10 +8,10 @@ import { gsap, prefersReducedMotion } from '../home/useHomeScroll.js'
 import '../home/integrations.css'
 
 const facts = [
-  { icon: 'download', label: 'CSV export', angle: -90, radius: 'min(40vw,210px)' },
-  { icon: 'fileText', label: 'Excel export', angle: -18, radius: 'min(40vw,210px)' },
-  { icon: 'puzzle', label: 'API access', angle: 54, radius: 'min(40vw,210px)' },
-  { icon: 'lock', label: 'Secure, signed data', angle: 126, radius: 'min(40vw,210px)' },
+  { icon: 'download', label: 'CSV export', angle: -90, radius: 'min(31vw,210px)' },
+  { icon: 'fileText', label: 'Excel export', angle: -18, radius: 'min(31vw,210px)' },
+  { icon: 'puzzle', label: 'API access', angle: 54, radius: 'min(31vw,210px)' },
+  { icon: 'lock', label: 'Secure, signed data', angle: 126, radius: 'min(31vw,210px)' },
 ]
 
 export default function IntegrationsTeaser() {

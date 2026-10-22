@@ -1,0 +1,148 @@
+/* Phone polish layer: touch targets, safe areas and form ergonomics that
+   cut across many components. Loaded last (see main.jsx). Layout changes
+   that belong to one component live in that component's own stylesheet. */
+
+/* ---------- Safe areas (notch, rounded corners, home indicator) ---------- */
+.chatbot-root {
+  right: max(20px, env(safe-area-inset-right));
+  bottom: max(20px, env(safe-area-inset-bottom));
+}
+
+.site-footer .footer-bottom {
+  padding-bottom: max(28px, calc(env(safe-area-inset-bottom) + 16px));
+}
+
+@media (max-width: 900px) {
+  .container {
+    padding-left: max(var(--page-pad), env(safe-area-inset-left));
+    padding-right: max(var(--page-pad), env(safe-area-inset-right));
+  }
+
+  /* the floating chat button sits over the bottom-right corner; leave room
+     under the footer's last line so it never covers the legal links */
+  .site-footer .footer-bottom {
+    padding-bottom: max(88px, calc(env(safe-area-inset-bottom) + 76px));
+  }
+}
+
+@media (max-width: 600px) {
+  .chatbot-root {
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(16px, env(safe-area-inset-bottom));
+  }
+  .chatbot-fab {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+/* ---------- Touch targets (44px minimum on touch screens) ---------- */
+@media (pointer: coarse), (max-width: 900px) {
+  .mobile-toggle {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    margin-right: -8px;
+  }
+  .mobile-link,
+  .mobile-section-toggle {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* pill-style links and segmented toggles */
+  .module-nav-strip a,
+  .legal-pill-link,
+  .rt-quick a,
+  .cycle-toggle button,
+  .module-nav-link {
+    min-height: 44px;
+  }
+  .legal-pill-link {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* underlined text links keep their look; an invisible pseudo-element
+     extends the tappable area to 44px tall */
+  .home-v2 .h-textlink,
+  .tour-link,
+  .tile-link {
+    position: relative;
+  }
+  .home-v2 .h-textlink::after,
+  .tour-link::after,
+  .tile-link::after {
+    content: '';
+    position: absolute;
+    left: -4px;
+    right: -4px;
+    top: 50%;
+    height: 44px;
+    transform: translateY(-50%);
+  }
+
+  /* privacy-policy switches on the home page (::after is the knob) */
+  .home-v2 .h-tog::before {
+    content: '';
+    position: absolute;
+    inset: -10px -4px;
+  }
+
+  /* footer: comfortable rows instead of tightly packed 18px lines */
+  .footer-col ul {
+    gap: 0;
+  }
+  .footer-col ul li a {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+  }
+  .footer-legal a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+  }
+
+  /* sliders: a taller hit area around the thin native track */
+  .seat-slider input[type='range'],
+  .roi-slider input[type='range'] {
+    height: 32px;
+  }
+
+  .consent-check input {
+    width: 20px;
+    height: 20px;
+    margin-top: 0;
+  }
+
+  /* 16px+ stops iOS Safari zooming the page when a field is focused */
+  .form-field input,
+  .form-field select,
+  .form-field textarea,
+  .roi-field input[type='number'] {
+    font-size: 16px;
+    min-height: 46px;
+  }
+  .form-field textarea {
+    min-height: 110px;
+  }
+}
+
+/* ---------- Buttons on small phones ---------- */
+@media (max-width: 480px) {
+  /* long labels wrap instead of pushing the page sideways */
+  .btn {
+    max-width: 100%;
+    white-space: normal;
+    text-align: center;
+    min-height: 48px;
+  }
+  .btn-lg {
+    padding: 14px 24px;
+    font-size: var(--fs-base);
+  }
+}

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import SectionHead from '../components/SectionHead.jsx'
+import FitScale from '../components/FitScale.jsx'
 import {
   DashboardMock,
   TeamsMock,
@@ -93,7 +94,9 @@ export default function ProductTour() {
                 </Link>
               </div>
               <div className="tour-visual">
-                <m.Comp />
+                <FitScale width={580}>
+                  <m.Comp />
+                </FitScale>
               </div>
             </div>
           ))}

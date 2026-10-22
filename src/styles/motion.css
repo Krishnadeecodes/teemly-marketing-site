@@ -1,0 +1,44 @@
+/* Motion budget for phones, tablets and reduced-motion users.
+   Loaded last (see main.jsx) so it can switch off purely decorative,
+   always-running animations site-wide. Functional motion stays: the
+   marquee scroll, loading spinners, chat typing dots, menus and the
+   one-off reveal animations. The Problem connectors and the
+   Integrations orbit also keep running on phones: they only move small
+   elements, and their own stylesheets stop them for reduced motion.
+
+   Most of what is stopped here animated paint-heavy properties
+   (box-shadow, background-position, stroke-dashoffset) or moved large
+   blurred layers, which repaints on every frame and is what made
+   low-end phones stutter while scrolling. */
+
+@media (max-width: 900px), (hover: none), (prefers-reduced-motion: reduce) {
+  /* floating aurora blobs (home hero, AI section, final CTA) */
+  .home-v2 .h-aurora i,
+  /* hero: gradient sheen on the headline and the flowing signal lines */
+  .home-v2 .h-hero h1 .h-l2,
+  .home-v2 .h-hv-flow .pulse path,
+  /* "live" status pulses */
+  .home-v2 .h-db-live i,
+  .home-v2 .h-scr-status.live::before,
+  .home-v2 .h-live i,
+  /* marquee: per-word shimmer and the bobbing / glowing T marks */
+  .home-v2 .h-marquee-word.g,
+  .home-v2 .h-marquee-sep,
+  .home-v2 .h-marquee-sep::before,
+  /* inner-page hero orbit particles */
+  .orbit-track,
+  /* resource templates: decorative spin / float / bob */
+  .rt-hero-art::before,
+  .rt-hero-orb,
+  .rt-hub-float {
+    animation: none !important;
+  }
+
+  /* blurred blobs: smaller and lighter, so the one-off rasterisation
+     is cheap and they never get re-blurred during scroll */
+  .home-v2 .h-aurora i,
+  .glow-blob {
+    filter: blur(48px);
+    will-change: auto;
+  }
+}
