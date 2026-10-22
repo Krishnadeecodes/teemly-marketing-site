@@ -437,6 +437,136 @@
   }
 }
 
+/* ---------- phones: the running tour fills the screen ---------- */
+.tour-full {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+  background: var(--surface);
+}
+.tour-full-bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 0 8px 0 16px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.tour-full-bar strong {
+  font-family: var(--font-head);
+  font-size: var(--fs-base);
+  color: var(--ink);
+}
+.tour-full-bar span {
+  margin-left: auto;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--muted);
+}
+.tour-full-close {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--ink);
+  cursor: pointer;
+}
+.tour-full-progress {
+  flex: none;
+  height: 4px;
+  background: var(--line-soft);
+}
+.tour-full-progress i {
+  display: block;
+  height: 100%;
+  background: var(--grad-bar);
+  transition: width 0.35s var(--ease, ease);
+}
+.tour-full-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 16px 12px;
+  overflow-y: auto;
+}
+.tour-full .tour-guide,
+.tour-full .tour-player {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.tour-full .tour-player {
+  gap: 12px;
+  /* the desktop grid aligns items to the start, which would shrink the
+     screen to its caption's width in this column */
+  align-items: stretch;
+}
+.tour-full .tour-screen {
+  flex: none;
+}
+.tour-full .tour-illus {
+  margin-top: 4px;
+}
+/* the panel becomes the lower half: text in the middle, controls at the bottom */
+.tour-full .tour-panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.tour-full .tour-text {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  align-content: start;
+}
+/* in full screen the controls are pinned, so the size-reserving copies aren't needed */
+.tour-full .tour-text-sizer,
+.tour-full .tour-panel > .tour-progress,
+.tour-full .tour-foot {
+  display: none;
+}
+.tour-full .tour-count {
+  margin-top: 12px;
+}
+.tour-full .tour-title {
+  font-size: 1.2rem;
+}
+.tour-full .tour-body {
+  font-size: var(--fs-base);
+}
+.tour-full .tour-dots {
+  order: 1;
+  margin-top: 10px;
+  justify-content: center;
+}
+.tour-full .tour-nav {
+  order: 2;
+  margin-top: 8px;
+}
+.tour-full .tour-nav .btn {
+  min-height: 50px;
+}
+/* the end screen scrolls as one page inside the full-screen view */
+.tour-full .tour-end {
+  padding: 8px 0 16px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tour-layer.on,
   .tour-spot::after {
@@ -444,6 +574,7 @@
   }
   .tour-spot,
   .tour-progress i,
+  .tour-full-progress i,
   .tour-path {
     transition: none;
   }

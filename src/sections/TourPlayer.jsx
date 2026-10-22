@@ -77,6 +77,27 @@ function StepText({ s, n, total, headingRef }) {
   )
 }
 
+/** True while `query` matches; follows rotation and window resizes. */
+function useMedia(query) {
+  const [matches, setMatches] = useState(() => window.matchMedia(query).matches)
+  useEffect(() => {
+    const mq = window.matchMedia(query)
+    const on = () => setMatches(mq.matches)
+    on()
+    mq.addEventListener('change', on)
+    return () => mq.removeEventListener('change', on)
+  }, [query])
+  return matches
+}
+
+function CloseIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+      <path d="M6 6l12 12M18 6 6 18" />
+    </svg>
+  )
+}
+
 function minutes(stepCount) {
   return Math.max(1, Math.round((stepCount * SECONDS_PER_STEP) / 60))
 }
@@ -133,11 +154,19 @@ export default function TourPlayer({ onSeeAll }) {
   const chooserRef = useRef(null)
   const focusNext = useRef(null)
   const touch = useRef(null)
+  const fullRef = useRef(null)
+  const historyEntry = useRef(false)
+  const leaving = useRef(false)
 
   const path = getPath(role)
   const total = path ? path.steps.length : 0
   const current = path ? STEPS[path.steps[step]] : null
   const spot = useSpotlight(stageRef, current?.target)
+
+  // On phones a running tour takes over the whole screen, so the product
+  // screen, the explanation and Back / Next are all visible together.
+  const phone = useMedia('(max-width: 760px)')
+  const full = phone && !!path
 
   // address bar and resume point follow the tour
   useEffect(() => {
@@ -177,6 +206,79 @@ export default function TourPlayer({ onSeeAll }) {
     bringIntoView()
   }
 
+  // closes the full-screen tour but keeps the place, so the chooser offers to continue
+  const close = useCallback(() => {
+    setSaved({ role, step, done })
+    setRole(null)
+    setStep(0)
+    setDone(false)
+    focusNext.current = 'chooser'
+  }, [role, step, done])
+  const closeRef = useRef(close)
+  closeRef.current = close
+  const latest = useRef({ role, step, done })
+  latest.current = { role, step, done }
+
+  // Full screen on a phone: one extra history entry, so the phone's back
+  // button closes the tour instead of leaving the page.
+  useEffect(() => {
+    if (!full) return undefined
+    window.history.pushState(window.history.state, '', window.location.href)
+    historyEntry.current = true
+    leaving.current = false
+    const onPop = () => {
+      historyEntry.current = false
+      closeRef.current()
+    }
+    window.addEventListener('popstate', onPop)
+    return () => {
+      window.removeEventListener('popstate', onPop)
+      // closed another way (✕, Esc, finished, rotated): drop the extra entry,
+      // unless a link inside the tour is taking the visitor to another page.
+      // The entry it returns to still has the old address, so write the
+      // current one back once it lands.
+      if (historyEntry.current && !leaving.current) {
+        window.addEventListener(
+          'popstate',
+          () => {
+            const s = latest.current
+            writeUrl(s.role, s.step, s.done)
+          },
+          { once: true },
+        )
+        window.history.back()
+      }
+      historyEntry.current = false
+    }
+  }, [full])
+
+  // while full screen: the page behind doesn't scroll and focus stays inside
+  useEffect(() => {
+    if (!full) return undefined
+    const root = document.documentElement
+    const prev = root.style.overflow
+    root.style.overflow = 'hidden'
+    function trap(e) {
+      if (e.key !== 'Tab' || !fullRef.current) return
+      const items = [...fullRef.current.querySelectorAll('a[href], button:not([disabled])')]
+      if (!items.length) return
+      const first = items[0]
+      const last = items[items.length - 1]
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
+    document.addEventListener('keydown', trap)
+    return () => {
+      root.style.overflow = prev
+      document.removeEventListener('keydown', trap)
+    }
+  }, [full])
+
   const next = useCallback(() => {
     if (!path) return
     if (step < total - 1) setStep(step + 1)
@@ -204,12 +306,13 @@ export default function TourPlayer({ onSeeAll }) {
         e.preventDefault()
         back()
       } else if (e.key === 'Escape') {
-        exit()
+        if (full) close()
+        else exit()
       }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [path, done, next, back])
+  }, [path, done, next, back, full, close])
 
   // swipe left / right on the screen
   function onTouchStart(e) {
@@ -290,6 +393,29 @@ export default function TourPlayer({ onSeeAll }) {
     )
   }
 
+  // On phones the player and the end screen open in a full-screen dialog;
+  // elsewhere they sit in the page.
+  const frame = (content) =>
+    full ? (
+      <div className="tour-full" ref={fullRef} role="dialog" aria-modal="true" aria-label={`${path.label} tour`}>
+        <div className="tour-full-bar">
+          <strong>{path.label}</strong>
+          <span>{done ? 'Done' : `${step + 1} / ${total}`}</span>
+          <button type="button" className="tour-full-close" onClick={close} aria-label="Close the tour">
+            <CloseIcon />
+          </button>
+        </div>
+        {!done && (
+          <div className="tour-full-progress" aria-hidden="true">
+            <i style={{ width: `${((step + 1) / total) * 100}%` }} />
+          </div>
+        )}
+        <div className="tour-full-body">{content}</div>
+      </div>
+    ) : (
+      content
+    )
+
   /* ---------- 3. end of the tour ---------- */
   if (done) {
     const viewed = [...new Set(path.steps.map((id) => SCREENS[STEPS[id].screen].label))]
@@ -300,7 +426,7 @@ export default function TourPlayer({ onSeeAll }) {
         message: `I took the self-guided tour (${path.label} path) and looked at: ${viewed.join(', ')}.`,
       },
     }
-    return (
+    return frame(
       <div className="tour-guide" ref={rootRef}>
         <div className="tour-end">
           <span className="tour-end-icon">
@@ -331,7 +457,7 @@ export default function TourPlayer({ onSeeAll }) {
             ))}
           </ol>
           <div className="tour-end-ctas">
-            <Link to="/book-a-demo" state={demoState} className="btn btn-primary btn-lg">
+            <Link to="/book-a-demo" state={demoState} className="btn btn-primary btn-lg" onClick={() => (leaving.current = true)}>
               Book a demo
               <Icon name="arrowRight" size={16} />
             </Link>
@@ -341,7 +467,10 @@ export default function TourPlayer({ onSeeAll }) {
           </div>
           <p className="tour-end-note">
             The demo form opens with your role and what you viewed filled in — change anything you like. Or read{' '}
-            <Link to={path.learnMore.to}>{path.learnMore.label}</Link>.
+            <Link to={path.learnMore.to} onClick={() => (leaving.current = true)}>
+              {path.learnMore.label}
+            </Link>
+            .
           </p>
         </div>
       </div>
@@ -353,7 +482,7 @@ export default function TourPlayer({ onSeeAll }) {
   // one shown, and every step's text likewise, so both areas keep the height
   // of their largest item and Back / Next never move between steps.
   const pathScreens = [...new Set(path.steps.map((id) => STEPS[id].screen))]
-  return (
+  return frame(
     <div className="tour-guide" ref={rootRef}>
       <div className="tour-player">
         <div className="tour-screen" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
