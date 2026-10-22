@@ -800,6 +800,23 @@ a.related-card:hover {
   overflow-wrap: anywhere;
 }
 
+/* note shown when the demo form arrives pre-filled from the guided tour */
+.form-prefill {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0 0 18px;
+  padding: 10px 14px;
+  border-radius: var(--r-sm);
+  font-size: var(--fs-sm);
+  color: #13875c;
+  background: rgba(31, 184, 127, 0.1);
+}
+.form-prefill svg {
+  flex: none;
+  margin-top: 2px;
+}
+
 .contact-form {
   background: #fff;
   border: 1px solid var(--line-soft);

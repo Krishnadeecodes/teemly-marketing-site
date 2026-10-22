@@ -1,0 +1,450 @@
+/* Guided product tour (TourPlayer.jsx) on /take-a-tour */
+.tour-guide {
+  scroll-margin-top: 96px;
+}
+.tour-guide h2:focus {
+  outline: none;
+}
+.tour-lede {
+  color: var(--muted);
+  font-size: var(--fs-lg);
+  max-width: 60ch;
+  margin: 8px 0 0;
+}
+.tour-textbtn {
+  border: 0;
+  padding: 0;
+  background: none;
+  font: inherit;
+  font-weight: 600;
+  color: var(--blue);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------- 1. path chooser ---------- */
+.tour-chooser h2 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+}
+.tour-paths {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 14px;
+}
+.tour-path {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 18px 18px 18px 16px;
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast), transform var(--dur-fast);
+}
+.tour-path > svg:last-child {
+  margin-left: auto;
+  flex: none;
+  color: var(--muted-soft);
+  transition: transform var(--dur-fast), color var(--dur-fast);
+}
+@media (hover: hover) {
+  .tour-path:hover {
+    border-color: var(--blue);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+  .tour-path:hover > svg:last-child {
+    color: var(--blue);
+    transform: translateX(3px);
+  }
+}
+.tour-path.all {
+  background: var(--surface-soft);
+}
+.tour-path-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  color: #fff;
+  background: var(--grad-bar);
+}
+.tour-path.all .tour-path-icon {
+  background: var(--grad-mark);
+}
+.tour-path-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.tour-path-text strong {
+  font-family: var(--font-head);
+  font-size: var(--fs-lg);
+}
+.tour-path-text span {
+  color: var(--ink-soft);
+  font-size: var(--fs-sm);
+}
+.tour-path-text small {
+  color: var(--muted);
+  font-size: var(--fs-xs);
+  margin-top: 4px;
+}
+.tour-resume {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--r-md);
+  background: var(--surface-soft);
+  color: var(--ink-soft);
+}
+.tour-resume > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.tour-resume-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+}
+.tour-alt {
+  margin-top: 22px;
+  color: var(--muted);
+}
+
+/* ---------- 2. player ---------- */
+.tour-player {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(300px, 0.85fr);
+  gap: clamp(20px, 3vw, 40px);
+  align-items: start;
+}
+.tour-screen {
+  position: relative;
+  min-width: 0;
+  touch-action: pan-y;
+}
+/* all of the path's screens share one cell, so the area keeps the height of
+   the tallest; only the current one is shown, the others hold the space.
+   A shorter screen is centred, so the spare room splits above and below. */
+.tour-stage {
+  display: grid;
+}
+.tour-layer {
+  grid-area: 1 / 1;
+  align-self: center;
+  position: relative;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  visibility: hidden;
+}
+.tour-layer.on {
+  visibility: visible;
+  animation: tour-fade 0.35s var(--ease, ease) both;
+}
+@keyframes tour-fade {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+/* the ring dims everything around it with one large shadow */
+.tour-spot {
+  position: absolute;
+  z-index: 3;
+  border-radius: 14px;
+  box-shadow: 0 0 0 3px #fff, 0 0 0 6px var(--blue), 0 0 0 4000px rgba(9, 18, 75, 0.42);
+  pointer-events: none;
+  transition: left 0.35s var(--ease, ease), top 0.35s var(--ease, ease), width 0.35s var(--ease, ease),
+    height 0.35s var(--ease, ease);
+}
+.tour-spot::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 18px;
+  border: 2px solid var(--cyan);
+  opacity: 0;
+  animation: tour-ping 2.2s ease-out 0.4s infinite;
+}
+@keyframes tour-ping {
+  0% { opacity: 0.7; transform: scale(1); }
+  70%, 100% { opacity: 0; transform: scale(1.04); }
+}
+/* a caption under the screen, so it never covers what the step points at */
+.tour-illus {
+  display: block;
+  margin-top: 8px;
+  text-align: right;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+.tour-panel {
+  position: sticky;
+  top: 100px;
+  padding: clamp(20px, 2.4vw, 28px);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+}
+/* likewise every step's text: hidden copies reserve the longest one */
+.tour-text {
+  display: grid;
+}
+.tour-text > * {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+.tour-text-sizer {
+  visibility: hidden;
+  pointer-events: none;
+}
+.tour-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.tour-chip,
+.tour-trust {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: var(--r-pill);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+}
+.tour-chip {
+  color: var(--blue);
+  background: rgba(10, 161, 232, 0.1);
+}
+.tour-trust {
+  color: #13875c;
+  background: rgba(31, 184, 127, 0.12);
+}
+.tour-count {
+  margin: 16px 0 6px;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--muted);
+}
+.tour-title {
+  font-size: clamp(1.3rem, 2vw, 1.6rem);
+  line-height: 1.25;
+}
+.tour-body {
+  margin: 10px 0 0;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+.tour-progress {
+  margin-top: 22px;
+  height: 6px;
+  border-radius: var(--r-pill);
+  background: var(--line-soft);
+  overflow: hidden;
+}
+.tour-progress i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--grad-bar);
+  transition: width 0.35s var(--ease, ease);
+}
+.tour-nav {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.tour-nav .btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+  transform: none;
+}
+.tour-flip {
+  transform: rotate(180deg);
+}
+.tour-dots {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.tour-dots button {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.tour-dots button::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--line);
+  transition: background var(--dur-fast), transform var(--dur-fast);
+}
+.tour-dots button.seen::before {
+  background: var(--cyan);
+}
+.tour-dots button[aria-current='step']::before {
+  background: var(--blue);
+  transform: scale(1.3);
+}
+.tour-foot {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: var(--fs-sm);
+}
+.tour-hint {
+  color: var(--muted-soft);
+}
+
+/* ---------- 3. end ---------- */
+.tour-end {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+.tour-end .tour-lede {
+  margin-left: auto;
+  margin-right: auto;
+}
+.tour-end-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 14px;
+  border-radius: 50%;
+  color: #fff;
+  background: var(--status-productive);
+}
+.tour-end h2 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+}
+.tour-recap {
+  list-style: none;
+  margin: 24px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 8px;
+  text-align: left;
+}
+.tour-recap button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  padding: 10px 14px;
+  font: inherit;
+  text-align: left;
+  color: var(--ink);
+  background: var(--surface-soft);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+}
+@media (hover: hover) {
+  .tour-recap button:hover {
+    border-color: var(--blue);
+  }
+}
+.tour-recap .n {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--blue);
+  background: rgba(10, 161, 232, 0.12);
+}
+.tour-recap small {
+  display: block;
+  color: var(--muted);
+  font-size: var(--fs-xs);
+}
+.tour-end-ctas {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+.tour-end-note {
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: var(--fs-sm);
+}
+.tour-end-note a {
+  color: var(--blue);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------- phones and tablets: screen on top, steps under it ---------- */
+@media (max-width: 1000px) {
+  .tour-player {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .tour-panel {
+    position: static;
+  }
+}
+@media (hover: none) {
+  .tour-hint {
+    display: none;
+  }
+}
+@media (max-width: 480px) {
+  .tour-end-ctas .btn {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tour-layer.on,
+  .tour-spot::after {
+    animation: none;
+  }
+  .tour-spot,
+  .tour-progress i,
+  .tour-path {
+    transition: none;
+  }
+}

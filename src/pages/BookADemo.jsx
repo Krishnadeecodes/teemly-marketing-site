@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import PageHero from '../components/PageHero.jsx'
 import Icon from '../components/Icon.jsx'
 import FieldError from '../components/FieldError.jsx'
@@ -22,6 +22,14 @@ const nextSteps = [
 ]
 
 export default function BookADemo() {
+  // Arriving from the end of the guided tour: start from the visitor's role
+  // and what they viewed. Only values the form itself offers are used.
+  const tour = useLocation().state?.tour
+  const fromTour = {
+    role: ROLE_OPTIONS.includes(tour?.role) ? tour.role : '',
+    problem: PROBLEM_OPTIONS.includes(tour?.problem) ? tour.problem : '',
+    message: typeof tour?.message === 'string' ? tour.message.slice(0, 500) : '',
+  }
   const { values, errors, status, formError, field, handleSubmit } = useLeadForm('demo', {
     firstName: '',
     lastName: '',
@@ -30,9 +38,9 @@ export default function BookADemo() {
     jobTitle: '',
     country: '',
     companySize: '',
-    role: '',
-    problem: '',
-    message: '',
+    role: fromTour.role,
+    problem: fromTour.problem,
+    message: fromTour.message,
     consent: false,
   })
   const successRef = useRef(null)
@@ -91,6 +99,12 @@ export default function BookADemo() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} noValidate>
+                {fromTour.message && (
+                  <p className="form-prefill">
+                    <Icon name="check" size={15} />
+                    We’ve filled in your role and what you viewed on the tour — change anything you like.
+                  </p>
+                )}
                 <div className="form-hp" aria-hidden="true">
                   <label htmlFor="website">Website</label>
                   <input {...field('website')} tabIndex={-1} autoComplete="off" />
