@@ -350,10 +350,12 @@
   box-shadow: var(--h-shadow-sm);
   transition: transform 0.35s var(--ease, ease), box-shadow 0.35s, border-color 0.35s;
 }
-.home-v2 .h-pl-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--h-line-strong);
-  box-shadow: var(--h-shadow-lg);
+@media (hover: hover) {
+  .home-v2 .h-pl-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--h-line-strong);
+    box-shadow: var(--h-shadow-lg);
+  }
 }
 .home-v2 .h-pl-idx {
   font: 600 13px/1 var(--h-font-body);
@@ -413,8 +415,13 @@
     min-height: 0;
     padding: 10px 0;
   }
-  .home-v2 .h-pl-list .h-pl-card {
+  /* every card is shown in full, so none is singled out as "active": the
+     border and shadow used to jump from card to card while scrolling */
+  .home-v2 .h-pl-list .h-pl-card,
+  .home-v2 .h-pl-list .h-pl-card.active {
     opacity: 1;
+    border-color: var(--h-line);
+    box-shadow: var(--h-shadow-sm);
   }
   .home-v2 .h-pl-list .h-pl-cell::before {
     transform: scaleY(1);

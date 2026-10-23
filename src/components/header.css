@@ -174,8 +174,10 @@
   transition: background var(--dur-fast);
 }
 
-.mega-item:hover {
-  background: var(--surface-soft);
+@media (hover: hover) {
+  .mega-item:hover {
+    background: var(--surface-soft);
+  }
 }
 
 .mega-icon {
@@ -189,8 +191,10 @@
   transition: transform var(--dur-fast);
 }
 
-.mega-item:hover .mega-icon {
-  transform: scale(1.06);
+@media (hover: hover) {
+  .mega-item:hover .mega-icon {
+    transform: scale(1.06);
+  }
 }
 
 .mega-icon.tone-blue {

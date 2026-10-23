@@ -210,7 +210,7 @@
   padding: 9px 15px;
   border-radius: var(--r-pill);
   background: #fff;
-  transition: all var(--dur-fast);
+  transition: border-color var(--dur-fast), color var(--dur-fast);
 }
 
 .module-nav-strip a:hover {
@@ -455,10 +455,12 @@
   transition: border-color var(--dur-fast), transform var(--dur-fast), box-shadow var(--dur-fast);
 }
 
-.related-preview-card:hover {
-  border-color: var(--pink);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+@media (hover: hover) {
+  .related-preview-card:hover {
+    border-color: var(--pink);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
 }
 
 .related-preview-cap {
@@ -495,9 +497,11 @@
   transition: border-color var(--dur-fast), transform var(--dur-fast);
 }
 
-a.related-card:hover {
-  border-color: var(--pink);
-  transform: translateY(-2px);
+@media (hover: hover) {
+  a.related-card:hover {
+    border-color: var(--pink);
+    transform: translateY(-2px);
+  }
 }
 
 .related-card.static {

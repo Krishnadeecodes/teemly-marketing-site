@@ -910,7 +910,7 @@ a:hover .rt-book .rt-cover {
   font-size: 0.86rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all var(--dur-fast);
+  transition: border-color var(--dur-fast), color var(--dur-fast), box-shadow var(--dur-fast);
 }
 
 .rt-chips button:hover {
@@ -1032,13 +1032,15 @@ a:hover .rt-book .rt-cover {
   transition: transform var(--dur-med) var(--ease);
 }
 
-.rt .res-card:hover {
-  border-color: color-mix(in srgb, var(--accent) 28%, transparent);
-  box-shadow: 0 24px 48px -24px color-mix(in srgb, var(--accent) 50%, transparent);
-}
+@media (hover: hover) {
+  .rt .res-card:hover {
+    border-color: color-mix(in srgb, var(--accent) 28%, transparent);
+    box-shadow: 0 24px 48px -24px color-mix(in srgb, var(--accent) 50%, transparent);
+  }
 
-.rt .res-card:hover::before {
-  transform: scaleX(1);
+  .rt .res-card:hover::before {
+    transform: scaleX(1);
+  }
 }
 
 .rt .res-card-media {
@@ -1049,8 +1051,10 @@ a:hover .rt-book .rt-cover {
   transition: transform 0.6s var(--ease);
 }
 
-.rt .res-card:hover .res-card-media img {
-  transform: scale(1.05);
+@media (hover: hover) {
+  .rt .res-card:hover .res-card-media img {
+    transform: scale(1.05);
+  }
 }
 
 .rt .res-card-placeholder {
@@ -1073,8 +1077,10 @@ a:hover .rt-book .rt-cover {
   transition: color var(--dur-fast);
 }
 
-.rt .res-card:hover .res-card-body h3 {
-  color: var(--accent);
+@media (hover: hover) {
+  .rt .res-card:hover .res-card-body h3 {
+    color: var(--accent);
+  }
 }
 
 /* ================= Hub ================= */
@@ -1107,7 +1113,7 @@ a:hover .rt-book .rt-cover {
   background: #fff;
   border: 1px solid var(--line);
   color: var(--ink-soft);
-  transition: all var(--dur-fast) var(--ease);
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), background-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
 }
 
 .rt-quick a svg {
@@ -1234,17 +1240,19 @@ a:hover .rt-book .rt-cover {
   transition: transform var(--dur-med) var(--ease);
 }
 
-.rt-hub a.tile-card:hover {
-  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
-  box-shadow: 0 22px 44px -22px color-mix(in srgb, var(--accent) 55%, transparent);
-}
+@media (hover: hover) {
+  .rt-hub a.tile-card:hover {
+    border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+    box-shadow: 0 22px 44px -22px color-mix(in srgb, var(--accent) 55%, transparent);
+  }
 
-.rt-hub a.tile-card:hover::before {
-  transform: scaleX(1);
-}
+  .rt-hub a.tile-card:hover::before {
+    transform: scaleX(1);
+  }
 
-.rt-hub a.tile-card:hover::after {
-  transform: scale(1.4);
+  .rt-hub a.tile-card:hover::after {
+    transform: scale(1.4);
+  }
 }
 
 .rt-hub .tile-icon {
@@ -1277,15 +1285,17 @@ a:hover .rt-book .rt-cover {
   transition: box-shadow var(--dur-med) var(--ease), transform var(--dur-med) var(--ease);
 }
 
-.rt-spot-lead:hover,
-.rt-spot-item:hover,
-.rt-download-card:hover,
-.rt-story:hover,
-.rt-guide-card:hover,
-.rt-lead:hover {
-  border-color: color-mix(in srgb, var(--accent) 28%, transparent);
-  box-shadow: 0 24px 48px -24px color-mix(in srgb, var(--accent) 50%, transparent);
-  transform: translateY(-4px);
+@media (hover: hover) {
+  .rt-spot-lead:hover,
+  .rt-spot-item:hover,
+  .rt-download-card:hover,
+  .rt-story:hover,
+  .rt-guide-card:hover,
+  .rt-lead:hover {
+    border-color: color-mix(in srgb, var(--accent) 28%, transparent);
+    box-shadow: 0 24px 48px -24px color-mix(in srgb, var(--accent) 50%, transparent);
+    transform: translateY(-4px);
+  }
 }
 
 .rt-spot-lead > div:last-child {
@@ -1931,12 +1941,14 @@ a:hover .rt-book .rt-cover {
   line-height: 1.15;
 }
 
-.rt-feature:hover h2,
-.rt-post:hover h3 {
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 4px;
-  text-decoration-color: var(--accent);
+@media (hover: hover) {
+  .rt-feature:hover h2,
+  .rt-post:hover h3 {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+    text-decoration-color: var(--accent);
+  }
 }
 
 .rt-feature-body p {
@@ -1977,19 +1989,21 @@ a:hover .rt-book .rt-cover {
   transition: transform 0.6s var(--ease);
 }
 
-.rt-feature:hover .rt-cover,
-.rt-post:hover .rt-cover,
-.rt-reel-lead:hover .rt-cover,
-.rt-reel a:hover .rt-cover {
-  transform: translateY(-4px);
-  box-shadow: 0 24px 44px -22px color-mix(in srgb, var(--accent) 60%, transparent);
-}
+@media (hover: hover) {
+  .rt-feature:hover .rt-cover,
+  .rt-post:hover .rt-cover,
+  .rt-reel-lead:hover .rt-cover,
+  .rt-reel a:hover .rt-cover {
+    transform: translateY(-4px);
+    box-shadow: 0 24px 44px -22px color-mix(in srgb, var(--accent) 60%, transparent);
+  }
 
-.rt-feature:hover .rt-cover > img,
-.rt-post:hover .rt-cover > img,
-.rt-reel-lead:hover .rt-cover > img,
-.rt-reel a:hover .rt-cover > img {
-  transform: scale(1.05);
+  .rt-feature:hover .rt-cover > img,
+  .rt-post:hover .rt-cover > img,
+  .rt-reel-lead:hover .rt-cover > img,
+  .rt-reel a:hover .rt-cover > img {
+    transform: scale(1.05);
+  }
 }
 
 .rt-reel-lead strong,
@@ -1997,13 +2011,15 @@ a:hover .rt-book .rt-cover {
   transition: color var(--dur-fast);
 }
 
-.rt-reel-lead:hover strong,
-.rt-reel a:hover strong {
-  color: var(--accent);
-}
+@media (hover: hover) {
+  .rt-reel-lead:hover strong,
+  .rt-reel a:hover strong {
+    color: var(--accent);
+  }
 
-.rt-feature:hover .rt-feature-body h2 {
-  color: var(--accent);
+  .rt-feature:hover .rt-feature-body h2 {
+    color: var(--accent);
+  }
 }
 
 .rt-post-meta {
@@ -2193,8 +2209,10 @@ a:hover .rt-book .rt-cover {
   transition: box-shadow var(--dur-med) var(--ease);
 }
 
-.rt-event-row:hover {
-  box-shadow: var(--shadow-lg);
+@media (hover: hover) {
+  .rt-event-row:hover {
+    box-shadow: var(--shadow-lg);
+  }
 }
 
 .rt-event-row-main strong {

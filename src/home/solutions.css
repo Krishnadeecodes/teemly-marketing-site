@@ -97,8 +97,10 @@
   margin-top: auto;
   align-self: flex-start;
 }
-.home-v2 .h-sol-card:hover {
-  box-shadow: var(--h-shadow-lg);
+@media (hover: hover) {
+  .home-v2 .h-sol-card:hover {
+    box-shadow: var(--h-shadow-lg);
+  }
 }
 .home-v2 .h-sol-role {
   display: inline-flex;

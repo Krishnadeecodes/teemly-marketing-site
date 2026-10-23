@@ -54,7 +54,7 @@
   margin-top: -8px;
   border-radius: 50%;
   border: 2px solid var(--h-line-strong);
-  transition: all 0.25s;
+  transition: border-color 0.25s, background 0.25s;
 }
 .home-v2 .h-prompts button:hover {
   border-color: var(--h-azure);

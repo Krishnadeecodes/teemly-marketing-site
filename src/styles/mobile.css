@@ -210,4 +210,20 @@
   a[class*='card']:active {
     transform: scale(0.985);
   }
+  /* Whole-card links answer a tap with that press alone: a tint across the
+     entire card read as the card flashing colour, even when the finger only
+     landed on it to scroll. */
+  a[class*='card'],
+  a.mega-item,
+  a.rt-story,
+  a.rt-post,
+  a.rt-feature,
+  a.rt-lead,
+  a.rt-event-row,
+  a.rt-spot-lead,
+  a.rt-spot-item,
+  a.rt-reel-lead,
+  .rt-reel > a {
+    -webkit-tap-highlight-color: transparent;
+  }
 }

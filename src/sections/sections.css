@@ -186,7 +186,7 @@
   font-size: 0.86rem;
   padding: 10px 18px;
   border-radius: var(--r-pill);
-  transition: all var(--dur-fast);
+  transition: background-color var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast);
 }
 
 .explorer-tab:hover {
@@ -282,10 +282,12 @@
   transition: transform var(--dur-med) var(--ease), box-shadow var(--dur-med) var(--ease), border-color var(--dur-med) var(--ease);
 }
 
-.cap-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--line);
+@media (hover: hover) {
+  .cap-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--line);
+  }
 }
 
 .cap-icon {
@@ -442,10 +444,12 @@
   transition: transform var(--dur-med) var(--ease), background var(--dur-med) var(--ease), border-color var(--dur-med) var(--ease);
 }
 
-.trust-card:hover {
-  transform: translateY(-4px);
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.22);
+@media (hover: hover) {
+  .trust-card:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.22);
+  }
 }
 
 .trust-icon {
@@ -512,9 +516,11 @@
   transition: transform var(--dur-med) var(--ease), box-shadow var(--dur-med) var(--ease);
 }
 
-.segment-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+@media (hover: hover) {
+  .segment-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
 }
 
 .segment-icon {
@@ -670,10 +676,12 @@
   transition: transform var(--dur-med) var(--ease), box-shadow var(--dur-med) var(--ease), border-color var(--dur-med) var(--ease);
 }
 
-a.tile-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--line);
+@media (hover: hover) {
+  a.tile-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--line);
+  }
 }
 
 .tile-icon {

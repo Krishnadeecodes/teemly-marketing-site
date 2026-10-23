@@ -19,7 +19,7 @@
   padding: 10px 16px;
   border-radius: var(--h-radius-pill);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
 }
 .home-v2 .h-explorer-tab:hover {
   border-color: var(--h-line-strong);
