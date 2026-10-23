@@ -42,13 +42,24 @@ const QA = [
   },
 ]
 
-function Answer({ item, barsOn, animate = false }) {
+function ThinkingDots() {
+  return (
+    <div className="h-thinking">
+      <i />
+      <i />
+      <i />
+    </div>
+  )
+}
+
+// `stale`: the previous answer, kept on screen (dimmed) while the next
+// question types, so the console never empties between questions; its avatar
+// shows the "thinking" dots once the question is typed.
+function Answer({ item, barsOn, animate = false, stale = false, thinking = false }) {
   const fade = animate ? 'h-fadein' : undefined
   return (
-    <div className="h-msg-a">
-      <div className="h-av">
-        <Icon name="sparkle" size={16} />
-      </div>
+    <div className={`h-msg-a${stale ? ' h-msg-stale' : ''}`}>
+      <div className="h-av">{thinking ? <ThinkingDots /> : <Icon name="sparkle" size={16} />}</div>
       <div className="h-msg-body">
         <p className={fade}>{item.a}</p>
         <div className={fade}>
@@ -79,8 +90,12 @@ export default function TeemlyAISection() {
   const [typed, setTyped] = useState('')
   const [phase, setPhase] = useState('typing') // typing | thinking | answered
   const [barsOn, setBarsOn] = useState(false)
+  // the answer currently on screen; it changes only once the next one is ready
+  const [shown, setShown] = useState(null)
   const sectionRef = useRef(null)
   const started = useRef(false)
+  // once the visitor picks a question themselves, the demo stops moving on
+  const pickedRef = useRef(false)
   const autoRef = useRef(null)
   const tokenRef = useRef(0)
   const inViewRef = useRef(false)
@@ -91,7 +106,6 @@ export default function TeemlyAISection() {
     pendingRef.current = null
     setActive(i)
     setTyped('')
-    setBarsOn(false)
     setPhase('typing')
     clearTimeout(autoRef.current)
 
@@ -99,6 +113,7 @@ export default function TeemlyAISection() {
     const q = QA[i].q
     if (reduced) {
       setTyped(q)
+      setShown(i)
       setPhase('answered')
       setBarsOn(true)
       return
@@ -115,8 +130,11 @@ export default function TeemlyAISection() {
         setPhase('thinking')
         setTimeout(() => {
           if (tokenRef.current !== token) return
+          setBarsOn(false)
+          setShown(i)
           setPhase('answered')
           requestAnimationFrame(() => requestAnimationFrame(() => setBarsOn(true)))
+          if (pickedRef.current) return
           autoRef.current = setTimeout(() => {
             // only move on to the next question while the section is on
             // screen; otherwise resume when the visitor scrolls back
@@ -163,10 +181,11 @@ export default function TeemlyAISection() {
 
   function onPromptClick(i) {
     started.current = true
+    pickedRef.current = true
     play(i)
   }
 
-  const current = QA[active]
+  const answered = phase === 'answered' && shown !== null
 
   return (
     <section className="h-ai h-sec-blue" ref={sectionRef}>
@@ -219,21 +238,17 @@ export default function TeemlyAISection() {
                 {typed}
                 {phase === 'typing' && <span className="h-caret" />}
               </div>
-              {phase === 'thinking' && (
+              {answered && <Answer key={shown} item={QA[shown]} barsOn={barsOn} animate />}
+              {!answered && shown !== null && (
+                <Answer key={`stale-${shown}`} item={QA[shown]} barsOn stale thinking={phase === 'thinking'} />
+              )}
+              {!answered && shown === null && phase === 'thinking' && (
                 <div className="h-msg-a">
                   <div className="h-av">
-                    <Icon name="sparkle" size={16} />
-                  </div>
-                  <div className="h-msg-body">
-                    <div className="h-thinking">
-                      <i />
-                      <i />
-                      <i />
-                    </div>
+                    <ThinkingDots />
                   </div>
                 </div>
               )}
-              {phase === 'answered' && <Answer item={current} barsOn={barsOn} animate />}
             </div>
           </div>
         </div>

@@ -223,7 +223,11 @@
   a.rt-spot-lead,
   a.rt-spot-item,
   a.rt-reel-lead,
-  .rt-reel > a {
+  .rt-reel > a,
+  .home-v2 .h-prompts button {
     -webkit-tap-highlight-color: transparent;
+  }
+  .home-v2 .h-prompts button:active {
+    transform: scale(0.985);
   }
 }

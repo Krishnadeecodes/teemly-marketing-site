@@ -42,7 +42,7 @@
   font: 500 15px/1.4 var(--h-font-body);
   cursor: pointer;
   position: relative;
-  transition: border-color 0.25s, transform 0.25s;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
 }
 .home-v2 .h-prompts button::before {
   content: '';
@@ -56,9 +56,12 @@
   border: 2px solid var(--h-line-strong);
   transition: border-color 0.25s, background 0.25s;
 }
-.home-v2 .h-prompts button:hover {
-  border-color: var(--h-azure);
-  transform: translateX(4px);
+/* mouse only: on touch screens a tap would leave this stuck on */
+@media (hover: hover) {
+  .home-v2 .h-prompts button:hover {
+    border-color: var(--h-azure);
+    transform: translateX(4px);
+  }
 }
 .home-v2 .h-prompts button[aria-pressed='true'] {
   border-color: var(--h-pink);
@@ -253,6 +256,22 @@
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+}
+/* the previous answer, dimmed while the next question is typed */
+.home-v2 .h-msg-stale {
+  animation: h-dim 0.35s ease forwards;
+}
+@keyframes h-dim {
+  to { opacity: 0.4; }
+}
+/* "thinking" dots sized to sit inside the 32px avatar */
+.home-v2 .h-av .h-thinking {
+  gap: 3px;
+  padding: 0;
+}
+.home-v2 .h-av .h-thinking i {
+  width: 5px;
+  height: 5px;
 }
 .home-v2 .h-fadein {
   animation: h-fi 0.5s both;
