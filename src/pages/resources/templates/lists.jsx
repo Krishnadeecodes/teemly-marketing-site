@@ -25,7 +25,7 @@ function ListHero({ category, variant = 'soft', kicker = 'Resources', children }
           <span aria-current="page">{category.label}</span>
         </nav>
         <span className="rt-kicker">{kicker}</span>
-        <HeroTitle text={category.label} gradient />
+        <HeroTitle text={category.label} />
         {category.description && <p className="rt-dek">{category.description}</p>}
         {children}
       </div>

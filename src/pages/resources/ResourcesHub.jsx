@@ -65,7 +65,7 @@ export default function ResourcesHub() {
         </div>
         <div className="container rt-hero-inner left">
           <span className="rt-kicker">{hub.eyebrow}</span>
-          <HeroTitle text={hub.title} gradient />
+          <HeroTitle text={hub.title} />
           {hub.desc && <p className="rt-dek">{hub.desc}</p>}
           {latest.length > 0 && (
             <form className="rt-search large" role="search" onSubmit={search}>
