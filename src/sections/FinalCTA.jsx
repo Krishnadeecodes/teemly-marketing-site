@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import SplitHeading from '../home/SplitHeading.jsx'
 import Reveal from '../home/Reveal.jsx'
+import TourLink from '../components/TourLink.jsx'
 import '../home/finalCta.css'
 
 export default function FinalCTA() {
@@ -26,9 +27,7 @@ export default function FinalCTA() {
                       <Icon name="arrowRight" size={14} />
                     </span>
                   </Link>
-                  <Link to="/take-a-tour" className="h-btn h-btn-ghost">
-                    Take a Tour
-                  </Link>
+                  <TourLink className="h-btn h-btn-ghost">Take a Tour</TourLink>
                 </div>
                 <p className="h-final-note">
                   No credit card required · Live in a day ·{' '}

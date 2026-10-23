@@ -137,7 +137,7 @@ function useBubble(canvasRef, layerRef, bubbleRef, target, enabled) {
 }
 
 /** A step's label, count, title and description. */
-function StepText({ s, n, total, headingRef }) {
+export function StepText({ s, n, total, headingRef }) {
   return (
     <>
       <div className="tour-meta">
@@ -172,7 +172,7 @@ function useMedia(query) {
   return matches
 }
 
-function CloseIcon() {
+export function CloseIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
       <path d="M6 6l12 12M18 6 6 18" />
@@ -185,7 +185,7 @@ function minutes(stepCount) {
 }
 
 /** Puts a ring around the step's target and dims the rest of the screen. */
-function useSpotlight(stageRef, target) {
+export function useSpotlight(stageRef, target) {
   const [spot, setSpot] = useState(null)
 
   const measure = useCallback(() => {

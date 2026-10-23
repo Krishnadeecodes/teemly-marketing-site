@@ -5,6 +5,7 @@ import HeroDashboard from '../components/HeroDashboard.jsx'
 import FitScale from '../components/FitScale.jsx'
 import { useMagnetic } from '../home/useMagnetic.js'
 import { gsap, isPhone, prefersReducedMotion } from '../home/useHomeScroll.js'
+import TourLink from '../components/TourLink.jsx'
 import '../home/hero.css'
 
 const CHIPS = [
@@ -138,9 +139,9 @@ export default function Hero() {
                 <Icon name="arrowRight" size={14} />
               </span>
             </Link>
-            <Link to="/take-a-tour" className="h-btn h-btn-ghost" ref={ghostBtn}>
+            <TourLink className="h-btn h-btn-ghost" ref={ghostBtn}>
               Take a Tour
-            </Link>
+            </TourLink>
           </div>
 
           <div className="h-hero-meta" ref={addIntro}>

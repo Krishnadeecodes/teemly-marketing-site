@@ -1,0 +1,336 @@
+/* The "Take a Tour" popup (TourModal.jsx). Reuses the tour page's screen,
+   spotlight and step-text styles from tourPlayer.css. */
+
+.tm-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(4, 10, 40, 0.62);
+  animation: tm-fade 0.2s ease both;
+}
+@keyframes tm-fade {
+  from { opacity: 0; }
+}
+
+.tm-dialog {
+  width: min(1200px, 100%);
+  height: min(780px, calc(100dvh - 48px));
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-radius: 20px;
+  box-shadow: 0 40px 100px -30px rgba(2, 8, 40, 0.6);
+  overflow: hidden;
+  outline: none;
+  animation: tm-in 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes tm-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+}
+
+/* ---------- header: title, count, close, story bars ---------- */
+.tm-head {
+  flex: none;
+  padding: 14px 20px 12px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.tm-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.tm-bar strong {
+  font-family: var(--font-head);
+  font-size: 1rem;
+  color: var(--navy);
+}
+.tm-count {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.tm-close {
+  margin-left: auto;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--surface-soft);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+@media (hover: hover) {
+  .tm-close:hover {
+    background: var(--line-soft);
+  }
+}
+.tm-stories {
+  display: flex;
+  gap: 4px;
+  margin-top: 12px;
+}
+.tm-stories span {
+  flex: 1;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--line-soft);
+  overflow: hidden;
+}
+.tm-stories span.seen {
+  background: var(--blue);
+}
+.tm-stories .run {
+  display: block;
+  height: 100%;
+  background: var(--grad-bar);
+  transform-origin: 0 50%;
+  animation-name: tm-run;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+@keyframes tm-run {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.tm-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+/* ---------- player: screen + explanation ---------- */
+.tm-player {
+  min-height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 28px;
+  padding: 24px;
+  align-items: center;
+}
+.tm-screen {
+  min-width: 0;
+  touch-action: pan-y;
+}
+.tm-side {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.tm-controls .tour-progress {
+  margin-top: 22px;
+}
+.tm-nav {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 10px;
+}
+.tm-nav .btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+  transform: none;
+}
+.tm-icon-btn {
+  width: 48px;
+  padding-left: 0;
+  padding-right: 0;
+  justify-content: center;
+}
+.tm-play {
+  justify-content: center;
+  gap: 8px;
+}
+.tm-skip {
+  display: block;
+  margin: 16px auto 0;
+}
+
+/* ---------- topics ---------- */
+.tm-topics,
+.tm-done {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: clamp(24px, 4vw, 40px) 24px 32px;
+}
+.tm-topics h2,
+.tm-done h2 {
+  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+  outline: none;
+}
+.tm-group {
+  margin: 26px 0 12px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.tm-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px;
+}
+.tm-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 14px 16px;
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+@media (hover: hover) {
+  .tm-option:hover {
+    border-color: var(--blue);
+    box-shadow: var(--shadow-md);
+  }
+}
+.tm-option:active {
+  transform: scale(0.985);
+}
+.tm-option > svg:last-child {
+  flex: none;
+  margin-left: auto;
+  color: var(--muted);
+}
+.tm-option-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(10, 161, 232, 0.1);
+  color: var(--blue);
+}
+.tm-option-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.tm-option-text strong {
+  font-family: var(--font-head);
+  font-size: 0.98rem;
+  color: var(--navy);
+}
+.tm-option-text span {
+  font-size: var(--fs-sm);
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+.tm-option-text small {
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+.tm-replay {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 26px;
+}
+
+/* ---------- done ---------- */
+.tm-done {
+  text-align: center;
+  max-width: 620px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.tm-done .tour-end-icon {
+  margin: 0 auto 16px;
+}
+.tm-done-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+/* ---------- tablets: explanation under the screen ---------- */
+@media (max-width: 1000px) {
+  .tm-player {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 20px;
+  }
+}
+
+/* ---------- phones: a full-screen sheet, controls always in reach ---------- */
+@media (max-width: 760px) {
+  .tm-backdrop {
+    padding: 0;
+  }
+  .tm-dialog {
+    width: 100%;
+    height: 100dvh;
+    border-radius: 0;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .tm-head {
+    padding: max(10px, env(safe-area-inset-top)) 16px 10px;
+  }
+  .tm-player {
+    min-height: 100%;
+    grid-template-rows: auto 1fr;
+    padding: 16px 16px 0;
+    gap: 16px;
+  }
+  .tm-side {
+    min-height: 100%;
+  }
+  .tm-side .tour-title {
+    font-size: 1.2rem;
+  }
+  .tm-controls {
+    position: sticky;
+    bottom: 0;
+    margin: auto -16px 0;
+    padding: 4px 16px 14px;
+    background: var(--surface);
+    box-shadow: 0 -12px 16px -12px rgba(9, 18, 75, 0.12);
+  }
+  .tm-nav .btn,
+  .tm-controls .tour-nav .btn {
+    min-height: 48px;
+  }
+  .tm-skip {
+    margin-top: 10px;
+  }
+  .tm-topics,
+  .tm-done {
+    padding: 22px 16px 28px;
+  }
+  .tm-options {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .tm-done-ctas .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tm-backdrop,
+  .tm-dialog {
+    animation: none;
+  }
+}

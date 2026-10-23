@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
+import TourLink from './TourLink.jsx'
 
 import MegaMenu from './MegaMenu.jsx'
 import Icon from './Icon.jsx'
@@ -292,9 +293,7 @@ export default function Header() {
             <Link to="/company/contact" className="nav-signin-link hide-mobile">
               Sign in
             </Link>
-            <Link to="/take-a-tour" className="btn btn-outline btn-sm">
-              Take a Tour
-            </Link>
+            <TourLink className="btn btn-outline btn-sm">Take a Tour</TourLink>
             <Link to="/book-a-demo" className="btn btn-primary btn-sm">
               Book a Demo
             </Link>
@@ -353,9 +352,9 @@ export default function Header() {
               Sign in
             </Link>
             <div className="mobile-cta-row">
-              <Link to="/take-a-tour" className="btn btn-outline btn-block">
+              <TourLink className="btn btn-outline btn-block" onClick={() => setMobileOpen(false)}>
                 Take a Tour
-              </Link>
+              </TourLink>
               <Link to="/book-a-demo" className="btn btn-primary btn-block">
                 Book a Demo
               </Link>

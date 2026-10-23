@@ -189,3 +189,25 @@ export const PATHS = [
 export function getPath(id) {
   return PATHS.find((p) => p.id === id) || null
 }
+
+// The tour popup (src/sections/TourModal.jsx) also offers one short tour per
+// product screen, made from that screen's steps above in the order listed.
+const MODULE_ICONS = {
+  dashboard: 'chart',
+  teams: 'users',
+  screenshots: 'camera',
+  attendance: 'clock',
+  reports: 'fileText',
+  settings: 'gear',
+}
+
+export const MODULES = Object.entries(SCREENS).map(([id, s]) => ({
+  id: `module-${id}`,
+  label: s.label,
+  icon: MODULE_ICONS[id],
+  steps: Object.keys(STEPS).filter((key) => STEPS[key].screen === id),
+}))
+
+export function getTopic(id) {
+  return getPath(id) || MODULES.find((m) => m.id === id) || null
+}
