@@ -1,6 +1,14 @@
 .home-v2 .h-segment {
   background: var(--h-bg-alt);
 }
+/* Integrations follows on the same background, so on wide screens the two
+   section paddings read as one big gap; each gives up half of its share
+   (see integrations.css). Phones keep the full padding. */
+@media (min-width: 901px) {
+  .home-v2 .h-segment {
+    padding-bottom: calc(var(--h-section-pad) / 2);
+  }
+}
 .home-v2 .h-pr-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

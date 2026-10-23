@@ -2,6 +2,13 @@
   background: linear-gradient(180deg, var(--h-bg-alt), var(--h-bg));
   overflow: hidden;
 }
+/* half the usual top padding on wide screens: it continues the section above
+   (segment.css) */
+@media (min-width: 901px) {
+  .home-v2 .h-integ {
+    padding-top: calc(var(--h-section-pad) / 2);
+  }
+}
 .home-v2 .h-integ-grid {
   display: grid;
   grid-template-columns: 0.8fr 1.2fr;

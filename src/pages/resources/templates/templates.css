@@ -1,53 +1,10 @@
 /* ================= Resource Center templates =================
-   Each category has an accent pair; every template reads --accent,
-   --accent-2 and the gradient built from them. */
-.rt {
-  --accent: var(--blue);
-  --accent-2: var(--pink);
-  --accent-soft: rgba(10, 161, 232, 0.1);
-  --accent-grad: linear-gradient(120deg, var(--accent) 0%, var(--accent-2) 100%);
-}
-.t-research {
-  --accent: #6a2cc7;
-  --accent-2: #f52998;
-  --accent-soft: rgba(106, 44, 199, 0.1);
-}
-.t-reports {
-  --accent: #0a8fd0;
-  --accent-2: #04c9c6;
-  --accent-soft: rgba(10, 143, 208, 0.1);
-}
-.t-guides {
-  --accent: #0b9b8f;
-  --accent-2: #0aa1e8;
-  --accent-soft: rgba(11, 155, 143, 0.1);
-}
-.t-case-studies {
-  --accent: #e21f5c;
-  --accent-2: #f52998;
-  --accent-soft: rgba(226, 31, 92, 0.08);
-}
-.t-blog {
-  --accent: #c2187a;
-  --accent-2: #6a2cc7;
-  --accent-soft: rgba(194, 24, 122, 0.08);
-}
-.t-webinars {
-  --accent: #4f46e5;
-  --accent-2: #0aa1e8;
-  --accent-soft: rgba(79, 70, 229, 0.1);
-}
-.t-videos {
-  --accent: #0a9fa3;
-  --accent-2: #0aa1e8;
-  --accent-soft: rgba(4, 196, 193, 0.12);
-}
-.t-glossary {
-  --accent: #0a8fd0;
-  --accent-2: #6a2cc7;
-  --accent-soft: rgba(10, 143, 208, 0.1);
-}
-/* Re-declared wherever the colours change, so it picks up the local pair. */
+   Every template reads --accent, --accent-2 and the gradient built from
+   them. All categories share the site's own palette (blue to cyan, as on the
+   home page and the product screens), so the Resource Center reads as part
+   of the same site; the category's icon and name tell the types apart. The
+   t-<type> classes are listed too because resource cards can sit outside .rt. */
+.rt,
 .t-research,
 .t-reports,
 .t-guides,
@@ -56,6 +13,9 @@
 .t-webinars,
 .t-videos,
 .t-glossary {
+  --accent: var(--blue);
+  --accent-2: var(--cyan);
+  --accent-soft: rgba(10, 161, 232, 0.1);
   --accent-grad: linear-gradient(120deg, var(--accent) 0%, var(--accent-2) 100%);
 }
 
@@ -1091,7 +1051,7 @@ a:hover .rt-book .rt-cover {
 
 .rt-hub-hero h1 {
   max-width: 760px;
-  --title-grad: linear-gradient(100deg, var(--navy) 30%, var(--blue) 70%, var(--pink));
+  --title-grad: linear-gradient(100deg, var(--navy) 30%, var(--blue) 70%, var(--cyan));
 }
 
 .rt-quick {
