@@ -1,38 +1,40 @@
-import { Fragment } from 'react'
-import Logo from '../components/Logo.jsx'
+import Icon from '../components/Icon.jsx'
 import '../home/marquee.css'
 
+// A "trusted by" style logo strip: muted, logo-like marks running slowly.
 const items = [
-  'Organizational Intelligence',
-  'Workforce Intelligence',
-  'Work Intelligence',
-  'Workflow Intelligence',
-  'AI Intelligence',
-  'Tool Intelligence',
+  { label: 'Organizational Intelligence', icon: 'building' },
+  { label: 'Workforce Intelligence', icon: 'users' },
+  { label: 'Work Intelligence', icon: 'briefcase' },
+  { label: 'Workflow Intelligence', icon: 'network' },
+  { label: 'AI Intelligence', icon: 'sparkle' },
+  { label: 'Tool Intelligence', icon: 'layers' },
 ]
 
 function Track({ hidden }) {
   return (
-    <div className="h-marquee-item" aria-hidden={hidden || undefined}>
-      {items.map((label, i) => (
-        <Fragment key={label}>
-          <span className={`h-marquee-word${i % 2 ? ' g' : ''}`}>{label}</span>
-          <span className="h-marquee-sep" style={{ '--d': `${(i % 3) * -0.8}s` }}>
-            <Logo variant="mark" size={30} label={null} />
+    <ul className="h-marquee-item" aria-hidden={hidden || undefined}>
+      {items.map((it) => (
+        <li key={it.label} className="h-marquee-logo">
+          <span className="h-marquee-mark">
+            <Icon name={it.icon} size={18} />
           </span>
-        </Fragment>
+          {it.label}
+        </li>
       ))}
-    </div>
+    </ul>
   )
 }
 
 export default function Marquee() {
   return (
-    <div className="h-marquee" aria-label="Teemly intelligence areas">
-      <div className="h-marquee-track">
-        <Track />
-        <Track hidden />
+    <section className="h-marquee" aria-label="Teemly intelligence areas">
+      <div className="h-marquee-rail">
+        <div className="h-marquee-track">
+          <Track />
+          <Track hidden />
+        </div>
       </div>
-    </div>
+    </section>
   )
 }

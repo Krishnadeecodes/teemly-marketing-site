@@ -919,6 +919,15 @@ a:hover .rt-book .rt-cover {
   max-width: 640px;
 }
 
+/* the hub hero has nothing beside it, so its text and search run full width */
+.rt-hub-hero .rt-dek,
+.rt-hub-hero .rt-search.large {
+  max-width: none;
+}
+.rt-hub-hero .rt-dek {
+  font-size: 1.02rem;
+}
+
 /* ---------- Article body in the category colours ---------- */
 .rt .res-prose h2 {
   position: relative;
@@ -1045,12 +1054,14 @@ a:hover .rt-book .rt-cover {
 
 /* ================= Hub ================= */
 .rt-hub-hero .rt-hero-inner {
-  padding-top: 64px;
-  padding-bottom: 64px;
+  padding-top: 48px;
+  padding-bottom: 48px;
 }
 
 .rt-hub-hero h1 {
-  max-width: 760px;
+  max-width: none;
+  /* smaller than other resource heroes so the full-width title sits on one line */
+  font-size: clamp(30px, 3.2vw, 46px);
   --title-grad: linear-gradient(100deg, var(--navy) 30%, var(--blue) 70%, var(--cyan));
 }
 
@@ -1059,7 +1070,6 @@ a:hover .rt-book .rt-cover {
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 10px;
-  max-width: 760px;
   font-size: 0.86rem;
   font-weight: 600;
 }
@@ -1085,147 +1095,6 @@ a:hover .rt-book .rt-cover {
   border-color: color-mix(in srgb, var(--accent) 40%, transparent);
   background: var(--accent-soft);
   transform: translateY(-2px);
-}
-
-/* Floating category cards on the hub hero. */
-.rt-hub-art {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: max(var(--page-pad), calc((100% - var(--page-max)) / 2 + var(--page-pad)));
-  width: 300px;
-  pointer-events: none;
-}
-
-.rt-hub-float {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 200px;
-  padding: 14px 16px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
-  box-shadow: 0 20px 40px -18px color-mix(in srgb, var(--accent) 55%, transparent);
-  backdrop-filter: blur(8px);
-  animation: rt-bob 7s var(--ease) infinite alternate;
-}
-
-.rt-hub-float strong {
-  font-family: var(--font-head);
-  font-size: 1rem;
-  color: var(--navy);
-}
-
-.rt-hub-float-ic {
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  color: #fff;
-  background: var(--accent-grad);
-}
-
-.rt-hub-float.f0 {
-  top: 12%;
-  left: 60px;
-  transform: rotate(-3deg);
-}
-
-.rt-hub-float.f1 {
-  top: 33%;
-  left: 0;
-  transform: rotate(2deg);
-  animation-delay: -2s;
-}
-
-.rt-hub-float.f2 {
-  top: 54%;
-  left: 80px;
-  transform: rotate(-2deg);
-  animation-delay: -4s;
-}
-
-.rt-hub-float.f3 {
-  top: 75%;
-  left: 20px;
-  transform: rotate(3deg);
-  animation-delay: -6s;
-}
-
-@keyframes rt-bob {
-  to {
-    translate: 0 -8px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .rt-hub-float {
-    animation: none;
-  }
-}
-
-/* Browse-by-type tiles take their category's colours. */
-.rt-hub .tile-card {
-  position: relative;
-  overflow: hidden;
-}
-
-.rt-hub .tile-card::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 4px;
-  background: var(--accent-grad);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform var(--dur-med) var(--ease);
-}
-
-.rt-hub .tile-card::after {
-  content: '';
-  position: absolute;
-  width: 160px;
-  height: 160px;
-  right: -60px;
-  bottom: -70px;
-  border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 14%, transparent), transparent 70%);
-  transition: transform var(--dur-med) var(--ease);
-}
-
-@media (hover: hover) {
-  .rt-hub a.tile-card:hover {
-    border-color: color-mix(in srgb, var(--accent) 30%, transparent);
-    box-shadow: 0 22px 44px -22px color-mix(in srgb, var(--accent) 55%, transparent);
-  }
-
-  .rt-hub a.tile-card:hover::before {
-    transform: scaleX(1);
-  }
-
-  .rt-hub a.tile-card:hover::after {
-    transform: scale(1.4);
-  }
-}
-
-.rt-hub .tile-icon {
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
-  color: #fff;
-  background: var(--accent-grad);
-  box-shadow: 0 10px 22px -10px color-mix(in srgb, var(--accent) 70%, transparent);
-}
-
-.rt-hub .tile-link {
-  color: var(--accent);
 }
 
 .rt-spotlight {
@@ -2501,12 +2370,6 @@ a:hover .rt-book .rt-cover {
 }
 
 /* ================= Responsive ================= */
-@media (max-width: 1200px) {
-  .rt-hub-art {
-    display: none;
-  }
-}
-
 @media (max-width: 1080px) {
   .rt-hero-art {
     display: none;

@@ -125,12 +125,12 @@
   .footer-col ul li a {
     display: flex;
     align-items: center;
-    min-height: 40px;
+    min-height: 36px;
   }
   .footer-legal a {
     display: inline-flex;
     align-items: center;
-    min-height: 40px;
+    min-height: 36px;
   }
 
   /* sliders: a taller hit area around the thin native track */

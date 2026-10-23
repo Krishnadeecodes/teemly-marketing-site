@@ -22,7 +22,7 @@ for (const [name, svg] of Object.entries(files)) fs.writeFileSync(pub(name), svg
 const font = "'Bricolage Grotesque', 'Space Grotesk', system-ui, sans-serif"
 const pngs = [
   // 2x size, cropped to the artwork (shown at 32px tall in emails)
-  { name: 'brand/teemly-logo.png', w: 679, h: 200, html: logoSvg().replace('<svg ', '<svg style="display:block;height:200px;width:auto" '), transparent: true },
+  { name: 'brand/teemly-logo.png', w: 720, h: 200, html: logoSvg().replace('<svg ', '<svg style="display:block;height:200px;width:auto" '), transparent: true },
   { name: 'brand/apple-touch-icon.png', w: 180, h: 180, html: `<div style="display:grid;place-items:center;height:100%;background:#fff">${logoSvg({ full: false }).replace('<svg ', '<svg style="height:132px;width:auto" ')}</div>` },
   {
     name: 'brand/og-image.png',

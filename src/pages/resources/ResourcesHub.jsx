@@ -53,16 +53,6 @@ export default function ResourcesHub() {
   return (
     <div className="rt rt-hub">
       <header className="rt-hero rt-hero-soft rt-hub-hero">
-        <div className="rt-hub-art" aria-hidden="true">
-          {categories.slice(0, 4).map((c, i) => (
-            <span key={c.slug} className={`rt-hub-float f${i} t-${c.slug}`}>
-              <span className="rt-hub-float-ic">
-                <Icon name={c.icon} size={18} />
-              </span>
-              <strong>{c.label}</strong>
-            </span>
-          ))}
-        </div>
         <div className="container rt-hero-inner left">
           <span className="rt-kicker">{hub.eyebrow}</span>
           <HeroTitle text={hub.title} />
@@ -161,27 +151,6 @@ export default function ResourcesHub() {
           </div>
         </section>
       )}
-
-      <section className="section-tight">
-        <div className="container">
-          <SectionTitle kicker="Explore" title="Browse by type" />
-          <div className="tile-grid" aria-busy={loading || undefined}>
-            {categories.map((r) => (
-              <Link to={`/resources/${r.slug}`} className={`tile-card t-${r.slug}`} key={r.slug}>
-                <span className="tile-icon">
-                  <Icon name={r.icon} size={20} />
-                </span>
-                <h3>{r.label}</h3>
-                <p>{r.description}</p>
-                <span className="tile-link">
-                  {r.count > 0 ? `${r.count} ${r.slug === 'glossary' ? 'terms' : r.count === 1 ? 'item' : 'items'}` : 'Explore'}{' '}
-                  <Icon name="arrowRight" size={14} />
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {latest.length > 0 && (
         <section className="section-tight rt-hub-library" ref={libraryRef}>

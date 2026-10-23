@@ -61,13 +61,18 @@ const FORMS = {
     },
     subject: (d) => `New contact enquiry — ${d.name}${d.company ? ` (${d.company})` : ''}`,
     autoReply: {
-      subject: 'Thanks for contacting Teemly — we’ve got your message',
+      subject: 'Thank you for contacting Teemly',
+      preheader: 'We have received your enquiry and will reply within one business day.',
+      heading: 'We’ve received your enquiry',
       firstName: (d) => d.name.split(/\s+/)[0],
       paragraphs: [
-        'Thanks for reaching out to Teemly. Your message has reached our team, and a real person — not a bot — will get back to you within one business day.',
-        'If you mentioned your team size, we’ll come prepared with the plan and setup that fits. Enterprise enquiries are routed straight to our team for a custom quote.',
+        'Thank you for contacting Teemly. Your enquiry has been received and a member of our team will respond within one business day.',
       ],
-      summary: ['company', 'seats'],
+      nextSteps: [
+        'Our team reviews your enquiry.',
+        'A Teemly specialist replies to you directly, usually within one business day.',
+        'For Enterprise enquiries, we prepare a quote tailored to your organisation.',
+      ],
       links: [
         { label: 'See pricing', path: '/pricing' },
         { label: 'Security & privacy', path: '/security' },
@@ -91,13 +96,18 @@ const FORMS = {
     },
     subject: (d) => `New demo request — ${d.firstName} ${d.lastName} (${d.company})`,
     autoReply: {
-      subject: 'Your Teemly demo request is confirmed',
+      subject: 'Your Teemly demo request has been received',
+      preheader: 'Our team will be in touch within one business day to schedule your demo.',
+      heading: 'Your demo request has been received',
       firstName: (d) => d.firstName,
       paragraphs: [
-        'Thanks for requesting a Teemly demo. We’ve received your details, and our team will email you within one business day with a few time slots to choose from.',
-        'On the call we’ll walk through the real-time dashboard, our own lightweight desktop agent, and the privacy controls — tailored to the problem you told us about. Feel free to bring your questions and anyone from your team.',
+        'Thank you for requesting a demo of Teemly. We have received your request and a member of our team will be in touch within one business day to arrange a time that suits you.',
       ],
-      summary: ['company', 'companySize', 'role', 'problem'],
+      nextSteps: [
+        'We email you a few available time slots within one business day.',
+        'You choose the time that works best for you and your team.',
+        'We walk you through the real-time dashboard, the Teemly desktop agent and our privacy controls, tailored to your needs.',
+      ],
       links: [
         { label: 'Explore the platform', path: '/platform' },
         { label: 'Calculate your ROI', path: '/roi-calculator' },
@@ -186,74 +196,124 @@ async function postToWebhook(lead) {
   if (!res.ok) throw new Error(`webhook responded ${res.status}`)
 }
 
-// Confirmation email to the person who submitted the form. Deliberately only
-// echoes short structured fields (never the free-text message) so the form
-// can't be abused to relay arbitrary content to a third party's inbox.
+// Confirmation email to the person who submitted the form. It never echoes
+// anything they typed except their first name, so the form can't be abused to
+// relay content to a third party's inbox. Table-based markup so it renders
+// the same in Gmail, Outlook and Apple Mail.
 function buildAutoReply(def, data) {
   const reply = def.autoReply
   const name = reply.firstName(data).slice(0, 40)
-  const summary = reply.summary.filter((k) => data[k]).map((k) => [def.fields[k], data[k].slice(0, 100)])
   const links = SITE_URL ? reply.links.map((l) => ({ label: l.label, url: SITE_URL + l.path })) : []
+  const year = new Date().getFullYear()
 
   const text = [
     `Hi ${name},`,
     '',
     ...reply.paragraphs.flatMap((p) => [p, '']),
-    ...(summary.length ? ['What you shared with us:', ...summary.map(([l, v]) => `  ${l}: ${v}`), ''] : []),
-    ...(links.length ? ['While you wait:', ...links.map((l) => `  ${l.label}: ${l.url}`), ''] : []),
-    'Just reply to this email if you have anything to add.',
+    'What happens next:',
+    ...reply.nextSteps.map((step, i) => `  ${i + 1}. ${step}`),
     '',
-    'Best,',
-    'The Teemly team',
+    ...(links.length ? ['In the meantime, you may find these useful:', ...links.map((l) => `  ${l.label}: ${l.url}`), ''] : []),
+    'If you have any questions, simply reply to this email.',
+    '',
+    'Kind regards,',
+    'The Teemly Team',
+    '',
+    '---',
+    `© ${year} Teemly. You are receiving this email because this address was used to submit a form on the Teemly website. If this wasn't you, please disregard this message.`,
   ].join('\n')
 
   const font = 'font-family:Inter,Segoe UI,Arial,sans-serif'
-  const html = `
-<div style="background:#f6f7fc;padding:32px 16px;${font}">
-  <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;border:1px solid #e6e7f2">
-    <div style="height:4px;background:linear-gradient(90deg,#0aa1e8,#04dcd9,#6a2cc7,#f52998)"></div>
-    <div style="padding:32px">
-      ${LOGO_ATTACHMENT ? '<img src="cid:teemly-logo" alt="Teemly" width="109" height="32" style="display:block;height:32px;width:auto;border:0;margin-bottom:24px">' : '<div style="font-size:22px;font-weight:800;color:#0b1442;letter-spacing:-0.5px;margin-bottom:24px">Teemly</div>'}
-      <p style="font-size:16px;color:#0a1140;margin:0 0 16px">Hi ${escapeHtml(name)},</p>
-      ${reply.paragraphs
-        .map((p) => `<p style="font-size:15px;line-height:1.6;color:#3d4266;margin:0 0 16px">${escapeHtml(p)}</p>`)
-        .join('')}
-      ${
-        summary.length
-          ? `<div style="background:#f6f7fc;border-radius:12px;padding:16px 20px;margin:24px 0">
-        <div style="font-size:12px;font-weight:700;color:#6b7093;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px">What you shared with us</div>
-        <table style="font-size:14px;border-collapse:collapse">
-          ${summary
-            .map(
-              ([l, v]) => `<tr>
-            <td style="padding:4px 16px 4px 0;color:#6b7093;white-space:nowrap">${escapeHtml(l)}</td>
-            <td style="padding:4px 0;color:#0a1140;font-weight:600">${escapeHtml(v)}</td>
-          </tr>`,
-            )
-            .join('')}
-        </table>
-      </div>`
-          : ''
-      }
-      ${
-        links.length
-          ? `<p style="font-size:14px;color:#3d4266;margin:0 0 12px">While you wait:</p>
-      <p style="margin:0 0 24px">${links
-        .map(
-          (l) =>
-            `<a href="${escapeHtml(l.url)}" style="display:inline-block;margin:0 8px 8px 0;padding:10px 18px;border-radius:999px;background:#09124b;color:#fff;text-decoration:none;font-size:14px;font-weight:600">${escapeHtml(l.label)} →</a>`,
-        )
-        .join('')}</p>`
-          : ''
-      }
-      <p style="font-size:15px;line-height:1.6;color:#3d4266;margin:0 0 16px">Just reply to this email if you have anything to add.</p>
-      <p style="font-size:15px;color:#0a1140;margin:0">Best,<br><strong>The Teemly team</strong></p>
-    </div>
-  </div>
-  <p style="max-width:560px;margin:16px auto 0;font-size:12px;color:#9297b3;text-align:center">
-    You’re receiving this because this email address was submitted on the Teemly website. If that wasn’t you, you can safely ignore it.
-  </p>
-</div>`
+  const body = `font-size:15px;line-height:1.6;color:#3d4266;${font}`
+  const html = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="x-apple-disable-message-reformatting">
+<title>${escapeHtml(reply.subject)}</title>
+</head>
+<body style="margin:0;padding:0;background:#f6f7fc">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent">${escapeHtml(reply.preheader)}</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f6f7fc">
+  <tr>
+    <td align="center" style="padding:32px 16px">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;background:#ffffff;border:1px solid #e6e7f2;border-radius:16px;overflow:hidden">
+        <tr>
+          <td height="4" bgcolor="#0aa1e8" style="height:4px;line-height:4px;font-size:0;background:linear-gradient(90deg,#0aa1e8,#04dcd9,#6a2cc7,#f52998)">&nbsp;</td>
+        </tr>
+        <tr>
+          <td style="padding:32px 32px 8px">
+            ${LOGO_ATTACHMENT ? '<img src="cid:teemly-logo" alt="Teemly" width="115" height="32" style="display:block;height:32px;width:auto;border:0">' : `<div style="font-size:22px;font-weight:800;color:#0b1442;letter-spacing:-0.5px;${font}">Teemly</div>`}
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:16px 32px 0">
+            <h1 style="margin:0 0 20px;font-size:22px;line-height:1.3;font-weight:700;color:#09124b;${font}">${escapeHtml(reply.heading)}</h1>
+            <p style="margin:0 0 16px;font-size:15px;color:#0a1140;${font}">Hi ${escapeHtml(name)},</p>
+            ${reply.paragraphs.map((p) => `<p style="margin:0 0 16px;${body}">${escapeHtml(p)}</p>`).join('\n            ')}
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:8px 32px 8px">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f6f7fc;border-radius:12px">
+              <tr>
+                <td style="padding:18px 20px 6px;font-size:12px;font-weight:700;color:#6b7093;text-transform:uppercase;letter-spacing:0.6px;${font}">What happens next</td>
+              </tr>
+              ${reply.nextSteps
+                .map(
+                  (step, i) => `<tr>
+                <td style="padding:6px 20px ${i === reply.nextSteps.length - 1 ? '18px' : '6px'}">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td valign="top" width="24" style="padding-top:1px">
+                        <div style="width:22px;height:22px;line-height:22px;border-radius:50%;background:#09124b;color:#ffffff;font-size:12px;font-weight:700;text-align:center;${font}">${i + 1}</div>
+                      </td>
+                      <td style="padding-left:12px;font-size:14px;line-height:1.55;color:#0a1140;${font}">${escapeHtml(step)}</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>`,
+                )
+                .join('\n              ')}
+            </table>
+          </td>
+        </tr>
+        ${
+          links.length
+            ? `<tr>
+          <td style="padding:20px 32px 4px">
+            <p style="margin:0 0 12px;font-size:14px;color:#3d4266;${font}">In the meantime, you may find these useful:</p>
+            ${links
+              .map(
+                (l) =>
+                  `<a href="${escapeHtml(l.url)}" style="display:inline-block;margin:0 8px 8px 0;padding:10px 18px;border-radius:999px;background:#09124b;color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;${font}">${escapeHtml(l.label)} &rarr;</a>`,
+              )
+              .join('\n            ')}
+          </td>
+        </tr>`
+            : ''
+        }
+        <tr>
+          <td style="padding:16px 32px 32px">
+            <p style="margin:0 0 20px;${body}">If you have any questions, simply reply to this email.</p>
+            <p style="margin:0;font-size:15px;line-height:1.6;color:#0a1140;${font}">Kind regards,<br><strong>The Teemly Team</strong></p>
+          </td>
+        </tr>
+      </table>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px">
+        <tr>
+          <td align="center" style="padding:20px 16px 0;font-size:12px;line-height:1.6;color:#9297b3;${font}">
+            &copy; ${year} Teemly${SITE_URL ? ` &middot; <a href="${escapeHtml(SITE_URL)}" style="color:#6b7093;text-decoration:underline">${escapeHtml(SITE_URL.replace(/^https?:\/\//, ''))}</a>` : ''}<br>
+            You are receiving this email because this address was used to submit a form on the Teemly website. If this wasn’t you, please disregard this message.
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>`
   return { subject: reply.subject, text, html }
 }
 

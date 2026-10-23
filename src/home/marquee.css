@@ -1,3 +1,4 @@
+/* Logo-style strip under the hero: brand-coloured marks running slowly. */
 .home-v2 .h-marquee {
   position: relative;
   padding: 30px 0;
@@ -5,86 +6,100 @@
   border-bottom: 1px solid var(--h-line);
   background: linear-gradient(180deg, var(--h-bg), var(--h-bg-alt));
   overflow: hidden;
-  /* soft fade at both edges so words glide in and out */
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
 }
+/* Soft fade at both edges. Two still overlays in the section's own colours,
+   rather than a mask over the moving row: a mask made the browser repaint
+   the row on every frame, so it stuttered whenever the page was busy. */
+.home-v2 .h-marquee::before,
+.home-v2 .h-marquee::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  width: 10%;
+  pointer-events: none;
+  background: linear-gradient(180deg, var(--h-bg), var(--h-bg-alt));
+}
+.home-v2 .h-marquee::before {
+  left: 0;
+  -webkit-mask-image: linear-gradient(90deg, #000, transparent);
+  mask-image: linear-gradient(90deg, #000, transparent);
+}
+.home-v2 .h-marquee::after {
+  right: 0;
+  -webkit-mask-image: linear-gradient(270deg, #000, transparent);
+  mask-image: linear-gradient(270deg, #000, transparent);
+}
+.home-v2 .h-marquee-rail {
+  overflow: hidden;
+}
+/* its own GPU layer, so the movement runs off the main thread */
 .home-v2 .h-marquee-track {
   display: flex;
-  gap: 48px;
+  gap: 64px;
   width: max-content;
-  animation: h-marq 42s linear infinite;
+  will-change: transform;
+  backface-visibility: hidden;
+  animation: h-marq 40s linear infinite;
 }
 /* mouse only: on touch screens a tap leaves :hover stuck and froze the scroll */
 @media (hover: hover) {
-  .home-v2 .h-marquee:hover .h-marquee-track {
+  .home-v2 .h-marquee-rail:hover .h-marquee-track {
     animation-play-state: paused;
   }
 }
 .home-v2 .h-marquee-item {
   display: flex;
   align-items: center;
-  gap: 48px;
+  gap: 64px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
   white-space: nowrap;
 }
-.home-v2 .h-marquee-word {
-  font: 700 clamp(22px, 2.3vw, 32px) / 1.1 var(--h-font-display);
-  letter-spacing: -0.03em;
+/* each item reads like a customer logo: monochrome mark + wordmark */
+.home-v2 .h-marquee-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font: 700 clamp(20px, 1.9vw, 27px) / 1 var(--h-font-display);
+  letter-spacing: -0.025em;
   color: var(--h-heading);
-  transition: color 0.3s, transform 0.3s var(--ease, ease);
+  transition: color 0.3s;
 }
-/* every other word in the brand gradient, with a slow shimmer */
-.home-v2 .h-marquee-word.g {
-  background: var(--h-grad-brand);
-  background-size: 220% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: h-marq-sheen 6s ease-in-out infinite alternate;
-}
-.home-v2 .h-marquee-word:hover {
-  transform: translateY(-2px);
-}
-.home-v2 .h-marquee-word:not(.g):hover {
-  color: var(--h-blue);
-}
-
-/* the shared T mark between words: gentle bob and a soft glow */
-.home-v2 .h-marquee-sep {
-  position: relative;
+/* badges in the site's brand gradients, cycling blue, purple and pink */
+.home-v2 .h-marquee-mark {
   display: inline-grid;
   place-items: center;
-  line-height: 0;
-  animation: h-marq-bob 3.2s ease-in-out infinite;
-  animation-delay: var(--d, 0s);
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0aa1e8, #04dcd9);
+  box-shadow: 0 8px 18px -8px rgba(10, 161, 232, 0.55);
 }
-.home-v2 .h-marquee-sep::before {
-  content: '';
-  position: absolute;
-  inset: -8px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(7, 215, 217, 0.28), rgba(246, 45, 160, 0.12) 45%, transparent 70%);
-  animation: h-marq-glow 3.2s ease-in-out infinite;
-  animation-delay: var(--d, 0s);
+.home-v2 .h-marquee-logo:nth-child(3n + 2) .h-marquee-mark {
+  background: linear-gradient(135deg, #6a2cc7, #0aa1e8);
+  box-shadow: 0 8px 18px -8px rgba(106, 44, 199, 0.5);
 }
-.home-v2 .h-marquee-sep svg {
-  position: relative;
+.home-v2 .h-marquee-logo:nth-child(3n) .h-marquee-mark {
+  background: linear-gradient(135deg, #f52998, #6a2cc7);
+  box-shadow: 0 8px 18px -8px rgba(245, 41, 152, 0.5);
+}
+.home-v2 .h-marquee-mark svg {
+  width: 20px;
+  height: 20px;
+  color: #fff;
+}
+@media (hover: hover) {
+  .home-v2 .h-marquee-logo:hover {
+    color: var(--h-blue);
+  }
 }
 
 @keyframes h-marq {
-  to { transform: translateX(-50%); }
-}
-@keyframes h-marq-sheen {
-  from { background-position: 0% 50%; }
-  to { background-position: 100% 50%; }
-}
-@keyframes h-marq-bob {
-  0%, 100% { transform: translateY(2px) rotate(-4deg); }
-  50% { transform: translateY(-3px) rotate(4deg); }
-}
-@keyframes h-marq-glow {
-  0%, 100% { opacity: 0.35; transform: scale(0.85); }
-  50% { opacity: 1; transform: scale(1.1); }
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
 }
 
 @media (max-width: 600px) {
@@ -93,19 +108,21 @@
   }
   .home-v2 .h-marquee-track,
   .home-v2 .h-marquee-item {
-    gap: 32px;
+    gap: 40px;
   }
-  .home-v2 .h-marquee-sep svg {
-    width: auto;
-    height: 24px;
+  .home-v2 .h-marquee-mark {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+  }
+  .home-v2 .h-marquee-mark svg {
+    width: 18px;
+    height: 18px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .home-v2 .h-marquee-track,
-  .home-v2 .h-marquee-word.g,
-  .home-v2 .h-marquee-sep,
-  .home-v2 .h-marquee-sep::before {
+  .home-v2 .h-marquee-track {
     animation: none;
   }
 }
