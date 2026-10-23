@@ -18,64 +18,34 @@ export default function SolutionsTeaser() {
   const railRef = useRef(null)
   const trackRef = useRef(null)
   const holdUntil = useRef(0)
+  const stepRef = useRef(() => {})
   const cardRefs = useRef([])
   cardRefs.current = []
   const addCard = (el) => el && cardRefs.current.push(el)
 
+  // card tilt (mouse only) and the cards' entrance
   useEffect(() => {
-    const rail = railRef.current
-    if (!rail) return undefined
-    const reduced = prefersReducedMotion()
-
-    let drag = null
-    function onDown(e) {
-      if (e.pointerType !== 'mouse') return
-      drag = { x: e.clientX, s: rail.scrollLeft, moved: false }
-      rail.classList.add('drag')
-    }
-    function onMove(e) {
-      if (!drag) return
-      const dx = e.clientX - drag.x
-      if (Math.abs(dx) > 4) drag.moved = true
-      rail.scrollLeft = drag.s - dx
-    }
-    function onUp() {
-      if (!drag) return
-      rail.classList.remove('drag')
-      drag = null
-    }
-    rail.addEventListener('pointerdown', onDown)
-    window.addEventListener('pointermove', onMove)
-    window.addEventListener('pointerup', onUp)
-
+    if (prefersReducedMotion()) return undefined
     const tiltHandlers = []
-    let stopCards = () => {}
-    if (!reduced) {
-      cardRefs.current.forEach((c) => {
-        const move = (e) => {
-          if (drag || e.pointerType !== 'mouse') return
-          const r = c.getBoundingClientRect()
-          const x = (e.clientX - r.left) / r.width - 0.5
-          const y = (e.clientY - r.top) / r.height - 0.5
-          c.style.transform = `perspective(900px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-6px)`
-          c.style.setProperty('--mx', `${e.clientX - r.left}px`)
-          c.style.setProperty('--my', `${e.clientY - r.top}px`)
-        }
-        const leave = () => {
-          c.style.transform = ''
-        }
-        c.addEventListener('pointermove', move)
-        c.addEventListener('pointerleave', leave)
-        tiltHandlers.push([c, move, leave])
-      })
-
-      stopCards = reveal(cardRefs.current, { x: isPhone() ? 24 : 100, opacity: 0 }, { stagger: 0.08, duration: isPhone() ? 0.4 : 1 })
-    }
-
+    cardRefs.current.forEach((c) => {
+      const move = (e) => {
+        if (railRef.current?.classList.contains('drag') || e.pointerType !== 'mouse') return
+        const r = c.getBoundingClientRect()
+        const x = (e.clientX - r.left) / r.width - 0.5
+        const y = (e.clientY - r.top) / r.height - 0.5
+        c.style.transform = `perspective(900px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-6px)`
+        c.style.setProperty('--mx', `${e.clientX - r.left}px`)
+        c.style.setProperty('--my', `${e.clientY - r.top}px`)
+      }
+      const leave = () => {
+        c.style.transform = ''
+      }
+      c.addEventListener('pointermove', move)
+      c.addEventListener('pointerleave', leave)
+      tiltHandlers.push([c, move, leave])
+    })
+    const stopCards = reveal(cardRefs.current, { x: isPhone() ? 24 : 100, opacity: 0 }, { stagger: 0.08, duration: isPhone() ? 0.4 : 1 })
     return () => {
-      rail.removeEventListener('pointerdown', onDown)
-      window.removeEventListener('pointermove', onMove)
-      window.removeEventListener('pointerup', onUp)
       tiltHandlers.forEach(([c, move, leave]) => {
         c.removeEventListener('pointermove', move)
         c.removeEventListener('pointerleave', leave)
@@ -84,114 +54,221 @@ export default function SolutionsTeaser() {
     }
   }, [])
 
-  // Continuous drift. The cards sit in a track that is moved with a GPU
-  // transform (sub-pixel, so the motion is smooth at any speed). A copy of the
-  // cards follows the originals, so when the drift has moved one full set it
-  // wraps back seamlessly. It eases to a stop while the visitor hovers,
-  // focuses, drags or uses the arrows, and stops whenever it is off screen.
+  // One position (`offset`) moves the cards, whatever moves it: the slow
+  // drift, the arrows, a mouse drag or a finger swipe. The track is shifted
+  // with a GPU transform and a copy of the cards follows the originals, so the
+  // position simply wraps around one set of cards in either direction: Back
+  // from the first card shows the last ones, and there is never an empty end.
+  // (Mixing native scrolling with the drift used to leave nothing before the
+  // first card, and made swipes jump on phones.)
   useEffect(() => {
     const rail = railRef.current
     const track = trackRef.current
-    if (!rail || !track || prefersReducedMotion()) return undefined
-    rail.classList.add('drift')
+    if (!rail || !track) return undefined
+    const reduced = prefersReducedMotion()
+    rail.classList.add('loop')
+    let loopW = 0
+    let step = 0
+    let offset = 0
+    let speed = 0 // drift speed, eased
+    let glide = 0 // velocity left over from a swipe, px/s
+    let target = null // where an arrow press is heading
     let hovering = false
     let visible = false
-    let offset = 0
-    let speed = 0
-    let last = performance.now()
+    let drag = null
     let raf = 0
-    let loopW = 0
-    // the rail's scroll position, cached from scroll events: reading
-    // scrollLeft inside the frame loop would force a layout on every frame
-    let scrollX = rail.scrollLeft
-    const onScroll = () => (scrollX = rail.scrollLeft)
-    rail.addEventListener('scroll', onScroll, { passive: true })
+    let last = performance.now()
 
     const measure = () => {
       const first = track.querySelector('.h-sol-card')
       const clone = track.querySelector('.h-sol-card.clone')
+      const second = first?.nextElementSibling
       loopW = first && clone ? clone.offsetLeft - first.offsetLeft : 0
+      step = first && second ? second.offsetLeft - first.offsetLeft : 0
     }
     measure()
     const ro = new ResizeObserver(measure)
     ro.observe(track)
 
+    const wrap = (x) => (loopW > 0 ? ((x % loopW) + loopW) % loopW : Math.max(0, x))
+    const paint = () => {
+      track.style.transform = `translate3d(${-wrap(offset).toFixed(2)}px, 0, 0)`
+    }
     const hold = (ms) => {
-      holdUntil.current = performance.now() + ms
+      holdUntil.current = Math.max(holdUntil.current, performance.now() + ms)
     }
 
     function tick(now) {
       const dt = Math.min(now - last, 50) / 1000
       last = now
-      const paused = hovering || now < holdUntil.current || rail.classList.contains('drag')
-      // ease the speed towards its target so starts and stops are gentle
-      const target = paused ? 0 : DRIFT_SPEED
-      speed += (target - speed) * Math.min(1, dt * 4)
-      offset += speed * dt
-      if (loopW > 0) {
-        // keep (manual scroll + drift) inside one set of cards
-        if (scrollX + offset >= loopW) {
-          if (scrollX >= loopW) {
-            scrollX -= loopW
-            rail.scrollLeft = scrollX
-          } else offset -= loopW
+      if (target !== null) {
+        // an arrow press: ease to the next card
+        offset += (target - offset) * Math.min(1, dt * (reduced ? 60 : 9))
+        if (Math.abs(target - offset) < 0.5) {
+          offset = target
+          target = null
         }
+      } else if (glide && !drag) {
+        // a swipe keeps going for a moment and slows down naturally
+        offset += glide * dt
+        glide *= Math.pow(0.04, dt)
+        if (Math.abs(glide) < 8) glide = 0
       }
-      track.style.transform = `translate3d(${-offset.toFixed(2)}px, 0, 0)`
-      raf = visible ? requestAnimationFrame(tick) : 0
+      const paused = reduced || hovering || drag || target !== null || glide || now < holdUntil.current
+      speed += ((paused ? 0 : DRIFT_SPEED) - speed) * Math.min(1, dt * 4)
+      offset += speed * dt
+      // wrap into one set of cards; anything measured against the old value
+      // moves with it, so a wrap is never visible
+      const before = offset
+      offset = wrap(offset)
+      const shift = offset - before
+      if (shift) {
+        if (target !== null) target += shift
+        if (drag) drag.o += shift
+      }
+      paint()
+      const busy = !reduced || target !== null || glide || drag
+      raf = visible && busy ? requestAnimationFrame(tick) : 0
     }
     const start = () => {
-      if (!raf) {
+      if (!raf && visible) {
         last = performance.now()
         raf = requestAnimationFrame(tick)
       }
     }
+    // an arrow press, from the buttons or the keyboard
+    stepRef.current = (dir) => {
+      if (!step) return
+      glide = 0
+      hold(2500)
+      const from = target ?? offset
+      // land on a card edge, one card further in the chosen direction
+      target = Math.round(from / step) * step + dir * step
+      if (Math.abs(target - from) < step * 0.25) target += dir * step
+      start()
+    }
+
+    // drag with the mouse, swipe with a finger; vertical swipes stay with
+    // the page (touch-action: pan-y in solutions.css)
+    let moved = false
+    let samples = []
+    function onDown(e) {
+      if (e.button !== 0) return
+      drag = { x: e.clientX, y: e.clientY, o: offset, id: e.pointerId, horizontal: e.pointerType === 'mouse' }
+      moved = false
+      samples = [{ t: performance.now(), x: e.clientX }]
+      target = null
+      glide = 0
+      start()
+    }
+    function onMove(e) {
+      if (!drag || e.pointerId !== drag.id) return
+      const dx = e.clientX - drag.x
+      const dy = e.clientY - drag.y
+      if (!drag.horizontal) {
+        if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return
+        if (Math.abs(dy) > Math.abs(dx)) {
+          drag = null // the page is being scrolled
+          return
+        }
+        drag.horizontal = true
+      }
+      if (Math.abs(dx) > 4 && !moved) {
+        moved = true
+        rail.classList.add('drag')
+      }
+      offset = drag.o - dx
+      samples.push({ t: performance.now(), x: e.clientX })
+      if (samples.length > 5) samples.shift()
+      paint()
+    }
+    function onUp(e) {
+      if (!drag || e.pointerId !== drag.id) return
+      if (moved && samples.length > 1) {
+        const a = samples[0]
+        const b = samples[samples.length - 1]
+        glide = (-(b.x - a.x) / Math.max(1, b.t - a.t)) * 1000
+      }
+      drag = null
+      rail.classList.remove('drag')
+      hold(2500)
+      start()
+    }
+    // a drag that ends on a card's link must not open it
+    const onClick = (e) => {
+      if (moved) {
+        e.preventDefault()
+        e.stopPropagation()
+        moved = false
+      }
+    }
+    rail.addEventListener('pointerdown', onDown)
+    window.addEventListener('pointermove', onMove)
+    window.addEventListener('pointerup', onUp)
+    window.addEventListener('pointercancel', onUp)
+    rail.addEventListener('click', onClick, true)
+
+    // keyboard: ← → move a card when the rail has focus. Tabbing to a card's
+    // link makes the browser scroll the rail itself; that scroll is folded
+    // into the position instead.
+    const onKey = (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        e.preventDefault()
+        stepRef.current(e.key === 'ArrowRight' ? 1 : -1)
+      }
+    }
+    const onScroll = () => {
+      if (!rail.scrollLeft) return
+      offset = wrap(offset + rail.scrollLeft)
+      rail.scrollLeft = 0
+      hold(2500)
+      paint()
+    }
+    rail.addEventListener('keydown', onKey)
+    rail.addEventListener('scroll', onScroll, { passive: true })
 
     const io = new IntersectionObserver(([e]) => {
       visible = e.isIntersecting
       if (visible) start()
     })
     io.observe(rail)
-    const enter = () => (hovering = true)
+    const enter = (e) => {
+      if (e.pointerType === 'mouse') hovering = true
+    }
     const leave = () => {
       hovering = false
       hold(400)
     }
-    const userScroll = () => hold(2000)
+    // a tap also focuses the rail (it is tabbable); only keyboard focus pauses
+    const focusIn = (e) => {
+      if (e.target.matches(':focus-visible')) hovering = true
+    }
     rail.addEventListener('pointerenter', enter)
     rail.addEventListener('pointerleave', leave)
-    // a tap also focuses the rail (it is tabbable), which used to stop the
-    // drift until the visitor tapped elsewhere; only keyboard focus pauses it
-    const focusIn = (e) => {
-      if (e.target.matches(':focus-visible')) enter()
-    }
     rail.addEventListener('focusin', focusIn)
     rail.addEventListener('focusout', leave)
-    rail.addEventListener('wheel', userScroll, { passive: true })
-    rail.addEventListener('touchstart', userScroll, { passive: true })
+    paint()
 
     return () => {
       cancelAnimationFrame(raf)
       io.disconnect()
       ro.disconnect()
+      stepRef.current = () => {}
       track.style.transform = ''
-      rail.classList.remove('drift')
+      rail.classList.remove('loop', 'drag')
+      rail.removeEventListener('pointerdown', onDown)
+      window.removeEventListener('pointermove', onMove)
+      window.removeEventListener('pointerup', onUp)
+      window.removeEventListener('pointercancel', onUp)
+      rail.removeEventListener('click', onClick, true)
+      rail.removeEventListener('keydown', onKey)
       rail.removeEventListener('scroll', onScroll)
       rail.removeEventListener('pointerenter', enter)
       rail.removeEventListener('pointerleave', leave)
       rail.removeEventListener('focusin', focusIn)
       rail.removeEventListener('focusout', leave)
-      rail.removeEventListener('wheel', userScroll)
-      rail.removeEventListener('touchstart', userScroll)
     }
   }, [])
-
-  function railStep(dir) {
-    holdUntil.current = performance.now() + 2000
-    const c = railRef.current.querySelector('.h-sol-card')
-    if (!c) return
-    railRef.current.scrollBy({ left: dir * (c.offsetWidth + 20), behavior: prefersReducedMotion() ? 'auto' : 'smooth' })
-  }
 
   return (
     <section className="h-solutions">
@@ -202,10 +279,10 @@ export default function SolutionsTeaser() {
           <p>Seven roles, one shared record — everyone gets the view built for their job, not a one-size-fits-all dashboard.</p>
         </div>
         <div className="h-rail-btns">
-          <button type="button" aria-label="Previous" onClick={() => railStep(-1)}>
+          <button type="button" aria-label="Previous" onClick={() => stepRef.current(-1)}>
             <Icon name="arrowRight" size={16} className="flip" />
           </button>
-          <button type="button" aria-label="Next" onClick={() => railStep(1)}>
+          <button type="button" aria-label="Next" onClick={() => stepRef.current(1)}>
             <Icon name="arrowRight" size={16} />
           </button>
         </div>
@@ -226,7 +303,7 @@ export default function SolutionsTeaser() {
               </Link>
             </article>
           ))}
-          {/* copy of the cards so the slow drift can loop seamlessly */}
+          {/* copy of the cards so the rail loops seamlessly in both directions */}
           {featured.map((s) => (
             <article className="h-sol-card h-spot clone" key={`clone-${s.to}`} aria-hidden="true">
               <span className="h-sol-role">

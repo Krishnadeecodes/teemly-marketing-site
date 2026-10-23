@@ -29,9 +29,15 @@
   justify-content: center;
   transition: background 0.2s, border-color 0.2s;
 }
-.home-v2 .h-rail-btns button:hover {
-  background: var(--h-pink);
-  border-color: var(--h-pink);
+/* mouse only: on phones a tapped arrow used to stay pink */
+@media (hover: hover) {
+  .home-v2 .h-rail-btns button:hover {
+    background: var(--h-pink);
+    border-color: var(--h-pink);
+  }
+}
+.home-v2 .h-rail-btns button:active {
+  transform: scale(0.94);
 }
 .home-v2 .h-rail-btns svg.flip {
   transform: rotate(180deg);
@@ -45,16 +51,15 @@
   margin: clamp(40px, 6vw, 72px) auto 0;
   display: flex;
   gap: 22px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
+  /* the cards are moved by SolutionsTeaser.jsx (drift, arrows, drag and
+     swipe all move one position), not by native scrolling; vertical swipes
+     still scroll the page */
+  overflow: hidden;
+  touch-action: pan-y;
   padding: 14px 0 34px;
-  scrollbar-width: none;
   cursor: grab;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 48px, #000 calc(100% - 48px), transparent);
   mask-image: linear-gradient(90deg, transparent, #000 48px, #000 calc(100% - 48px), transparent);
-}
-.home-v2 .h-sol-rail::-webkit-scrollbar {
-  display: none;
 }
 /* the cards' track, moved by the drift with a transform */
 .home-v2 .h-sol-track {
@@ -63,21 +68,16 @@
   flex: 0 0 auto;
   will-change: transform;
 }
-/* the looping copies only exist for the drift; a still rail ends at the last card */
-.home-v2 .h-sol-rail:not(.drift) .h-sol-card.clone {
+/* the copies let the rail loop in both directions; without the script the
+   rail just shows the original cards */
+.home-v2 .h-sol-rail:not(.loop) .h-sol-card.clone {
   display: none;
-}
-/* while drifting, snapping would fight the movement */
-.home-v2 .h-sol-rail.drift {
-  scroll-snap-type: none;
 }
 .home-v2 .h-sol-rail.drag {
   cursor: grabbing;
-  scroll-snap-type: none;
 }
 .home-v2 .h-sol-card {
   flex: 0 0 min(300px, 78vw);
-  scroll-snap-align: start;
   background: var(--h-surface);
   border: 1px solid var(--h-line);
   border-radius: var(--h-radius-xl);
