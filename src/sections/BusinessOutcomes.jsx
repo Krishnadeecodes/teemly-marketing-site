@@ -60,7 +60,6 @@ export default function BusinessOutcomes() {
           <Reveal as="article" className="h-oc h-oc-a h-spot">
             <div className="h-oc-top">
               <h3>Software spend, right-sized</h3>
-              <span className="h-illus">Illustrative</span>
             </div>
             <p>Tool Intelligence flags underused licences automatically, with the monthly cost attached — not buried in a spreadsheet nobody opens.</p>
             <div className="h-oc-ring">
@@ -108,7 +107,6 @@ export default function BusinessOutcomes() {
           <Reveal as="article" className="h-oc h-oc-c h-spot" delay={0.14}>
             <div className="h-oc-top">
               <h3>Attendance that enforces itself</h3>
-              <span className="h-illus">Illustrative</span>
             </div>
             <p>Late arrivals and absences are flagged automatically from real activity events — nobody has to chase a timesheet.</p>
             <div className="h-stackbar" aria-hidden="true">

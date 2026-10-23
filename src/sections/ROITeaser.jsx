@@ -73,7 +73,6 @@ export default function ROITeaser() {
           <p className="h-roi-assume">
             <strong>{DEMO.employees} employees</strong> × <strong>{fmt(DEMO.cost)}/yr</strong> × <strong>{DEMO.pct}% productivity opportunity</strong>.
           </p>
-          <span className="h-illus">Illustrative example — not your numbers</span>
         </Reveal>
       </div>
     </section>

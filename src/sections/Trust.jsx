@@ -41,7 +41,6 @@ function PolicyPanel() {
     <div className="h-policy">
       <div className="h-policy-head">
         <b>Workspace privacy policy</b>
-        <span className="h-illus">Illustrative settings</span>
       </div>
       {policyRows.map((r, i) => (
         <div className="h-pol" key={r.label}>

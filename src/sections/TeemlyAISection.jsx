@@ -79,7 +79,6 @@ function Answer({ item, barsOn, animate = false, leaving = false }) {
         </div>
         <div className={`h-src${animate ? ' h-fadein' : ''}`}>
           <span>Sources: work activity, team structure</span>
-          <span className="h-illus">Illustrative</span>
         </div>
       </div>
     </div>
