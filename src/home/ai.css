@@ -42,7 +42,7 @@
   font: 500 15px/1.4 var(--h-font-body);
   cursor: pointer;
   position: relative;
-  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s, background-color 0.25s;
 }
 .home-v2 .h-prompts button::before {
   content: '';
@@ -156,6 +156,15 @@
   font-weight: 500;
   min-height: 44px;
 }
+.home-v2 .h-msg-typing {
+  display: grid;
+}
+.home-v2 .h-msg-typing > span {
+  grid-area: 1 / 1;
+}
+.home-v2 .h-msg-ghost {
+  visibility: hidden;
+}
 .home-v2 .h-caret {
   display: inline-block;
   width: 2px;
@@ -257,21 +266,13 @@
   justify-content: space-between;
   align-items: center;
 }
-/* the previous answer, dimmed while the next question is typed */
-.home-v2 .h-msg-stale {
-  animation: h-dim 0.35s ease forwards;
+/* the previous answer fades out as the next question starts typing */
+.home-v2 .h-msg-leaving {
+  animation: h-fade-out 0.3s ease forwards;
+  pointer-events: none;
 }
-@keyframes h-dim {
-  to { opacity: 0.4; }
-}
-/* "thinking" dots sized to sit inside the 32px avatar */
-.home-v2 .h-av .h-thinking {
-  gap: 3px;
-  padding: 0;
-}
-.home-v2 .h-av .h-thinking i {
-  width: 5px;
-  height: 5px;
+@keyframes h-fade-out {
+  to { opacity: 0; }
 }
 .home-v2 .h-fadein {
   animation: h-fi 0.5s both;

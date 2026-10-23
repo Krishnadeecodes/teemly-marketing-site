@@ -52,14 +52,15 @@ function ThinkingDots() {
   )
 }
 
-// `stale`: the previous answer, kept on screen (dimmed) while the next
-// question types, so the console never empties between questions; its avatar
-// shows the "thinking" dots once the question is typed.
-function Answer({ item, barsOn, animate = false, stale = false, thinking = false }) {
+// `leaving`: the previous answer fading out while the next question types,
+// so it clears smoothly instead of vanishing in one frame.
+function Answer({ item, barsOn, animate = false, leaving = false }) {
   const fade = animate ? 'h-fadein' : undefined
   return (
-    <div className={`h-msg-a${stale ? ' h-msg-stale' : ''}`}>
-      <div className="h-av">{thinking ? <ThinkingDots /> : <Icon name="sparkle" size={16} />}</div>
+    <div className={`h-msg-a${leaving ? ' h-msg-leaving' : ''}`} aria-hidden={leaving || undefined}>
+      <div className="h-av">
+        <Icon name="sparkle" size={16} />
+      </div>
       <div className="h-msg-body">
         <p className={fade}>{item.a}</p>
         <div className={fade}>
@@ -234,17 +235,28 @@ export default function TeemlyAISection() {
               </div>
             ))}
             <div className="h-console-layer" aria-live="polite">
-              <div className="h-msg-u">
-                {typed}
-                {phase === 'typing' && <span className="h-caret" />}
+              {/* the full question sits invisibly underneath, so the bubble
+                  is its final size from the start and the text types into it
+                  instead of the bubble shrinking and stretching each time */}
+              <div className="h-msg-u h-msg-typing">
+                <span className="h-msg-ghost" aria-hidden="true">
+                  {QA[active].q}
+                </span>
+                <span>
+                  {typed}
+                  {phase === 'typing' && <span className="h-caret" />}
+                </span>
               </div>
               {answered && <Answer key={shown} item={QA[shown]} barsOn={barsOn} animate />}
-              {!answered && shown !== null && (
-                <Answer key={`stale-${shown}`} item={QA[shown]} barsOn stale thinking={phase === 'thinking'} />
+              {phase === 'typing' && shown !== null && (
+                <Answer key={`leaving-${shown}`} item={QA[shown]} barsOn leaving />
               )}
-              {!answered && shown === null && phase === 'thinking' && (
+              {phase === 'thinking' && (
                 <div className="h-msg-a">
                   <div className="h-av">
+                    <Icon name="sparkle" size={16} />
+                  </div>
+                  <div className="h-msg-body">
                     <ThinkingDots />
                   </div>
                 </div>
