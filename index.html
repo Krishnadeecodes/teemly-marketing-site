@@ -20,9 +20,23 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Boot screen: shown until the app's first render replaces #root. It stays
+         blank on a fast connection and only brings in the mark and a progress
+         bar when loading takes long enough to notice (slow phone networks). -->
+    <style>
+      html, body { margin: 0; background: #fff; }
+      .boot { position: fixed; inset: 0; display: grid; place-items: center; background: #fff; }
+      .boot img { width: 56px; height: 56px; opacity: 0; animation: boot-in 0.4s ease 0.35s forwards, boot-pulse 1.6s ease-in-out 0.75s infinite; }
+      .boot::before { content: ''; position: fixed; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #0187e0, #07d7d9, #f62da0); transform-origin: 0 50%; opacity: 0; animation: boot-bar 6s cubic-bezier(0.1, 0.7, 0.2, 1) 0.35s forwards; }
+      @keyframes boot-in { to { opacity: 1; } }
+      @keyframes boot-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.92); } }
+      @keyframes boot-bar { from { opacity: 1; transform: scaleX(0); } to { opacity: 1; transform: scaleX(0.9); } }
+      @media (prefers-reduced-motion: reduce) { .boot img { animation: boot-in 0.01s 0.35s forwards; } }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><div class="boot" role="status" aria-label="Loading Teemly"><img src="/favicon.svg?v=2" alt="" /></div></div>
+    <noscript>Teemly needs JavaScript to run. Please enable it to view this site.</noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

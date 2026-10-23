@@ -12,7 +12,9 @@ captureAttribution()
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
+    {/* startTransition: while the next page's code loads, the current page
+        stays on screen instead of blanking to a loading state */}
+    <BrowserRouter future={{ v7_startTransition: true }}>
       <App />
     </BrowserRouter>
   </React.StrictMode>,

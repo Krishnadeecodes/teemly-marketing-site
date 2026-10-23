@@ -4,6 +4,7 @@ import Logo from '../components/Logo.jsx'
 import FitScale from '../components/FitScale.jsx'
 import SplitHeading from '../home/SplitHeading.jsx'
 import { gsap, prefersReducedMotion } from '../home/useHomeScroll.js'
+import { reveal } from '../home/reveal.js'
 import '../home/model.css'
 
 /* ---- Product screens, one per step (illustrative sample data) ---- */
@@ -266,10 +267,7 @@ export default function TeemlyModel() {
     })
     mm.add('(max-width: 900px)', () => {
       const panels = trackRef.current ? trackRef.current.querySelectorAll('.h-panel') : []
-      panels.forEach((p) => {
-        gsap.from(p, { y: 14, opacity: 0, duration: 0.45, ease: 'power2.out', scrollTrigger: { trigger: p, start: 'top 98%', once: true } })
-      })
-      return undefined
+      return reveal(panels, { y: 14, opacity: 0 }, { phone: true })
     })
     return () => mm.revert()
   }, [])

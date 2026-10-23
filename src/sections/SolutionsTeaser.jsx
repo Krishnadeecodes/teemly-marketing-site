@@ -2,7 +2,8 @@ import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import SplitHeading from '../home/SplitHeading.jsx'
 import Icon from '../components/Icon.jsx'
-import { gsap, isPhone, prefersReducedMotion } from '../home/useHomeScroll.js'
+import { isPhone, prefersReducedMotion } from '../home/useHomeScroll.js'
+import { reveal } from '../home/reveal.js'
 import { solutionsLinks } from '../data/navigation.js'
 import '../home/solutions.css'
 
@@ -48,7 +49,7 @@ export default function SolutionsTeaser() {
     window.addEventListener('pointerup', onUp)
 
     const tiltHandlers = []
-    let cardTween = null
+    let stopCards = () => {}
     if (!reduced) {
       cardRefs.current.forEach((c) => {
         const move = (e) => {
@@ -68,15 +69,7 @@ export default function SolutionsTeaser() {
         tiltHandlers.push([c, move, leave])
       })
 
-      const phone = isPhone()
-      cardTween = gsap.from(cardRefs.current, {
-        x: phone ? 24 : 100,
-        opacity: 0,
-        stagger: phone ? 0 : 0.08,
-        duration: phone ? 0.45 : 1,
-        ease: phone ? 'power2.out' : 'power3.out',
-        scrollTrigger: { trigger: rail, start: phone ? 'top 98%' : 'top 85%', once: true },
-      })
+      stopCards = reveal(cardRefs.current, { x: isPhone() ? 24 : 100, opacity: 0 }, { stagger: 0.08, duration: isPhone() ? 0.4 : 1 })
     }
 
     return () => {
@@ -87,10 +80,7 @@ export default function SolutionsTeaser() {
         c.removeEventListener('pointermove', move)
         c.removeEventListener('pointerleave', leave)
       })
-      if (cardTween) {
-        cardTween.scrollTrigger && cardTween.scrollTrigger.kill()
-        cardTween.revert()
-      }
+      stopCards()
     }
   }, [])
 

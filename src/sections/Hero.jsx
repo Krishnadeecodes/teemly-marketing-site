@@ -1,10 +1,10 @@
-import { useEffect, useRef } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import HeroDashboard from '../components/HeroDashboard.jsx'
 import FitScale from '../components/FitScale.jsx'
 import { useMagnetic } from '../home/useMagnetic.js'
-import { gsap, prefersReducedMotion } from '../home/useHomeScroll.js'
+import { gsap, isPhone, prefersReducedMotion } from '../home/useHomeScroll.js'
 import '../home/hero.css'
 
 const CHIPS = [
@@ -28,7 +28,9 @@ export default function Hero() {
   introRefs.current = []
   const addIntro = (el) => el && introRefs.current.push(el)
 
-  useEffect(() => {
+  // Layout effect: the intro states are applied before the first paint, so the
+  // headline never shows, vanishes and slides back in.
+  useLayoutEffect(() => {
     const reduced = prefersReducedMotion()
     const words = l1Ref.current ? l1Ref.current.querySelectorAll('.w > span') : []
     const chips = heroRef.current ? heroRef.current.querySelectorAll('.h-hv-chip') : []
@@ -47,15 +49,20 @@ export default function Hero() {
       return undefined
     }
 
-    gsap.set(words, { yPercent: 110 })
-    gsap.set([l2Ref.current, ...introRefs.current], { y: 24, opacity: 0 })
-
     const tl = gsap.timeline({ defaults: { ease: 'expo.out' } })
-    tl.to(words, { yPercent: 0, duration: 1.1, stagger: 0.05 })
-      .to(l2Ref.current, { y: 0, opacity: 1, duration: 1 }, '-=0.8')
-      .to(introRefs.current, { y: 0, opacity: 1, duration: 0.9, stagger: 0.08 }, '-=0.8')
-      .from(chips, { y: 16, opacity: 0, duration: 0.7 }, 0.2)
-      .from(flow, { opacity: 0, duration: 0.6 }, 0.2)
+    if (isPhone()) {
+      // Phones: the headline, intro and buttons are there from the first
+      // frame; only the artwork below them eases in.
+      tl.from([chips, flow], { opacity: 0, duration: 0.5 }, 0)
+    } else {
+      gsap.set(words, { yPercent: 110 })
+      gsap.set([l2Ref.current, ...introRefs.current], { y: 24, opacity: 0 })
+      tl.to(words, { yPercent: 0, duration: 0.9, stagger: 0.04 })
+        .to(l2Ref.current, { y: 0, opacity: 1, duration: 0.8 }, 0.15)
+        .to(introRefs.current, { y: 0, opacity: 1, duration: 0.8, stagger: 0.06 }, 0.25)
+        .from(chips, { y: 16, opacity: 0, duration: 0.7 }, 0.2)
+        .from(flow, { opacity: 0, duration: 0.6 }, 0.2)
+    }
 
     // The dashboard arrives as one finished screen alongside the headline:
     // every card, number and row is present at once (no per-item stagger).

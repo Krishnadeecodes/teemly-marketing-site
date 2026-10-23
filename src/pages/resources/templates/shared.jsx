@@ -7,8 +7,8 @@ import { toEmbedUrl } from '../../../lib/video.js'
 import { formatDate } from '../../../lib/resourcesApi.js'
 import { splitPair } from '../../../lib/resourceTemplates.js'
 import SplitHeading from '../../../home/SplitHeading.jsx'
-import { gsap, prefersReducedMotion } from '../../../home/useHomeScroll.js'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { gsap, isPhone, prefersReducedMotion } from '../../../home/useHomeScroll.js'
+import { reveal } from '../../../home/reveal.js'
 
 export const itemUrl = (item) => `/resources/${item.type}/${item.slug}`
 
@@ -50,37 +50,24 @@ const SCROLL_PARTS =
 const topLevel = (els) => els.filter((el) => !els.some((other) => other !== el && other.contains(el)))
 
 // Runs the page's entrance and scroll animations once its content is on screen.
-// `key` changes when a different page (or its data) is shown.
+// `key` changes when a different page (or its data) is shown. On phones the
+// banner details are simply there with the title; nothing waits to slide in.
 export function useResourceMotion(key) {
   useLayoutEffect(() => {
     const root = document.querySelector('main')
     if (!key || !root || prefersReducedMotion()) return undefined
-    const ctx = gsap.context(() => {
-      const heroes = [...root.querySelectorAll('.rt-hero, .rt-theatre')]
-      const inHero = (el) => heroes.some((h) => h.contains(el))
-      const intro = topLevel([...root.querySelectorAll(HERO_PARTS)].filter(inHero))
-      if (intro.length) {
-        gsap.from(intro, { y: 24, opacity: 0, duration: 0.8, ease: 'power3.out', stagger: 0.06, delay: 0.15, clearProps: 'transform,opacity' })
-      }
-      const items = topLevel([...root.querySelectorAll(SCROLL_PARTS)].filter((el) => !inHero(el)))
-      if (items.length) {
-        gsap.set(items, { y: 32, opacity: 0 })
-        ScrollTrigger.batch(items, {
-          start: 'top 92%',
-          once: true,
-          onEnter: (batch) =>
-            gsap.to(batch, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', stagger: 0.08, overwrite: true, clearProps: 'transform,opacity' }),
-        })
-      }
-    }, root)
-    // Images and fonts settle the layout after the first paint.
-    const refresh = () => ScrollTrigger.refresh()
-    const raf = requestAnimationFrame(refresh)
-    window.addEventListener('load', refresh)
+    const heroes = [...root.querySelectorAll('.rt-hero, .rt-theatre')]
+    const inHero = (el) => heroes.some((h) => h.contains(el))
+    const intro = isPhone() ? [] : topLevel([...root.querySelectorAll(HERO_PARTS)].filter(inHero))
+    const items = topLevel([...root.querySelectorAll(SCROLL_PARTS)].filter((el) => !inHero(el)))
+    if (intro.length) {
+      gsap.from(intro, { y: 24, opacity: 0, duration: 0.7, ease: 'power3.out', stagger: 0.05, delay: 0.1, clearProps: 'transform,opacity' })
+    }
+    const stopItems = reveal(items, { y: 32, opacity: 0 }, { duration: 0.8, stagger: 0.08 })
     return () => {
-      cancelAnimationFrame(raf)
-      window.removeEventListener('load', refresh)
-      ctx.revert()
+      stopItems()
+      gsap.killTweensOf(intro)
+      gsap.set(intro, { clearProps: 'transform,opacity' })
     }
   }, [key])
 }

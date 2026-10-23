@@ -1,11 +1,33 @@
 import { Outlet, useLocation } from 'react-router-dom'
-import { useEffect, useLayoutEffect } from 'react'
+import { lazy, Suspense, useEffect, useLayoutEffect, useState } from 'react'
 import Header from './Header.jsx'
 import Footer from './Footer.jsx'
-import ChatbotWidget from './ChatbotWidget.jsx'
 import { prefetchResourcePage } from '../lib/resourcesApi.js'
 
+// The chat assistant (and its answer data) loads once the page is up and the
+// browser is idle, so it never competes with the page's own first paint.
+const ChatbotWidget = lazy(() => import('./ChatbotWidget.jsx'))
+
+function useWhenIdle() {
+  const [ready, setReady] = useState(false)
+  useEffect(() => {
+    let id = 0
+    const go = () => {
+      id = window.requestIdleCallback ? requestIdleCallback(() => setReady(true), { timeout: 3000 }) : setTimeout(() => setReady(true), 1200)
+    }
+    if (document.readyState === 'complete') go()
+    else window.addEventListener('load', go, { once: true })
+    return () => {
+      window.removeEventListener('load', go)
+      if (window.cancelIdleCallback) cancelIdleCallback(id)
+      clearTimeout(id)
+    }
+  }, [])
+  return ready
+}
+
 export default function Layout() {
+  const chatReady = useWhenIdle()
   const { pathname, hash, key } = useLocation()
 
   // The app decides where each page starts; the browser's own restoration
@@ -59,10 +81,18 @@ export default function Layout() {
     <>
       <Header />
       <main>
-        <Outlet />
+        {/* Shown only when a page is opened directly and its code is still on
+            the way; moving between pages keeps the current one up instead. */}
+        <Suspense fallback={<div className="route-loading" aria-busy="true" aria-label="Loading" />}>
+          <Outlet />
+        </Suspense>
       </main>
       <Footer />
-      <ChatbotWidget />
+      {chatReady && (
+        <Suspense fallback={null}>
+          <ChatbotWidget />
+        </Suspense>
+      )}
     </>
   )
 }

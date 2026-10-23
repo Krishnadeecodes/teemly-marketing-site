@@ -1,59 +1,109 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './components/Layout.jsx'
 import Home from './pages/Home.jsx'
-import Product from './pages/Product.jsx'
-import ModulePage from './pages/ModulePage.jsx'
-import Pricing from './pages/Pricing.jsx'
-import About from './pages/About.jsx'
-import Contact from './pages/Contact.jsx'
-import NotFound from './pages/NotFound.jsx'
+
+// Every other page is its own chunk, so a visitor's first load only carries
+// the shell and the page they landed on. Once the browser is idle the rest are
+// fetched in the background, so moving between pages is still instant.
+const loaders = []
+function page(load) {
+  loaders.push(load)
+  // A dropped connection gets one retry. If that fails too, the site was
+  // probably redeployed (old chunk names are gone), so reload once to pick up
+  // the new build instead of leaving a blank page.
+  return lazy(() =>
+    load()
+      .catch(() => new Promise((r) => setTimeout(r, 800)).then(load))
+      .catch((err) => {
+        let reloaded = false
+        try {
+          reloaded = sessionStorage.getItem('chunk-reload') === location.pathname
+          sessionStorage.setItem('chunk-reload', location.pathname)
+        } catch {}
+        if (reloaded) throw err
+        location.reload()
+        return new Promise(() => {})
+      }),
+  )
+}
+
+const Product = page(() => import('./pages/Product.jsx'))
+const ModulePage = page(() => import('./pages/ModulePage.jsx'))
+const Pricing = page(() => import('./pages/Pricing.jsx'))
+const About = page(() => import('./pages/About.jsx'))
+const Contact = page(() => import('./pages/Contact.jsx'))
+const NotFound = page(() => import('./pages/NotFound.jsx'))
 
 // Platform
-import PlatformHub from './pages/platform/PlatformHub.jsx'
-import PlatformPillarPage from './pages/platform/PlatformPillarPage.jsx'
+const PlatformHub = page(() => import('./pages/platform/PlatformHub.jsx'))
+const PlatformPillarPage = page(() => import('./pages/platform/PlatformPillarPage.jsx'))
 
 // Solutions
-import SolutionsHub from './pages/solutions/SolutionsHub.jsx'
-import SolutionPage from './pages/solutions/SolutionPage.jsx'
+const SolutionsHub = page(() => import('./pages/solutions/SolutionsHub.jsx'))
+const SolutionPage = page(() => import('./pages/solutions/SolutionPage.jsx'))
 
 // Industries
-import IndustriesHub from './pages/industries/IndustriesHub.jsx'
-import IndustryPage from './pages/industries/IndustryPage.jsx'
+const IndustriesHub = page(() => import('./pages/industries/IndustriesHub.jsx'))
+const IndustryPage = page(() => import('./pages/industries/IndustryPage.jsx'))
 
 // Why Teemly
-import WhyTeemlyHub from './pages/why-teemly/WhyTeemlyHub.jsx'
-import WhyTeemlySubPage from './pages/why-teemly/WhyTeemlySubPage.jsx'
+const WhyTeemlyHub = page(() => import('./pages/why-teemly/WhyTeemlyHub.jsx'))
+const WhyTeemlySubPage = page(() => import('./pages/why-teemly/WhyTeemlySubPage.jsx'))
 
 // Conversion tools
-import ROICalculator from './pages/ROICalculator.jsx'
-import TakeATour from './pages/TakeATour.jsx'
-import BookADemo from './pages/BookADemo.jsx'
+const ROICalculator = page(() => import('./pages/ROICalculator.jsx'))
+const TakeATour = page(() => import('./pages/TakeATour.jsx'))
+const BookADemo = page(() => import('./pages/BookADemo.jsx'))
 
 // Security & Trust
-import SecurityHub from './pages/security/SecurityHub.jsx'
-import SecuritySubPage from './pages/security/SecuritySubPage.jsx'
-import TrustCenter from './pages/TrustCenter.jsx'
+const SecurityHub = page(() => import('./pages/security/SecurityHub.jsx'))
+const SecuritySubPage = page(() => import('./pages/security/SecuritySubPage.jsx'))
+const TrustCenter = page(() => import('./pages/TrustCenter.jsx'))
 
 // Resources
-import ResourcesHub from './pages/resources/ResourcesHub.jsx'
-import ResourceTypePage from './pages/resources/ResourceTypePage.jsx'
-import ResourceDetailPage from './pages/resources/ResourceDetailPage.jsx'
+const ResourcesHub = page(() => import('./pages/resources/ResourcesHub.jsx'))
+const ResourceTypePage = page(() => import('./pages/resources/ResourceTypePage.jsx'))
+const ResourceDetailPage = page(() => import('./pages/resources/ResourceDetailPage.jsx'))
 
 // Company
-import Careers from './pages/company/Careers.jsx'
-import Partners from './pages/company/Partners.jsx'
-import News from './pages/company/News.jsx'
-import Support from './pages/Support.jsx'
-import Customers from './pages/Customers.jsx'
+const Careers = page(() => import('./pages/company/Careers.jsx'))
+const Partners = page(() => import('./pages/company/Partners.jsx'))
+const News = page(() => import('./pages/company/News.jsx'))
+const Support = page(() => import('./pages/Support.jsx'))
+const Customers = page(() => import('./pages/Customers.jsx'))
 
 // Legal
-import LegalPage from './pages/legal/LegalPage.jsx'
+const LegalPage = page(() => import('./pages/legal/LegalPage.jsx'))
 
 // Admin panel: loaded only when someone visits /admin
 const AdminApp = lazy(() => import('./admin/AdminApp.jsx'))
 
+function usePrefetchPages() {
+  useEffect(() => {
+    // Respect data-saver: those visitors load each page when they open it.
+    if (navigator.connection?.saveData) return undefined
+    let idle = 0
+    const run = () => {
+      // the page loaded, so a later chunk failure may reload again
+      try {
+        sessionStorage.removeItem('chunk-reload')
+      } catch {}
+      const fetchAll = () => loaders.forEach((load) => load().catch(() => {}))
+      idle = window.requestIdleCallback ? requestIdleCallback(fetchAll, { timeout: 4000 }) : setTimeout(fetchAll, 1500)
+    }
+    if (document.readyState === 'complete') run()
+    else window.addEventListener('load', run, { once: true })
+    return () => {
+      window.removeEventListener('load', run)
+      if (window.cancelIdleCallback) cancelIdleCallback(idle)
+      clearTimeout(idle)
+    }
+  }, [])
+}
+
 export default function App() {
+  usePrefetchPages()
   return (
     <Routes>
       <Route

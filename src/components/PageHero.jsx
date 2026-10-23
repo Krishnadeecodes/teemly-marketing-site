@@ -13,7 +13,7 @@ export default function PageHero({ eyebrow, title, desc, children }) {
             {eyebrow}
           </span>
         )}
-        <SplitHeading as="h1" text={title} />
+        <SplitHeading as="h1" text={title} mode="load" />
         {desc && (
           <Reveal as="p" delay={0.15}>
             {desc}

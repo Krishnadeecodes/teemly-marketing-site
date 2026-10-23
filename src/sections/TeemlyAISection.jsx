@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import Icon from '../components/Icon.jsx'
 import SplitHeading from '../home/SplitHeading.jsx'
 import { ScrollTrigger, prefersReducedMotion } from '../home/useHomeScroll.js'
+import { whenInView } from '../home/reveal.js'
 import '../home/ai.css'
 
 const QA = [
@@ -133,22 +134,11 @@ export default function TeemlyAISection() {
       play(0)
       return undefined
     }
-    const trigger = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: 'top 60%',
-      once: true,
-      onEnter: () => {
-        if (!started.current) {
-          started.current = true
-          play(0)
-        }
-      },
-      onEnterBack: () => {
-        if (!started.current) {
-          started.current = true
-          play(0)
-        }
-      },
+    const stopStart = whenInView([sectionRef.current], () => {
+      if (!started.current) {
+        started.current = true
+        play(0)
+      }
     })
     const visibility = ScrollTrigger.create({
       trigger: sectionRef.current,
@@ -164,7 +154,7 @@ export default function TeemlyAISection() {
       },
     })
     return () => {
-      trigger.kill()
+      stopStart()
       visibility.kill()
       clearTimeout(autoRef.current)
     }

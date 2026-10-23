@@ -3,6 +3,7 @@ import Icon from '../components/Icon.jsx'
 import SplitHeading from '../home/SplitHeading.jsx'
 import Reveal from '../home/Reveal.jsx'
 import { gsap, isPhone, prefersReducedMotion } from '../home/useHomeScroll.js'
+import { whenInView } from '../home/reveal.js'
 import '../home/outcomes.css'
 
 export default function BusinessOutcomes() {
@@ -17,34 +18,33 @@ export default function BusinessOutcomes() {
       stackRefs.current.forEach((s) => (s.style.width = s.dataset.w))
       return undefined
     }
-    const tweens = []
     const phone = isPhone()
-    if (ringRef.current) {
-      tweens.push(
-        gsap.to(ringRef.current, {
-          strokeDashoffset: 28,
-          duration: phone ? 0.7 : 1.4,
-          ease: 'power3.out',
-          scrollTrigger: { trigger: ringRef.current, start: phone ? 'top 98%' : 'top 90%', once: true },
-        })
+    const ring = ringRef.current
+    const stacks = stackRefs.current
+    const stops = []
+    if (ring) {
+      stops.push(
+        whenInView([ring], () =>
+          gsap.to(ring, { strokeDashoffset: 28, duration: phone ? 0.7 : 1.4, ease: 'power3.out' })
+        )
       )
     }
-    stackRefs.current.forEach((s, i) => {
-      tweens.push(
-        gsap.to(s, {
-          width: s.dataset.w,
-          duration: phone ? 0.7 : 1.1,
-          delay: phone ? 0 : i * 0.12,
-          ease: 'power3.out',
-          scrollTrigger: { trigger: s, start: phone ? 'top 98%' : 'top 92%', once: true },
-        })
+    stops.push(
+      whenInView(stacks, (batch) =>
+        batch.forEach((s) =>
+          gsap.to(s, {
+            width: s.dataset.w,
+            duration: phone ? 0.7 : 1.1,
+            delay: phone ? 0 : stacks.indexOf(s) * 0.12,
+            ease: 'power3.out',
+          })
+        )
       )
-    })
-    return () =>
-      tweens.forEach((t) => {
-        t.scrollTrigger && t.scrollTrigger.kill()
-        t.kill()
-      })
+    )
+    return () => {
+      stops.forEach((stop) => stop())
+      gsap.killTweensOf([ring, ...stacks].filter(Boolean))
+    }
   }, [])
 
   return (

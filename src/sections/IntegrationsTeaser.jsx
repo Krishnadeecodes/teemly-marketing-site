@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import SplitHeading from '../home/SplitHeading.jsx'
 import Reveal from '../home/Reveal.jsx'
-import { gsap, isPhone, prefersReducedMotion } from '../home/useHomeScroll.js'
+import { isPhone, prefersReducedMotion } from '../home/useHomeScroll.js'
+import { reveal } from '../home/reveal.js'
 import '../home/integrations.css'
 
 const facts = [
@@ -20,18 +21,11 @@ export default function IntegrationsTeaser() {
   useEffect(() => {
     if (prefersReducedMotion() || !orbitRef.current) return undefined
     const phone = isPhone()
-    const tween = gsap.from(orbitRef.current, {
-      scale: phone ? 0.92 : 0.7,
-      opacity: 0,
-      rotate: phone ? 0 : -20,
-      duration: phone ? 0.5 : 1.2,
-      ease: phone ? 'power2.out' : 'expo.out',
-      scrollTrigger: { trigger: orbitRef.current, start: phone ? 'top 98%' : 'top 82%', once: true },
-    })
-    return () => {
-      tween.scrollTrigger && tween.scrollTrigger.kill()
-      tween.revert()
-    }
+    return reveal(
+      orbitRef.current,
+      { scale: phone ? 0.92 : 0.7, opacity: 0, rotate: phone ? 0 : -20 },
+      { duration: phone ? 0.4 : 1.2, ease: phone ? 'power2.out' : 'expo.out' },
+    )
   }, [])
 
   return (
