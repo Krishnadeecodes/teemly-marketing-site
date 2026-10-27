@@ -84,12 +84,14 @@
   font-size: var(--fs-lg);
   color: var(--navy);
   margin: 10px 0 8px;
+  overflow-wrap: anywhere;
 }
 
 .res-card-body p {
   color: var(--muted);
   font-size: 0.88rem;
   line-height: 1.6;
+  overflow-wrap: anywhere;
 }
 
 .res-card-body .tile-link {

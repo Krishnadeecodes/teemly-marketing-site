@@ -1127,7 +1127,10 @@ a:hover .rt-book .rt-cover {
   }
 }
 
+/* Side cards stack cover-on-top like the lead, so every cover keeps its 16:9 shape uncropped.
+   The lead's button sits at the bottom, level with the last side card's link. */
 .rt-spot-lead > div:last-child {
+  flex: 1;
   padding: 24px 28px 28px;
   display: flex;
   flex-direction: column;
@@ -1146,18 +1149,13 @@ a:hover .rt-book .rt-cover {
   line-height: 1.6;
 }
 
+.rt-spot-lead .btn {
+  margin-top: auto;
+}
+
 .rt-spot-side {
   display: grid;
   gap: 24px;
-}
-
-.rt-spot-item {
-  flex-direction: row;
-}
-
-.rt-spot-item .rt-cover {
-  flex: 0 0 40%;
-  aspect-ratio: auto;
 }
 
 .rt-spot-item > div:last-child {
@@ -2413,6 +2411,9 @@ a:hover .rt-book .rt-cover {
   .rt-lead .rt-cover {
     min-height: 220px;
   }
+  .rt-spot-side {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .rt-lead-body {
     padding: 28px 24px;
   }
@@ -2446,14 +2447,9 @@ a:hover .rt-book .rt-cover {
     font-size: var(--fs-2xl);
   }
   .rt-downloads,
-  .rt-stats {
+  .rt-stats,
+  .rt-spot-side {
     grid-template-columns: 1fr;
-  }
-  .rt-spot-item {
-    flex-direction: column;
-  }
-  .rt-spot-item .rt-cover {
-    aspect-ratio: 16 / 9;
   }
   .rt-guides,
   .rt-stories,
@@ -2486,5 +2482,233 @@ a:hover .rt-book .rt-cover {
   }
   .rt-upnext li > a {
     grid-template-columns: 120px minmax(0, 1fr);
+  }
+}
+
+/* ================= Standard card size =================
+   A long title or summary never changes a card's size. Cards with a photo keep it at 16:9 so
+   it isn't cropped at any width, and give their text a fixed-height area below it; cards in
+   one grid share a width, so they all come out the same size. Cards without a photo have one
+   fixed height. The text fills the space it has and ends with "…" (see below), while the link
+   sits on the card's bottom edge. */
+.rt .res-card-media {
+  flex-shrink: 0;
+}
+
+.rt .res-card-body {
+  flex: none;
+  height: 240px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.rt-spot-item > div:last-child {
+  flex: none;
+  height: 150px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* The lead takes its height from the two side cards next to it. */
+.rt-spot-lead {
+  contain: size;
+}
+
+.rt-spot-lead > div:last-child {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.rt-download-card {
+  height: 420px;
+  overflow: hidden;
+}
+
+.rt-shelf-item {
+  height: 600px;
+  overflow: hidden;
+}
+
+.rt-shelf-item .rt-book {
+  height: 300px;
+}
+
+.rt-shelf-item .rt-book .rt-cover {
+  width: auto;
+  height: 100%;
+}
+
+.rt-shelf-body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.rt-guide-card {
+  height: 420px;
+  overflow: hidden;
+}
+
+.rt-story {
+  height: 340px;
+  overflow: hidden;
+}
+
+.rt-post-body {
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+}
+
+/* On-demand webinars show no summary, so their text area is shorter. */
+.rt-ondemand .rt-post-body {
+  height: 130px;
+}
+
+/* Titles and summaries take their natural size and give way when the card runs out of room.
+   useFitCardText (templates/shared.jsx) then sets --fit-lines to the number of whole lines that
+   fit, so the text fills the card and ends with "…" exactly where the space runs out.
+   Summaries carry a far larger shrink factor, so they give way first and a title only
+   shrinks once the summary below it is used up. */
+.rt .res-card-body h3,
+.rt .res-card-body p,
+.rt-spot-lead h3,
+.rt-spot-lead p,
+.rt-spot-item h3,
+.rt-download-card h3,
+.rt-shelf-body h3,
+.rt-shelf-body p,
+.rt-guide-card h3,
+.rt-guide-card p,
+.rt-story h3,
+.rt-story p,
+.rt-post h3,
+.rt-post p {
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--fit-lines, none);
+}
+
+.rt .res-card-body h3,
+.rt-spot-lead h3,
+.rt-spot-item h3,
+.rt-download-card h3,
+.rt-shelf-body h3,
+.rt-guide-card h3,
+.rt-story h3,
+.rt-post h3 {
+  line-height: 1.3;
+}
+
+.rt .res-card-body p,
+.rt-spot-lead p,
+.rt-shelf-body p,
+.rt-guide-card p,
+.rt-story p,
+.rt-post p {
+  flex-shrink: 1000;
+  line-height: 1.6;
+}
+
+/* Guide takeaways and the case-study stat caption: up to 2 lines each. */
+.rt-guide-card li > span,
+.rt-story-stat span {
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+/* Each takeaway sits in a flex row next to its tick, so let its text narrow and wrap. */
+.rt-guide-card li > span {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* The link or footer sits on the card's bottom edge. */
+.rt .res-card .tile-link,
+.rt-spot-item .rt-link,
+.rt-download-card .rt-link,
+.rt-shelf-body .rt-link,
+.rt-guide-foot,
+.rt-story .rt-link,
+.rt-post-author {
+  flex-shrink: 0;
+  margin-top: auto;
+}
+
+/* The featured card's button follows straight after its summary. */
+.rt-spot-lead .btn {
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+.rt-spot-item .rt-cover,
+.rt-spot-lead .rt-cover,
+.rt-spot-lead .rt-kicker,
+.rt-spot-item .rt-kicker,
+.rt .res-card-meta,
+.rt-download-card .rt-book,
+.rt-download-card .rt-badge,
+.rt-shelf-item .rt-book,
+.rt-shelf-body .rt-badge,
+.rt-guide-n,
+.rt-guide-card ul,
+.rt-story-top,
+.rt-story-stat,
+.rt-post .rt-cover,
+.rt-post-meta {
+  flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  /* Stacked on its own, the featured card sizes to its 16:9 cover plus a 4-line summary. */
+  .rt-spot-lead {
+    contain: none;
+  }
+  .rt-spot-lead > div:last-child {
+    padding: 20px 20px 22px;
+  }
+  .rt-spot-lead h3 {
+    font-size: var(--fs-xl);
+  }
+  .rt-spotlight .rt-spot-lead p {
+    -webkit-line-clamp: 4;
+  }
+}
+
+@media (max-width: 600px) {
+  /* On phones the side cards become compact rows: cover on the left, text on the right. */
+  .rt-spotlight {
+    gap: 16px;
+  }
+  .rt-spot-side {
+    gap: 16px;
+  }
+  .rt-spot-item {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+  }
+  .rt-spot-item .rt-cover {
+    flex: 0 0 40%;
+    border-radius: var(--r-md);
+  }
+  .rt-spot-item > div:last-child {
+    flex: 1;
+    height: 92px;
+    padding: 0;
+    gap: 4px;
+  }
+  .rt-spot-item h3 {
+    font-size: 0.95rem;
   }
 }

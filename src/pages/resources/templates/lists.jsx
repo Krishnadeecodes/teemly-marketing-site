@@ -143,7 +143,7 @@ export function GuidesList({ category, items }) {
                   <ul>
                     {r.meta.takeaways.slice(0, 3).map((t) => (
                       <li key={t}>
-                        <Icon name="check" size={14} /> {t}
+                        <Icon name="check" size={14} /> <span>{t}</span>
                       </li>
                     ))}
                   </ul>
@@ -239,13 +239,15 @@ export function BlogList({ category, items }) {
                 {rest.map((r) => (
                   <Link to={itemUrl(r)} className="rt-post" key={r.id}>
                     <Cover item={r} icon={category.icon} />
-                    <span className="rt-post-meta">
-                      {r.tags?.[0] && <span className="rt-kicker">{r.tags[0]}</span>}
-                      {formatDate(r.publishedAt)} · {r.readMins} min read
-                    </span>
-                    <h3>{r.title}</h3>
-                    {r.summary && <p>{r.summary}</p>}
-                    {r.author && <span className="rt-post-author">By {r.author}</span>}
+                    <div className="rt-post-body">
+                      <span className="rt-post-meta">
+                        {r.tags?.[0] && <span className="rt-kicker">{r.tags[0]}</span>}
+                        {formatDate(r.publishedAt)} · {r.readMins} min read
+                      </span>
+                      <h3>{r.title}</h3>
+                      {r.summary && <p>{r.summary}</p>}
+                      {r.author && <span className="rt-post-author">By {r.author}</span>}
+                    </div>
                   </Link>
                 ))}
               </div>
@@ -299,14 +301,16 @@ export function WebinarsList({ category, items }) {
                   {onDemand.map((r) => (
                     <Link to={itemUrl(r)} className="rt-post" key={r.id}>
                       <Cover item={r} icon="play" label="On demand" />
-                      <span className="rt-post-meta">
-                        {r.meta?.eventOn ? `Recorded ${formatDate(r.meta.eventOn)}` : formatDate(r.publishedAt)}
-                        {r.meta?.duration && ` · ${r.meta.duration}`}
-                      </span>
-                      <h3>{r.title}</h3>
-                      {r.meta?.speakers?.length > 0 && (
-                        <span className="rt-post-author">With {r.meta.speakers.map((s) => splitPair(s).value).join(', ')}</span>
-                      )}
+                      <div className="rt-post-body">
+                        <span className="rt-post-meta">
+                          {r.meta?.eventOn ? `Recorded ${formatDate(r.meta.eventOn)}` : formatDate(r.publishedAt)}
+                          {r.meta?.duration && ` · ${r.meta.duration}`}
+                        </span>
+                        <h3>{r.title}</h3>
+                        {r.meta?.speakers?.length > 0 && (
+                          <span className="rt-post-author">With {r.meta.speakers.map((s) => splitPair(s).value).join(', ')}</span>
+                        )}
+                      </div>
                     </Link>
                   ))}
                 </div>

@@ -1,7 +1,7 @@
 import { useParams, Navigate } from 'react-router-dom'
 import FinalCTA from '../../sections/FinalCTA.jsx'
 import { LIST_TEMPLATES, DefaultList, GlossaryList } from './templates/lists.jsx'
-import { PageSkeleton, useResourceMotion } from './templates/shared.jsx'
+import { PageSkeleton, useFitCardText, useResourceMotion } from './templates/shared.jsx'
 import { useResourceType } from '../../lib/resourcesApi.js'
 import { useSEO } from '../../lib/useSEO.js'
 import '../pages.css'
@@ -15,6 +15,7 @@ export default function ResourceTypePage() {
   const { data, loading } = useResourceType(slug)
   const type = data?.category
   useResourceMotion(data ? `${slug}:${data.items?.length ?? data.terms?.length}` : null)
+  useFitCardText()
 
   useSEO({
     title: type ? `${type.label} — Resources` : 'Resources',

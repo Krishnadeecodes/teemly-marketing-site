@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import Icon from '../../components/Icon.jsx'
 import FinalCTA from '../../sections/FinalCTA.jsx'
 import ResourceCard from './ResourceCard.jsx'
-import { Cover, HeroTitle, SectionTitle, itemUrl, useResourceMotion } from './templates/shared.jsx'
+import { Cover, HeroTitle, SectionTitle, itemUrl, useFitCardText, useResourceMotion } from './templates/shared.jsx'
 import { useResourcesHub } from '../../lib/resourcesApi.js'
 import { useSEO } from '../../lib/useSEO.js'
 import { DEFAULT_SETTINGS } from '../../data/resourcesMeta.js'
@@ -26,6 +26,7 @@ export default function ResourcesHub() {
 
   useSEO({ title: 'Resource Center', description: hub.desc, path: '/resources' })
   useResourceMotion(data ? 'hub' : null)
+  useFitCardText()
 
   const latest = data?.latest || []
   // Featured first; fill up to 3 with the latest so the strip isn't half empty.

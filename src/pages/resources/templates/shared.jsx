@@ -52,6 +52,53 @@ const topLevel = (els) => els.filter((el) => !els.some((other) => other !== el &
 // Runs the page's entrance and scroll animations once its content is on screen.
 // `key` changes when a different page (or its data) is shown. On phones the
 // banner details are simply there with the title; nothing waits to slide in.
+// Card titles/summaries that fill the space left in their fixed-height card (see "Standard
+// card size" in templates.css).
+const FIT_TEXT = [
+  '.res-card-body h3', '.res-card-body p', '.rt-spot-lead h3', '.rt-spot-lead p', '.rt-spot-item h3',
+  '.rt-download-card h3', '.rt-shelf-body h3', '.rt-shelf-body p', '.rt-guide-card h3', '.rt-guide-card p',
+  '.rt-story h3', '.rt-story p', '.rt-post h3', '.rt-post p',
+].join(',')
+
+// Clamp each one to the whole lines that fit, so its "…" lands where the card runs out of room.
+function fitCardText() {
+  const els = [...document.querySelectorAll(FIT_TEXT)]
+  // Unclamp first so every box takes its natural size before the card squeezes it.
+  els.forEach((el) => {
+    el.style.removeProperty('--fit-lines')
+    el.style.visibility = ''
+  })
+  const sizes = els.map((el) => [el.clientHeight, parseFloat(getComputedStyle(el).lineHeight)])
+  els.forEach((el, i) => {
+    const [h, lh] = sizes[i]
+    const lines = Math.floor((h + 2) / lh)
+    if (lines < 1) el.style.visibility = 'hidden'
+    else el.style.setProperty('--fit-lines', lines)
+  })
+}
+
+// Refits on load, on resize, after web fonts load and when cards are added (filters, "Load more").
+export function useFitCardText() {
+  useEffect(() => {
+    let raf = 0
+    const run = () => {
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(fitCardText)
+    }
+    const resize = new ResizeObserver(run)
+    resize.observe(document.body)
+    const added = new MutationObserver(run)
+    added.observe(document.body, { childList: true, subtree: true })
+    document.fonts?.ready.then(run)
+    run()
+    return () => {
+      cancelAnimationFrame(raf)
+      resize.disconnect()
+      added.disconnect()
+    }
+  }, [])
+}
+
 export function useResourceMotion(key) {
   useLayoutEffect(() => {
     const root = document.querySelector('main')
