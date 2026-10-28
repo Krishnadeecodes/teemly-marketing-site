@@ -1,52 +1,59 @@
 import { forwardRef } from 'react'
 import Icon from './Icon.jsx'
 import Logo from './Logo.jsx'
-import { MODULES } from '../data/modules.js'
 import '../home/heroDashboard.css'
 
-// The Teemly dashboard shown in the home hero. All numbers are illustrative
-// sample data (the hero is labelled "Illustrative example").
+// The Teemly "Organization overview" shown in the home hero: insight about
+// how the organisation works (scores, signals and teams) rather than who is
+// doing what right now. All numbers are illustrative sample data (the hero
+// is labelled "Illustrative example") and match the rest of the site.
 
-const SIDEBAR = MODULES.filter((m) => !['video-recording', 'location-tracking'].includes(m.slug))
+// the five intelligence areas
+const SIDEBAR = [
+  { icon: 'chart', label: 'Organizational Intelligence' },
+  { icon: 'users', label: 'Workforce Intelligence' },
+  { icon: 'monitor', label: 'Work Intelligence' },
+  { icon: 'clock', label: 'Workflow Intelligence' },
+  { icon: 'sparkle', label: 'AI Intelligence' },
+]
 
 const KPIS = [
-  { icon: 'clock', label: 'Time worked', value: '1,057h', trend: '8%', dir: 'up', note: 'vs last month' },
-  { icon: 'eyeOff', label: 'Idle time', value: '19h', trend: '10%', dir: 'down', note: 'vs last month' },
-  { icon: 'trendingUp', label: 'Productivity', value: '78%', trend: '3 pts', dir: 'up', note: 'vs last month' },
-  { icon: 'users', label: 'Online now', value: '89', suffix: '/128', note: 'checked in today' },
+  { icon: 'target', label: 'Org Intelligence Score', value: '78', suffix: '/100', trend: '3 pts', dir: 'up', note: 'vs last month' },
+  { icon: 'users', label: 'Teams on track', value: '5', suffix: '/6', note: 'Sales needs attention' },
+  { icon: 'clock', label: 'Avg focus session', value: '47', suffix: ' min', trend: '6 min', dir: 'up', note: 'vs last month' },
+  { icon: 'dollar', label: 'Savings found', value: '₹14,400', suffix: '/mo', note: 'unused licences' },
 ]
 
 const MONTHS = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep']
-// Productive share of work time (%), sampled every few days Apr → Sep:
-// flat and jittery, a climb to one clear 81% peak, then easing back down.
+// Org Intelligence Score, sampled every few days Apr to Sep: a steady climb
+// with ordinary ups and downs, to today's 78.
 const ACTIVITY = [
-  52, 53, 51, 52, 54, 52, 53, 51, 53, 55, 54, 56, 55, 58, 61, 59, 64, 62, 67, 70, 68, 76, 81, 77, 75, 76, 73, 71,
-  72, 68, 66, 67, 63, 60, 58, 56, 61, 64, 61, 62, 60,
+  61, 62, 60, 62, 63, 62, 64, 63, 64, 66, 65, 66, 65, 67, 68, 67, 69, 68, 70, 71, 70, 72, 71, 72, 73, 72, 74, 73,
+  74, 75, 74, 76, 75, 76, 77, 76, 78, 77, 77, 76, 77,
 ]
 const PEAK = ACTIVITY.indexOf(Math.max(...ACTIVITY))
 
-const APPS = [
-  { name: 'VS Code', v: 92 },
-  { name: 'Google Docs', v: 68 },
-  { name: 'Figma', v: 44 },
-  { name: 'Slack', v: 21 },
+// signal health this month, by source
+const SIGNALS = [
+  { name: 'People', v: 82 },
+  { name: 'Work', v: 74 },
+  { name: 'Technology', v: 68 },
 ]
 
-// hours per day: productive, idle
-const WEEK = [
-  { d: 'Mon', p: 6.4, i: 0.7 },
-  { d: 'Tue', p: 6.8, i: 0.5 },
-  { d: 'Wed', p: 7.1, i: 0.6, late: true },
-  { d: 'Thu', p: 4.6, i: 1.3 },
-  { d: 'Fri', p: 7.4, i: 1.6 },
-  { d: 'Sat', p: 1.1, i: 0.4 },
+// team health score; Sales is the one that needs attention
+const TEAM_HEALTH = [
+  { d: 'Des', v: 91 },
+  { d: 'Eng', v: 84 },
+  { d: 'Mkt', v: 79 },
+  { d: 'Ops', v: 76 },
+  { d: 'Sup', v: 72 },
+  { d: 'Sal', v: 58, late: true },
 ]
 
-const PEOPLE = [
-  { n: 'Ananya R.', team: 'Design', app: 'Figma', t: '6h 12m', s: 'productive', bars: [5, 7, 6, 8, 9, 7, 8, 6, 9, 8] },
-  { n: 'Karthik S.', team: 'Engineering', app: 'VS Code', t: '5h 48m', s: 'productive', bars: [6, 8, 9, 7, 8, 9, 6, 7, 8, 9] },
+const TEAMS = [
+  { n: 'Design', size: '10 people', status: 'On track', s: 'productive', score: '91%', bars: [6, 7, 7, 8, 8, 8, 9, 9, 9, 9] },
+  { n: 'Sales', size: '18 people', status: 'Needs attention', s: 'privacy', score: '58%', bars: [8, 8, 7, 7, 7, 6, 6, 6, 5, 6] },
 ]
-
 
 const W = 300
 const H = 72
@@ -59,9 +66,9 @@ function ActivityChart() {
   return (
     <div className="h-db-panel h-db-activity">
       <div className="h-db-ph">
-        <b>Activity by month</b>
+        <b>Org Intelligence Score</b>
         <span className="h-db-legend">
-          <i /> Productive time
+          <i /> Last 6 months
         </span>
       </div>
       <div className="h-db-linewrap">
@@ -109,15 +116,15 @@ function ActivityChart() {
   )
 }
 
-function TopApps() {
+function Signals() {
   return (
     <div className="h-db-panel">
       <div className="h-db-ph">
-        <b>Top apps</b>
+        <b>Signals</b>
         <small>This month</small>
       </div>
       <div className="h-db-apps">
-        {APPS.map((a) => (
+        {SIGNALS.map((a) => (
           <div className="h-db-app" key={a.name}>
             <span>{a.name}</span>
             <span className="h-db-apptrack">
@@ -130,22 +137,20 @@ function TopApps() {
   )
 }
 
-function WeekChart() {
-  const max = 9
+function TeamHealth() {
   return (
     <div className="h-db-panel">
       <div className="h-db-ph">
-        <b>Time worked</b>
-        <small>This week</small>
+        <b>Team health</b>
+        <small>By team</small>
       </div>
       <div className="h-db-week">
-        {WEEK.map((w) => (
-          <div className="h-db-day" key={w.d}>
-            <span className="h-db-stack" style={{ height: `${((w.p + w.i) / max) * 100}%` }}>
-              <span className="idle" style={{ flex: w.i }} />
-              <span className={`prod${w.late ? ' late' : ''}`} style={{ flex: w.p }} />
+        {TEAM_HEALTH.map((t) => (
+          <div className="h-db-day" key={t.d}>
+            <span className="h-db-stack" style={{ height: `${t.v}%` }}>
+              <span className={`prod${t.late ? ' late' : ''}`} style={{ flex: 1 }} />
             </span>
-            <small>{w.d}</small>
+            <small>{t.d}</small>
           </div>
         ))}
       </div>
@@ -160,7 +165,7 @@ const HeroDashboard = forwardRef(function HeroDashboard(props, ref) {
         <Logo variant="mark" size={26} label={null} />
         <nav>
           {SIDEBAR.map((m, i) => (
-            <span key={m.slug} className={i === 0 ? 'on' : ''} title={m.label}>
+            <span key={m.label} className={i === 0 ? 'on' : ''} title={m.label}>
               <Icon name={m.icon} size={17} />
             </span>
           ))}
@@ -169,17 +174,14 @@ const HeroDashboard = forwardRef(function HeroDashboard(props, ref) {
 
       <div className="h-db-main">
         <div className="h-db-top">
-          <b>Dashboard</b>
-          <span className="h-db-search">Search people, teams, apps</span>
-          <span className="h-db-live">
-            <i /> Live
-          </span>
+          <b>Organization overview</b>
+          <span className="h-db-search">Search teams, signals, reports</span>
           <span className="h-db-avatar">SM</span>
         </div>
 
         <div className="h-db-hello">
           <strong>Good morning, Sam</strong>
-          <span>All teams · Last 30 days</span>
+          <span>Acme Corp · 6 teams · 128 people · Last 30 days</span>
         </div>
 
         <div className="h-db-kpis">
@@ -212,31 +214,31 @@ const HeroDashboard = forwardRef(function HeroDashboard(props, ref) {
 
         <div className="h-db-row">
           <ActivityChart />
-          <TopApps />
-          <WeekChart />
+          <Signals />
+          <TeamHealth />
         </div>
 
         <div className="h-db-table">
           <div className="h-db-tr h-db-th">
-            <span>Employee</span>
-            <span>Current activity</span>
-            <span>Today</span>
-            <span>Activity</span>
+            <span>Team</span>
+            <span>Status</span>
+            <span>Score</span>
+            <span>Trend</span>
           </div>
-          {PEOPLE.map((p, i) => (
+          {TEAMS.map((p, i) => (
             <div className="h-db-tr" key={p.n}>
               <span className="h-db-who">
-                <i className={`h-db-av a${i}`}>{p.n[0]}</i>
+                <i className={`h-db-av a${i}`}>{p.n.slice(0, 2).toUpperCase()}</i>
                 <span>
                   <b>{p.n}</b>
-                  <small>{p.team}</small>
+                  <small>{p.size}</small>
                 </span>
               </span>
               <span className="h-db-now">
                 <i className={p.s} />
-                {p.app}
+                {p.status}
               </span>
-              <span className="h-db-time">{p.t}</span>
+              <span className="h-db-time">{p.score}</span>
               <span className="h-db-spark">
                 {p.bars.map((b, j) => (
                   <i key={j} style={{ height: `${b * 10}%` }} />

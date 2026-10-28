@@ -192,6 +192,8 @@ const SCHEMA = [
     country VARCHAR(80) NOT NULL DEFAULT '',
     consent TINYINT(1) NOT NULL DEFAULT 0,
     attribution JSON NOT NULL,
+    source VARCHAR(20) NOT NULL DEFAULT 'tour',
+    first_question VARCHAR(300) NOT NULL DEFAULT '',
     visits INT UNSIGNED NOT NULL DEFAULT 1,
     created_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     last_seen_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -219,6 +221,11 @@ async function init() {
     one('SELECT 1 FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?', [table, column])
   if (!(await hasColumn('categories', 'template'))) {
     await query("ALTER TABLE categories ADD COLUMN template VARCHAR(40) NOT NULL DEFAULT '' AFTER icon")
+  }
+  // sign-ups from the chat assistant, as well as the tour
+  if (!(await hasColumn('tour_signups', 'source'))) {
+    await query("ALTER TABLE tour_signups ADD COLUMN source VARCHAR(20) NOT NULL DEFAULT 'tour' AFTER attribution")
+    await query("ALTER TABLE tour_signups ADD COLUMN first_question VARCHAR(300) NOT NULL DEFAULT '' AFTER source")
   }
 
   if (!(await one('SELECT 1 FROM categories LIMIT 1'))) {

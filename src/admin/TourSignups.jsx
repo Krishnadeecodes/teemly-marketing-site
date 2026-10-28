@@ -11,7 +11,7 @@ export default function TourSignups() {
 
   return (
     <>
-      <PageHead title="Tour sign-ups" desc="People who signed in to unlock the product tour. Each new one is also emailed to the team.">
+      <PageHead title="Sign-ups" desc="People who signed in on the website — to unlock the product tour or to get chat answers. Each new one is also emailed to the team.">
         <a className="adm-btn" href="/api/admin/tour-signups.csv" download>
           Export CSV
         </a>
@@ -20,7 +20,7 @@ export default function TourSignups() {
       {loading && !data ? (
         <Loading />
       ) : all.length === 0 ? (
-        <div className="adm-card adm-empty">No tour sign-ups yet.</div>
+        <div className="adm-card adm-empty">No sign-ups yet.</div>
       ) : (
         <>
           <div className="adm-filters">
@@ -37,6 +37,7 @@ export default function TourSignups() {
                   <th>Role</th>
                   <th>Size</th>
                   <th>Visits</th>
+                  <th>Signed in via</th>
                   <th>Source</th>
                 </tr>
               </thead>
@@ -58,6 +59,10 @@ export default function TourSignups() {
                     <td data-label="Size">{s.company_size}</td>
                     <td data-label="Visits" title={`Last visit ${formatDateTime(s.last_seen_at)}`}>
                       {s.visits}
+                    </td>
+                    <td data-label="Signed in via">
+                      {s.source === 'chatbot' ? 'Chat' : 'Tour'}
+                      {s.first_question && <div className="adm-muted">“{s.first_question}”</div>}
                     </td>
                     <td data-label="Source" className="adm-muted">
                       {[s.attribution.utm_source, s.attribution.utm_campaign].filter(Boolean).join(' / ') || s.attribution.referrer || '—'}

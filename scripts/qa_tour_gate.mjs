@@ -32,10 +32,7 @@ async function newPage(viewport) {
 async function fill(scope, email = 'jane@acme-corp.com') {
   await scope.locator('#name').fill('Jane Doe')
   await scope.locator('#email').fill(email)
-  await scope.locator('#company').fill('Acme')
   await scope.locator('#role').selectOption('HR')
-  await scope.locator('#companySize').selectOption('51–200')
-  await scope.locator('#consent').check()
 }
 
 const nowPlaying = (page) => page.locator('.tp-info h3').innerText()
@@ -65,7 +62,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
 
   await page.waitForTimeout(1600) // the server drops forms filled faster than a person could
   await form.locator('button[type=submit]').click()
-  check((await form.locator('.field-error').count()) >= 5, `${label}: empty submit shows field errors`)
+  check((await form.locator('.field-error').count()) === 3, `${label}: empty submit shows the three field errors`)
   await fill(form, 'jane@gmail.com')
   await form.locator('button[type=submit]').click()
   check(/work email/i.test(await page.locator('#email-error').innerText()), `${label}: personal email is refused`)

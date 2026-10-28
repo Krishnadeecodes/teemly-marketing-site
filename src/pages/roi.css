@@ -1,23 +1,23 @@
-.roi-disclaimer {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  background: var(--surface-soft);
-  border: 1px dashed var(--line);
-  border-radius: var(--r-md);
-  padding: 16px 18px;
+/* compact title, so the calculator starts near the top */
+.roi-page {
+  padding: clamp(24px, 3vw, 36px) 0 clamp(40px, 6vw, 64px);
 }
 
-.roi-disclaimer svg {
-  color: var(--pink-deep);
-  flex-shrink: 0;
-  margin-top: 2px;
+.roi-head {
+  max-width: 820px;
+  margin-bottom: clamp(18px, 2.2vw, 26px);
 }
 
-.roi-disclaimer p {
-  font-size: 0.88rem;
-  color: var(--ink-soft);
-  line-height: 1.6;
+.roi-head h1 {
+  margin: 8px 0 6px;
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+  line-height: 1.15;
+  color: var(--navy);
+}
+
+.roi-head p {
+  margin: 0;
+  color: var(--muted);
 }
 
 .roi-layout {
@@ -35,13 +35,44 @@
   box-shadow: var(--shadow-card);
 }
 
+.roi-inputs-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.roi-inputs-head h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: var(--navy);
+}
+
+.roi-inputs-head h2,
+.roi-currency-toggle button {
+  white-space: nowrap;
+}
+
 .roi-currency-toggle {
-  margin-bottom: 20px;
   width: fit-content;
 }
 
+/* the five numbers in a grid rather than one tall column */
+.roi-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
 .roi-field {
-  margin-bottom: 16px;
+  min-width: 0;
+}
+
+.roi-field label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .roi-field label {
@@ -57,11 +88,31 @@
   width: 100%;
   border: 1px solid var(--line);
   border-radius: var(--r-sm);
-  padding: 11px 14px;
+  padding: 10px 12px;
   font-family: var(--font-body);
   font-size: 0.92rem;
   color: var(--ink);
   background: var(--surface-soft);
+}
+
+/* money inputs carry the currency sign */
+.roi-money {
+  position: relative;
+  display: block;
+}
+
+.roi-money > span {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.roi-field .roi-money input[type='number'] {
+  padding-left: 28px;
 }
 
 .roi-field input[type='number']:focus {
@@ -71,12 +122,12 @@
 }
 
 .roi-sliders {
-  margin-top: 24px;
-  padding-top: 20px;
+  margin-top: 20px;
+  padding-top: 18px;
   border-top: 1px solid var(--line-soft);
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 28px;
 }
 
 .roi-slider-head {
@@ -149,11 +200,34 @@
   margin-top: 4px;
 }
 
+.roi-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 16px 0 0;
+  color: var(--dark-text);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.roi-note svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--cyan);
+}
+
 @media (max-width: 900px) {
   .roi-layout {
     grid-template-columns: 1fr;
   }
   .roi-output {
     position: static;
+  }
+}
+
+@media (max-width: 600px) {
+  .roi-fields,
+  .roi-sliders {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

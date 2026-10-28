@@ -27,9 +27,53 @@ function markTourUnlocked() {
 
 // Submit handler for useLeadForm('tour', …): records the sign-in, then unlocks.
 export async function unlockTour(_type, payload) {
-  const data = await postForm('/api/tour/unlock', payload)
+  const data = await postForm('/api/tour/unlock', { ...payload, consent: true })
   markTourUnlocked()
   return data
+}
+
+// The chat assistant asks only for a name and email, so its sign-in opens the
+// chat but not the tour; the tour's fuller sign-in opens both.
+const CHAT_KEY = 'teemly_chat_signed_in'
+const CHAT_EVENT = 'teemly:chat-signed-in'
+
+function isChatSignedIn() {
+  if (isTourUnlocked()) return true
+  try {
+    return !!localStorage.getItem(CHAT_KEY)
+  } catch {
+    return false
+  }
+}
+
+// Submit handler for useLeadForm('chat', …): records the sign-in with the
+// question asked, then opens the chat.
+export function signInChat(question) {
+  return async (_type, payload) => {
+    const data = await postForm('/api/tour/unlock', { ...payload, form: 'chat', source: 'chatbot', question, consent: true })
+    try {
+      localStorage.setItem(CHAT_KEY, JSON.stringify({ at: Date.now() }))
+    } catch {
+      // Storage blocked: the chat stays open for this visit only.
+    }
+    window.dispatchEvent(new CustomEvent(CHAT_EVENT))
+    return data
+  }
+}
+
+/** Whether the chat assistant may answer: after a chat or a tour sign-in. */
+export function useChatSignedIn() {
+  const [signedIn, setSignedIn] = useState(isChatSignedIn)
+  useEffect(() => {
+    const on = () => setSignedIn(true)
+    window.addEventListener(CHAT_EVENT, on)
+    window.addEventListener(UNLOCK_EVENT, on)
+    return () => {
+      window.removeEventListener(CHAT_EVENT, on)
+      window.removeEventListener(UNLOCK_EVENT, on)
+    }
+  }, [])
+  return signedIn
 }
 
 /** Whether the tour is unlocked; updates everywhere once any sign-in form succeeds. */

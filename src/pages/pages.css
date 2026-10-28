@@ -1034,3 +1034,710 @@
   max-width: 900px;
   margin: 0 auto;
 }
+
+/* ---- Book a Demo: one card, a brand panel beside the form ---- */
+.demo-page {
+  padding: clamp(20px, 2.5vw, 28px) 0 clamp(48px, 7vw, 80px);
+  background:
+    radial-gradient(50% 40% at 0% 0%, rgba(10, 161, 232, 0.07), transparent 70%),
+    radial-gradient(40% 40% at 100% 100%, rgba(245, 41, 152, 0.06), transparent 70%);
+}
+
+.demo-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    'intro form'
+    'aside form';
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-xl);
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgba(9, 18, 75, 0.04),
+    0 30px 70px -36px rgba(9, 18, 75, 0.35);
+  overflow: hidden;
+}
+
+/* the brand panel (two blocks, one light surface) */
+.demo-intro,
+.demo-aside {
+  background: var(--surface-soft);
+  color: var(--ink-soft);
+  padding: clamp(22px, 2.6vw, 30px) clamp(24px, 3vw, 40px);
+}
+
+.demo-intro {
+  grid-area: intro;
+  padding-bottom: 8px;
+  background:
+    radial-gradient(70% 60% at 0% 0%, rgba(10, 161, 232, 0.12), transparent 70%),
+    var(--surface-soft);
+}
+
+.demo-aside {
+  grid-area: aside;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(70% 60% at 100% 100%, rgba(245, 41, 152, 0.08), transparent 70%),
+    var(--surface-soft);
+}
+
+.demo-intro h1 {
+  margin: 10px 0 8px;
+  font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+  line-height: 1.15;
+  color: var(--navy);
+}
+
+.demo-intro > p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.demo-points {
+  display: grid;
+  gap: 12px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.demo-points li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ink);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.demo-points li > span {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--blue);
+  box-shadow: var(--shadow-sm);
+}
+
+.demo-aside h2 {
+  margin: 14px 0 14px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* numbered steps on a connecting line */
+.demo-steps {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.demo-steps::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  left: 12px;
+  border-left: 1px dashed var(--line);
+}
+
+.demo-steps li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  gap: 12px;
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+.demo-steps b {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--grad-cta);
+  color: #fff;
+  font-size: 0.75rem;
+}
+
+.demo-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: auto 0 0;
+  padding: 22px 0 0;
+  list-style: none;
+}
+
+.demo-trust li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: #fff;
+  color: var(--ink-soft);
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+.demo-trust svg {
+  color: var(--status-productive);
+}
+
+/* the form panel */
+.demo-form {
+  grid-area: form;
+  align-self: stretch;
+  border-left: 1px solid var(--line-soft) !important;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: clamp(22px, 2.6vw, 30px) clamp(24px, 3vw, 40px);
+}
+
+.demo-form-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+/* the form sits in the middle of its panel when the panel is taller */
+.demo-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.demo-form-head h2 {
+  margin: 0;
+  font-size: clamp(1.2rem, 1.8vw, 1.45rem);
+  color: var(--navy);
+}
+
+.demo-form-head span {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.demo-group {
+  grid-column: 1 / -1;
+  margin: 8px 0 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--line-soft);
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.demo-page .form-grid {
+  gap: 0 14px;
+}
+
+.demo-page .form-field {
+  gap: 5px;
+  margin-bottom: 9px;
+}
+
+.demo-page .form-field input,
+.demo-page .form-field select,
+.demo-page .form-field textarea {
+  padding-top: 9px;
+  padding-bottom: 9px;
+  background: #fff;
+}
+
+.demo-submit {
+  margin-top: 14px;
+}
+
+.demo-privacy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+/* phones and tablets: title, then the form, then what happens next */
+@media (max-width: 900px) {
+  .demo-shell {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      'intro'
+      'form'
+      'aside';
+  }
+
+  .demo-intro {
+    padding-bottom: clamp(24px, 3vw, 36px);
+  }
+
+  .demo-points {
+    display: none;
+  }
+
+  .demo-aside h2 {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+}
+
+/* Contact page (same card as Book a Demo): ways to reach us, and social profiles */
+.contact-ways {
+  display: grid;
+  gap: 14px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact-ways li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.contact-ways li > span {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--blue);
+  box-shadow: var(--shadow-sm);
+}
+
+.contact-ways b,
+.contact-ways small {
+  display: block;
+}
+
+.contact-ways b {
+  color: var(--navy);
+  font-size: 0.92rem;
+}
+
+.contact-ways small {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.contact-ways a {
+  color: var(--blue);
+  font-weight: 600;
+}
+
+.contact-follow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.contact-follow p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+}
+
+.contact-follow .social-links {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact-follow .social-links a {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--navy);
+  transition:
+    color var(--dur-fast),
+    border-color var(--dur-fast),
+    transform var(--dur-fast) var(--ease);
+}
+
+.contact-follow .social-links a:hover,
+.contact-follow .social-links a:focus-visible {
+  border-color: var(--pink);
+  color: var(--pink-deep);
+  transform: translateY(-2px);
+}
+
+
+/* ---- thank-you screen after a lead form (FormSuccess.jsx) ---- */
+.form-done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 480px;
+  margin: 0 auto;
+  animation: form-done-in 0.45s var(--ease) both;
+}
+
+@keyframes form-done-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+.form-done-badge {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1fb87f, #0aa1e8);
+  color: #fff;
+  box-shadow:
+    0 0 0 8px rgba(31, 184, 127, 0.12),
+    0 0 0 16px rgba(10, 161, 232, 0.06),
+    0 14px 30px -10px rgba(10, 161, 232, 0.55);
+}
+
+/* the tick draws itself in */
+.form-done-badge path {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: form-done-tick 0.5s 0.25s var(--ease) forwards;
+}
+
+@keyframes form-done-tick {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.form-done-tag {
+  margin-top: 24px;
+  padding: 4px 12px;
+  border-radius: var(--r-pill);
+  background: rgba(31, 184, 127, 0.1);
+  color: #13875c;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.form-done h2 {
+  margin: 12px 0 8px;
+  font-size: clamp(1.35rem, 2.2vw, 1.7rem);
+  color: var(--navy);
+  outline: none;
+}
+
+.form-done-msg {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.form-done-facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  width: 100%;
+  margin-top: 22px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-md);
+  background: var(--line-soft);
+  overflow: hidden;
+  text-align: left;
+}
+
+.form-done-facts > span {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--surface-soft);
+}
+
+.form-done-facts svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--blue);
+}
+
+.form-done-facts small,
+.form-done-facts b {
+  display: block;
+}
+
+.form-done-facts small {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.form-done-facts b {
+  color: var(--navy);
+  font-size: 0.88rem;
+  word-break: break-word;
+}
+
+.form-done-next {
+  width: 100%;
+  margin-top: 24px;
+  text-align: left;
+}
+
+.form-done-next > small {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.form-done-next > div {
+  display: grid;
+  gap: 8px;
+}
+
+.form-done-next a {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-md);
+  background: #fff;
+  color: var(--ink);
+  transition:
+    border-color var(--dur-fast),
+    box-shadow var(--dur-fast),
+    transform var(--dur-fast) var(--ease);
+}
+
+.form-done-next a:hover,
+.form-done-next a:focus-visible {
+  border-color: rgba(245, 41, 152, 0.35);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.form-done-next a > svg {
+  color: var(--pink-deep);
+}
+
+.form-done-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--grad-mark);
+  color: #fff;
+}
+
+.form-done-next b,
+.form-done-next small {
+  display: block;
+}
+
+.form-done-next a b {
+  color: var(--navy);
+  font-size: 0.9rem;
+}
+
+.form-done-next a small {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 480px) {
+  .form-done-facts {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .form-done,
+  .form-done-badge path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ---- Book a Demo on shorter screens (laptops): the same card, tighter,
+   so the longer form fits without scrolling ---- */
+@media (min-width: 901px) and (max-height: 880px) {
+  .book-demo {
+    padding-top: 14px;
+    padding-bottom: 24px;
+  }
+
+  .book-demo .demo-intro,
+  .book-demo .demo-aside {
+    padding: 18px 28px;
+  }
+
+  .book-demo .demo-intro {
+    padding-bottom: 4px;
+  }
+
+  .book-demo .demo-intro h1 {
+    margin: 6px 0 4px;
+    font-size: 1.6rem;
+  }
+
+  .book-demo .demo-intro > p {
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+
+  .book-demo .demo-points,
+  .book-demo .contact-ways {
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .book-demo .demo-points li,
+  .book-demo .contact-ways b {
+    font-size: 0.85rem;
+  }
+
+  .book-demo .contact-ways small {
+    font-size: 0.8rem;
+  }
+
+  .book-demo .demo-points li > span,
+  .book-demo .contact-ways li > span {
+    width: 28px;
+    height: 28px;
+  }
+
+  .book-demo .demo-aside h2 {
+    margin: 4px 0 10px;
+    padding-top: 12px;
+  }
+
+  .book-demo .demo-steps {
+    gap: 8px;
+  }
+
+  .book-demo .demo-steps li {
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
+
+  .book-demo .demo-trust {
+    gap: 6px;
+    padding-top: 12px;
+  }
+
+  .book-demo .demo-trust li {
+    padding: 4px 9px;
+    font-size: 0.7rem;
+  }
+
+  .book-demo .demo-form {
+    padding: 18px 30px;
+  }
+
+  .book-demo .demo-form-head {
+    margin-bottom: 8px;
+  }
+
+  .book-demo .demo-form-head h2 {
+    font-size: 1.2rem;
+  }
+
+  .book-demo .demo-group {
+    margin: 4px 0 6px;
+    padding-bottom: 4px;
+    font-size: 0.68rem;
+  }
+
+  .book-demo .form-field {
+    gap: 3px;
+    margin-bottom: 7px;
+  }
+
+  .book-demo .form-field label {
+    font-size: 0.78rem;
+  }
+
+  .book-demo .form-field input,
+  .book-demo .form-field select,
+  .book-demo .form-field textarea {
+    padding-top: 7px;
+    padding-bottom: 7px;
+    font-size: 0.88rem;
+  }
+
+  .book-demo .consent-check {
+    margin-top: 0;
+    font-size: 0.78rem;
+  }
+
+  .book-demo .form-notice {
+    margin: 4px 0 0;
+    font-size: 0.78rem;
+  }
+
+  .book-demo .demo-submit {
+    margin-top: 10px;
+    padding-top: 11px;
+    padding-bottom: 11px;
+  }
+
+  .book-demo .demo-privacy {
+    margin-top: 6px;
+  }
+}
+
+/* Contact on the shortest laptop screens: a little less space above the card */
+@media (min-width: 901px) and (max-height: 740px) {
+  .contact-page {
+    padding-top: 16px;
+  }
+}

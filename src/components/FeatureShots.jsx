@@ -154,44 +154,53 @@ function Timeline({ rows, now = 0.68 }) {
   )
 }
 
+// attendance by team (a team's working day, from first to last activity)
 const LANES = [
   [
-    'Ananya Rao',
+    'Engineering',
     [
       [4, 34, 'p'],
       [34, 38, 'n'],
       [38, 68, 'p'],
     ],
-    ['ok', 'On time'],
+    ['ok', '94% on time'],
   ],
   [
-    'Karthik S.',
+    'Design',
     [
-      [10, 40, 'p'],
+      [6, 40, 'p'],
+      [40, 44, 'n'],
+      [44, 68, 'p'],
+    ],
+    ['ok', '100% on time'],
+  ],
+  [
+    'Sales',
+    [
+      [12, 40, 'p'],
       [40, 50, 'v'],
       [50, 68, 'p'],
     ],
-    ['warn', 'Late 24m'],
+    ['warn', '3 late'],
   ],
   [
-    'Meera Joshi',
+    'Support',
     [
-      [6, 30, 'p'],
-      [30, 42, 'u'],
-      [42, 56, 'p'],
+      [2, 30, 'p'],
+      [30, 36, 'u'],
+      [36, 62, 'p'],
     ],
-    ['neutral', 'Left early'],
+    ['neutral', '2 left early'],
   ],
   [
-    'Rohit Verma',
+    'Operations',
     [
-      [2, 40, 'p'],
-      [40, 43, 'n'],
-      [43, 68, 'p'],
+      [5, 42, 'p'],
+      [42, 45, 'n'],
+      [45, 68, 'p'],
     ],
-    ['ok', 'On time'],
+    ['ok', '96% on time'],
   ],
-  ['Daniel Brooks', [], ['bad', 'Absent']],
 ]
 
 const LANE_KEY = [
@@ -218,13 +227,13 @@ export function DashboardShot() {
             />
           </div>
         </Card>
-        <Card title="Live Activity" meta="89 / 128 online">
+        <Card title="Team health" meta="6 teams · this month">
           <LiveList
             rows={[
-              ['Ananya Rao', 'ok', 'Work Mode', 'VS Code'],
-              ['Karthik Subramanian', 'privacy', 'Privacy Mode', 'Paused by employee'],
-              ['Meera Joshi', 'neutral', 'Offline · 12m', 'Last seen 10:31'],
-              ['Rohit Verma', 'ok', 'Work Mode', 'Jira'],
+              ['Design', 'ok', 'On track', '91% productive · 10 people'],
+              ['Engineering', 'ok', 'On track', '84% productive · 34 people'],
+              ['Support', 'neutral', 'Steady', '72% productive · 22 people'],
+              ['Sales', 'warn', 'Needs attention', '58% productive · 18 people'],
             ]}
           />
         </Card>
@@ -264,36 +273,36 @@ export function TeamsShot() {
           </div>
         ))}
       </div>
-      <Card title="Engineering · members" meta="Live">
+      <Card title="Teams compared" meta="This month">
         <table className="ps-table">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Status</th>
-              <th>Active today</th>
+              <th>Team</th>
+              <th>Focus time / day</th>
+              <th>Trend</th>
               <th style={{ width: '30%' }}>Productivity</th>
             </tr>
           </thead>
           <tbody>
             {[
-              ['Ananya Rao', ['ok', 'Work Mode'], '6h 52m', 88],
-              ['Rohit Verma', ['ok', 'Work Mode'], '7h 20m', 81],
-              ['Kiran Das', ['privacy', 'Privacy Mode'], '5h 48m', 74],
-            ].map(([n, st, act, prod], i) => (
+              ['Design', '5h 12m', '+4 pts', 91],
+              ['Engineering', '4h 48m', '+2 pts', 84],
+              ['Sales', '2h 26m', '−6 pts', 58],
+            ].map(([n, focus, trend, prod], i) => (
               <tr key={n}>
                 <td>
-                  <span className="ps-person">
-                    <Avatar name={n} i={i} />
+                  <span className="ps-team">
+                    <span className="ps-team-badge" style={{ background: AVATAR_COLORS[i] }}>
+                      {n.slice(0, 2).toUpperCase()}
+                    </span>
                     {n}
                   </span>
                 </td>
-                <td>
-                  <Chip tone={st[0]}>{st[1]}</Chip>
-                </td>
-                <td>{act}</td>
+                <td>{focus}</td>
+                <td className={trend.startsWith('−') ? 'ps-down' : 'ps-up'}>{trend}</td>
                 <td>
                   <span className="ps-barcell">
-                    <Bar value={prod} tone="green" />
+                    <Bar value={prod} tone={prod < 65 ? 'pink' : 'green'} />
                     <b>{prod}%</b>
                   </span>
                 </td>
@@ -307,23 +316,24 @@ export function TeamsShot() {
 }
 
 const CAPTURES = [
-  ['Figma', 'design', '#f52998', '10:42 AM', ['ok', 'Productive']],
-  ['VS Code', 'code', '#0aa1e8', '10:40 AM', ['ok', 'Productive']],
-  ['Private window', 'doc', '#9aa1b8', '10:38 AM', ['neutral', 'Blurred'], true],
-  ['Google Docs', 'doc', '#2f7cf6', '10:36 AM', ['ok', 'Productive']],
-  ['Slack', 'chat', '#6a2cc7', '10:34 AM', ['neutral', 'Neutral']],
-  ['YouTube', 'video', '#e6415f', '10:32 AM', ['bad', 'Unproductive']],
+  ['Figma', 'Design', 'design', '#f52998', ['ok', 'Productive']],
+  ['VS Code', 'Engineering', 'code', '#0aa1e8', ['ok', 'Productive']],
+  ['Private window', 'Blur on', 'doc', '#9aa1b8', ['neutral', 'Blurred'], true],
+  ['Google Docs', 'Operations', 'doc', '#2f7cf6', ['ok', 'Productive']],
+  ['Slack', 'Support', 'chat', '#6a2cc7', ['neutral', 'Neutral']],
+  ['YouTube', 'Sales', 'video', '#e6415f', ['bad', 'Unproductive']],
 ]
 
 export function ScreenshotsShot() {
   return (
     <Shot url="screenshots">
       <div className="fs-toolbar">
-        <span className="ps-person">
-          <Avatar name="Ananya Rao" i={0} />
+        <span className="fs-capture-stats">
+          <b>All teams · this week</b>
           <span>
-            <b>Ananya Rao</b>
-            <small>Engineering · 46 captures today</small>
+            <Chip tone="ok">74% productive</Chip>
+            <Chip tone="neutral">18% neutral</Chip>
+            <Chip tone="bad">8% unproductive</Chip>
           </span>
         </span>
         <span className="fs-seg">
@@ -333,13 +343,13 @@ export function ScreenshotsShot() {
         </span>
       </div>
       <div className="fs-grid" style={{ gridTemplateColumns: 'repeat(3, minmax(0, 1fr))' }}>
-        {CAPTURES.map(([app, kind, color, time, tag, blur]) => (
-          <div className="ps-card fs-capture" key={time}>
+        {CAPTURES.map(([app, team, kind, color, tag, blur]) => (
+          <div className="ps-card fs-capture" key={app}>
             <ScreenThumb kind={kind} color={color} blur={blur} />
             <span className="fs-capture-foot">
               <span>
                 <b>{app}</b>
-                <small>{time}</small>
+                <small>{team}</small>
               </span>
               <Chip tone={tag[0]}>{tag[1]}</Chip>
             </span>
@@ -354,7 +364,7 @@ export function VideoRecordingShot() {
   return (
     <Shot url="recordings">
       <div className="fs-grid" style={{ gridTemplateColumns: '1.5fr 1fr' }}>
-        <Card title="Ananya Rao · Session 3" meta="10:30 – 10:45 AM">
+        <Card title="Design · Figma session" meta="15-min segment · in-browser playback">
           <span className="fs-player">
             <span className="fs-zoom">
               <ScreenThumb kind="design" color="#f52998" />
@@ -379,13 +389,13 @@ export function VideoRecordingShot() {
             ))}
           </span>
         </Card>
-        <Card title="Segments" meta="Today · 15 min each">
+        <Card title="Segments" meta="Tagged automatically">
           <div className="fs-seglist">
             {[
-              ['10:30 – 10:45', 'Figma', 'design', '#f52998', ['ok', 'Playing']],
-              ['10:15 – 10:30', 'VS Code', 'code', '#0aa1e8', ['ok', 'Productive']],
-              ['10:00 – 10:15', 'Private window', 'doc', '#9aa1b8', ['neutral', 'Blurred'], true],
-              ['9:45 – 10:00', 'Slack', 'chat', '#6a2cc7', ['neutral', 'Neutral']],
+              ['Figma', 'Design · productive', 'design', '#f52998', ['ok', 'Playing']],
+              ['VS Code', 'Engineering · productive', 'code', '#0aa1e8', ['ok', 'Productive']],
+              ['Private window', 'Blurred before storage', 'doc', '#9aa1b8', ['neutral', 'Blurred'], true],
+              ['Slack', 'Support · neutral', 'chat', '#6a2cc7', ['neutral', 'Neutral']],
             ].map(([t, app, kind, c, tag, blur], i) => (
               <span className={`fs-seg-row${i === 0 ? ' on' : ''}`} key={t}>
                 <span className="fs-seg-thumb">
@@ -404,11 +414,18 @@ export function VideoRecordingShot() {
   )
 }
 
+const LOCATION_MIX = [
+  ['Engineering', 70, 26, 4],
+  ['Sales', 22, 18, 60],
+  ['Design', 80, 20, 0],
+  ['Support', 55, 45, 0],
+]
+
 export function LocationTrackingShot() {
   return (
     <Shot url="location">
       <div className="fs-grid" style={{ gridTemplateColumns: '1.25fr 1fr' }}>
-        <Card title="Team map" meta="Live">
+        <Card title="Work locations" meta="Today · geofenced zones">
           <span className="fs-map">
             <span className="fs-road h" style={{ top: '34%' }} />
             <span className="fs-road v" style={{ left: '62%' }} />
@@ -416,31 +433,42 @@ export function LocationTrackingShot() {
               <em>HQ office</em>
             </span>
             <span className="fs-zone client" style={{ left: '66%', top: '8%', width: '26%' }}>
-              <em>Client site</em>
+              <em>Client sites</em>
             </span>
-            {[
-              ['AR', '26%', '54%', 0],
-              ['RV', '36%', '68%', 3],
-              ['KS', '79%', '28%', 1],
-            ].map(([n, l, t, c]) => (
-              <span className="fs-pin" key={n} style={{ left: l, top: t, background: AVATAR_COLORS[c] }}>
-                <em>{n}</em>
-              </span>
-            ))}
-            <span className="fs-pin alert" style={{ left: '86%', top: '86%' }}>
-              <em>DK</em>
+            <span className="fs-count office" style={{ left: '30%', top: '62%' }}>
+              61
+            </span>
+            <span className="fs-count client" style={{ left: '79%', top: '30%' }}>
+              9
+            </span>
+            <span className="fs-count remote" style={{ left: '82%', top: '74%' }}>
+              24 <small>remote</small>
             </span>
           </span>
         </Card>
-        <Card title="Live location" meta="Geofenced">
-          <LiveList
-            rows={[
-              ['Ananya Rao', 'ok', 'In office', 'HQ · since 9:02 AM'],
-              ['Karthik S.', 'info', 'Client site', 'Infosys Park'],
-              ['Meera Joshi', 'neutral', 'Remote', 'Home zone'],
-              ['Diya Kapoor', 'bad', 'Exited', 'Left zone 11:20'],
+        <Card title="Location mix by team" meta="Office · remote · client">
+          <div className="fs-mix">
+            {LOCATION_MIX.map(([team, office, remote, client]) => (
+              <span key={team}>
+                <b>{team}</b>
+                <span className="fs-mix-bar">
+                  <i className="office" style={{ flex: office }} />
+                  <i className="remote" style={{ flex: remote }} />
+                  <i className="client" style={{ flex: client }} />
+                </span>
+              </span>
+            ))}
+          </div>
+          <Legend
+            items={[
+              ['Office', '#0aa1e8'],
+              ['Remote', '#9aa1b8'],
+              ['Client', '#6a2cc7'],
             ]}
           />
+          <span className="fs-mix-alert">
+            <Chip tone="warn">2 geofence alerts today</Chip>
+          </span>
         </Card>
       </div>
     </Shot>
@@ -450,7 +478,7 @@ export function LocationTrackingShot() {
 export function AttendanceShot() {
   return (
     <Shot url="attendance">
-      <Card title="Team timeline" meta="Today · check-in is the first activity of the day">
+      <Card title="Attendance by team" meta="Today · check-in is the first activity of the day">
         <Timeline rows={LANES} />
         <Legend items={LANE_KEY} />
       </Card>
@@ -524,12 +552,10 @@ export function SettingsShot() {
       <div className="ps-card fs-settings">
         <span className="fs-settings-head">
           <span>
-            <b>Monitoring Controls</b>
-            <small>Per employee, on top of org defaults</small>
+            <b>Monitoring policy</b>
+            <small>Org-wide defaults · any person or team can be set differently</small>
           </span>
-          <span className="fs-select">
-            <Avatar name="Ananya Rao" i={0} /> Ananya Rao ▾
-          </span>
+          <span className="fs-select">All teams ▾</span>
         </span>
         {rows.map(([label, desc, control]) => (
           <span className="fs-setting" key={label}>
@@ -557,38 +583,75 @@ export function SettingsShot() {
 
 /* ================= Platform area screenshots (home page) ================= */
 
+// Organizational Intelligence: signals from people, work and technology
+// become one score, and the score becomes an action.
 function OrgArea() {
   const weeks = [66, 68, 67, 70, 69, 72, 71, 73, 74, 73, 76, 78]
-  const x = (i) => (i / (weeks.length - 1)) * 600
-  const y = (v) => 150 - ((v - 60) / 25) * 140
-  const line = weeks.map((v, i) => `${x(i)},${y(v)}`).join(' ')
+  const line = weeks.map((v, i) => `${(i / (weeks.length - 1)) * 200},${40 - ((v - 64) / 16) * 36}`).join(' ')
+  const signals = [
+    ['users', 'People', '128 employees', '89 online now', 'blue'],
+    ['monitor', 'Work', '74% productive', 'time this week', 'green'],
+    ['cpu', 'Technology', '46 apps', 'tagged automatically', 'purple'],
+  ]
   return (
-    <>
-      <div className="fs-grid" style={{ gridTemplateColumns: 'repeat(3, minmax(0, 1fr))' }}>
-        <Stat icon="users" label="Employees" value="128" note="across 6 teams" />
-        <Stat icon="trendingUp" label="Org score" value="78" unit="/100" delta="+3 pts" note="vs last month" />
-        <Stat icon="clock" label="Avg work time" value="6h 40m" note="per person / day" />
+    <div className="fs-org">
+      <div className="fs-org-col">
+        <span className="fs-org-label">Signals</span>
+        {signals.map(([icon, name, value, note, tone]) => (
+          <div className="ps-card fs-signal" key={name}>
+            <span className={`fs-signal-icon ${tone}`}>
+              <Icon name={icon} size={16} />
+            </span>
+            <span>
+              <small>{name}</small>
+              <b>{value}</b>
+              <small>{note}</small>
+            </span>
+          </div>
+        ))}
       </div>
-      <Card title="Org productivity score" meta="Last 12 weeks">
-        <svg className="fs-line" viewBox="0 0 600 160" preserveAspectRatio="none" aria-hidden="true">
-          <defs>
-            <linearGradient id="fsArea" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#0aa1e8" stopOpacity="0.25" />
-              <stop offset="1" stopColor="#0aa1e8" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-          <line className="target" x1="0" x2="600" y1={y(75)} y2={y(75)} />
-          <polygon points={`0,160 ${line} 600,160`} fill="url(#fsArea)" />
-          <polyline points={line} />
-        </svg>
-        <span className="fs-axis">
-          <small>W1</small>
-          <small>W4</small>
-          <small>W8</small>
-          <small>W12 · 78</small>
-        </span>
-      </Card>
-    </>
+
+      <span className="fs-org-arrow" aria-hidden="true" />
+
+      <div className="fs-org-col">
+        <span className="fs-org-label">Intelligence</span>
+        <div className="ps-card fs-org-score">
+          <small>Org productivity score</small>
+          <ScoreRing label="/ 100" target={null} />
+          <span className="fs-org-delta">↑ 3 pts vs last month</span>
+          <svg className="fs-org-trend" viewBox="0 0 200 44" preserveAspectRatio="none" aria-hidden="true">
+            <polyline points={line} />
+          </svg>
+          <small>Last 12 weeks</small>
+        </div>
+      </div>
+
+      <span className="fs-org-arrow" aria-hidden="true" />
+
+      <div className="fs-org-col">
+        <span className="fs-org-label">Action</span>
+        <div className="ps-card fs-org-alert">
+          <span className="fs-org-alert-head">
+            <span className="ps-team-badge" style={{ background: AVATAR_COLORS[5] }}>
+              SA
+            </span>
+            <Chip tone="warn">Needs attention</Chip>
+          </span>
+          <b>Sales · 58%</b>
+          <small>Productivity down 6 pts this month</small>
+        </div>
+        <div className="ps-card fs-org-ai">
+          <span className="fs-ai">
+            <Icon name="sparkle" size={12} /> Teemly AI
+          </span>
+          <b>Move Sales reviews to Friday afternoon</b>
+          <small>Your quietest window — frees up focus time.</small>
+          <span className="fs-org-cta">
+            View report <Icon name="arrowRight" size={12} />
+          </span>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -622,12 +685,12 @@ function WorkforceArea() {
             ))}
           </div>
         </Card>
-        <Card title="Burnout & Wellbeing" meta="Above usual hours">
+        <Card title="Burnout & Wellbeing" meta="Teams above usual hours">
           <LiveList
             rows={[
-              ['Rohit Verma', 'warn', '+1h 40m', 'Engineering'],
-              ['Priya Nair', 'warn', '+1h 15m', 'Support'],
-              ['Vikram Shah', 'warn', '+58m', 'Sales'],
+              ['Engineering', 'warn', '+1h 40m', '3 people · 2 weeks'],
+              ['Support', 'warn', '+1h 15m', '2 people · 2 weeks'],
+              ['Sales', 'warn', '+58m', '1 person · 1 week'],
             ]}
           />
         </Card>
@@ -702,7 +765,7 @@ function WorkflowArea() {
         <Stat icon="bolt" label="Avg check-in" value="9:12" unit=" AM" note="from real activity" />
         <Stat icon="clock" label="Late arrivals" value="3" delta="−2" note="vs last week" />
       </div>
-      <Card title="Attendance timeline" meta="Today">
+      <Card title="Attendance by team" meta="Today">
         <Timeline rows={LANES.slice(0, 4)} />
       </Card>
     </>

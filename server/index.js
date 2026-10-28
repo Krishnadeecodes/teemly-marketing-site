@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url'
 import express from 'express'
 import nodemailer from 'nodemailer'
 import { LEAD_FORMS, validateLead } from '../src/lib/leadForms.js'
+import { SOCIAL } from '../src/data/social.js'
 import { publicRouter, adminRouter } from './resources.js'
 import { PUBLIC_UPLOAD_DIR, query, ready as dbReady } from './db.js'
 
@@ -219,6 +220,8 @@ function buildAutoReply(def, data) {
     'Kind regards,',
     'The Teemly Team',
     '',
+    `Follow Teemly: ${SOCIAL.map((s) => `${s.label} ${s.url}`).join(' · ')}`,
+    '',
     '---',
     `© ${year} Teemly. You are receiving this email because this address was used to submit a form on the Teemly website. If this wasn't you, please disregard this message.`,
   ].join('\n')
@@ -304,6 +307,7 @@ function buildAutoReply(def, data) {
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px">
         <tr>
           <td align="center" style="padding:20px 16px 0;font-size:12px;line-height:1.6;color:#9297b3;${font}">
+            ${SOCIAL.map((s) => `<a href="${escapeHtml(s.url)}" style="color:#09124b;font-weight:600;text-decoration:none">${escapeHtml(s.label)}</a>`).join(' &nbsp;&middot;&nbsp; ')}<br>
             &copy; ${year} Teemly${SITE_URL ? ` &middot; <a href="${escapeHtml(SITE_URL)}" style="color:#6b7093;text-decoration:underline">${escapeHtml(SITE_URL.replace(/^https?:\/\//, ''))}</a>` : ''}<br>
             You are receiving this email because this address was used to submit a form on the Teemly website. If this wasn’t you, please disregard this message.
           </td>
@@ -479,13 +483,15 @@ app.post('/api/forms/:type', rateLimit, async (req, res) => {
     .catch((err) => console.error(`${tag} auto-reply to submitter failed:`, err.message))
 })
 
-// ---- Product tour sign-in: records the visitor and tells the team ----
-// The tour itself ships with the site, so this unlocks it in the browser
-// rather than guarding a secret; what matters here is capturing the lead.
+// ---- Site sign-in (product tour and chat assistant): records the visitor
+// and tells the team. The tour and the chat answers ship with the site, so
+// this unlocks them in the browser rather than guarding a secret; what
+// matters here is capturing the lead.
 const TOUR_DEF = {
-  title: 'Product tour sign-in',
+  title: 'Website sign-in',
   fields: { name: 'Name', email: 'Work email', company: 'Company', role: 'Role', companySize: 'Company size', country: 'Country' },
 }
+const SIGNIN_SOURCES = { tour: 'Product tour', chatbot: 'Chat assistant' }
 
 app.post('/api/tour/unlock', rateLimit, async (req, res) => {
   const tag = '[tour]'
@@ -499,7 +505,9 @@ app.post('/api/tour/unlock', rateLimit, async (req, res) => {
     return res.json({ ok: true })
   }
 
-  const fields = validateLead('tour', req.body)
+  // the chat assistant asks only for a name and email; the tour for the full form
+  const form = req.body?.form === 'chat' ? 'chat' : 'tour'
+  const fields = validateLead(form, req.body)
   if (Object.keys(fields).length) {
     return res.status(400).json({ error: 'Please fix the highlighted fields and try again.', fields })
   }
@@ -507,12 +515,15 @@ app.post('/api/tour/unlock', rateLimit, async (req, res) => {
   const data = clean(req.body, TOUR_DEF)
   data.email = data.email.toLowerCase()
   const attribution = cleanAttribution(req.body?.attribution)
+  const source = SIGNIN_SOURCES[req.body?.source] ? req.body.source : 'tour'
+  // the question a chat visitor asked before signing in
+  const question = typeof req.body?.question === 'string' ? req.body.question.replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, 300) : ''
   try {
     const result = await query(
-      `INSERT INTO tour_signups (email, name, company, role, company_size, country, consent, attribution)
-       VALUES (?, ?, ?, ?, ?, ?, 1, ?)
+      `INSERT INTO tour_signups (email, name, company, role, company_size, country, consent, attribution, source, first_question)
+       VALUES (?, ?, ?, ?, ?, ?, 1, ?, ?, ?)
        ON DUPLICATE KEY UPDATE visits = visits + 1, last_seen_at = CURRENT_TIMESTAMP(3)`,
-      [data.email, data.name, data.company, data.role, data.companySize, data.country, JSON.stringify(attribution)],
+      [data.email, data.name, data.company, data.role, data.companySize, data.country, JSON.stringify(attribution), source, question],
     )
     // affectedRows is 1 for a new row, 2 when an existing email was updated
     if (result.affectedRows !== 1) return res.json({ ok: true })
@@ -522,15 +533,22 @@ app.post('/api/tour/unlock', rateLimit, async (req, res) => {
   }
   res.json({ ok: true })
 
-  const lead = { form: 'tour', submittedAt: new Date().toISOString(), data, attribution, consent: true }
-  const { text, html } = buildEmail(TOUR_DEF, lead)
+  const lead = {
+    form: source,
+    submittedAt: new Date().toISOString(),
+    data: { ...data, source: SIGNIN_SOURCES[source], question: question || '-' },
+    attribution,
+    consent: true,
+  }
+  const def = { ...TOUR_DEF, fields: { ...TOUR_DEF.fields, source: 'Signed in from', question: 'Question asked' } }
+  const { text, html } = buildEmail(def, lead)
   const to = process.env.MAIL_TO_TOUR || MAIL_TO
   transporter
     .sendMail({
       from: `"Teemly Website" <${SMTP_USER}>`,
       to,
       replyTo: data.email,
-      subject: `New tour sign-in — ${data.name} (${data.company})`.replace(/[\r\n]+/g, ' '),
+      subject: `New sign-in (${SIGNIN_SOURCES[source]}) — ${data.name}${data.company ? ` (${data.company})` : ''}`.replace(/[\r\n]+/g, ' '),
       text,
       html,
     })

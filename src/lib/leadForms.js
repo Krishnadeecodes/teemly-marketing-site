@@ -61,15 +61,16 @@ export const LEAD_FORMS = {
     company: { required: 'Please enter your company name.', max: 120 },
     consent: { checkbox: true, required: 'Please confirm we may email you about this download.' },
   },
+  // Sign-in before the chat assistant's first answer (POST /api/tour/unlock)
+  chat: {
+    name: { required: 'Please enter your name.', max: 100 },
+    email: { required: 'Please enter your work email.', email: true, work: true, max: 254 },
+  },
   // Sign-in that unlocks the product tour (POST /api/tour/unlock in server/index.js)
   tour: {
     name: { required: 'Please enter your name.', max: 100 },
     email: { required: 'Please enter your work email.', email: true, work: true, max: 254 },
-    company: { required: 'Please enter your company name.', max: 120 },
     role: { required: 'Please select your role.', options: ROLE_OPTIONS },
-    companySize: { required: 'Please select your company size.', options: SIZE_OPTIONS },
-    country: { max: 80 },
-    consent: { checkbox: true, required: 'Please confirm we may contact you about Teemly.' },
   },
 }
 

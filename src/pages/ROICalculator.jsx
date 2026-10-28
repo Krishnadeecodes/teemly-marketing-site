@@ -1,18 +1,24 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import PageHero from '../components/PageHero.jsx'
 import SectionHead from '../components/SectionHead.jsx'
 import Icon from '../components/Icon.jsx'
 import FinalCTA from '../sections/FinalCTA.jsx'
 import './pages.css'
 import './roi.css'
 
+// Money amounts are entered in the selected currency, so each currency has
+// its own realistic starting figures (roughly the same scenario at ~₹83 to
+// the dollar). Switching currency loads that currency's figures; head-counts
+// and the percentage assumptions stay as they are.
+const MONEY_DEFAULTS = {
+  usd: { avgEmployeeCost: 12000, techSpend: 60000, avgManagerCost: 18000 },
+  inr: { avgEmployeeCost: 800000, techSpend: 5000000, avgManagerCost: 1500000 },
+}
+
 const defaults = {
   employees: 200,
-  avgEmployeeCost: 12000,
-  techSpend: 60000,
+  ...MONEY_DEFAULTS.usd,
   managerCount: 20,
-  avgManagerCost: 18000,
   productivityPct: 5,
   wastePct: 15,
   coordinationPct: 8,
@@ -27,6 +33,11 @@ function fmt(n, currency) {
 export default function ROICalculator() {
   const [v, setV] = useState(defaults)
   const [currency, setCurrency] = useState('usd')
+
+  function chooseCurrency(next) {
+    setCurrency(next)
+    setV((cur) => ({ ...cur, ...MONEY_DEFAULTS[next] }))
+  }
 
   function update(field) {
     return (e) => setV((cur) => ({ ...cur, [field]: Number(e.target.value) }))
@@ -74,53 +85,61 @@ export default function ROICalculator() {
 
   return (
     <>
-      <PageHero
-        eyebrow="ROI Calculator"
-        title="Model your own numbers — this is an estimate, not a promise"
-        desc="Every input below is yours to set. We don't have verified customer ROI results to cite yet, so nothing here is presented as one."
-      />
-
-      <section className="section-tight">
-        <div className="container roi-disclaimer">
-          <Icon name="layers" size={18} />
-          <p>
-            This calculator applies adjustable assumptions to the numbers you enter. It is a modelling tool for
-            your own planning, not a guaranteed or verified outcome.
-          </p>
+      <section className="roi-page">
+        <div className="container">
+          <header className="roi-head">
+            <span className="eyebrow">
+              <span className="dot" />
+              ROI Calculator
+            </span>
+            <h1>Model your own numbers</h1>
+            <p>Every input is yours to set. This is an estimate for your own planning, not a promise or a verified customer result.</p>
+          </header>
         </div>
-      </section>
-
-      <section className="section-tight">
         <div className="container roi-layout">
           <div className="roi-inputs">
-            <div className="cycle-toggle roi-currency-toggle">
-              <button className={currency === 'usd' ? 'active' : ''} onClick={() => setCurrency('usd')}>
-                USD ($)
-              </button>
-              <button className={currency === 'inr' ? 'active' : ''} onClick={() => setCurrency('inr')}>
-                INR (₹)
-              </button>
+            <div className="roi-inputs-head">
+              <h2>Your numbers</h2>
+              <div className="cycle-toggle roi-currency-toggle">
+                <button className={currency === 'usd' ? 'active' : ''} onClick={() => chooseCurrency('usd')}>
+                  USD ($)
+                </button>
+                <button className={currency === 'inr' ? 'active' : ''} onClick={() => chooseCurrency('inr')}>
+                  INR (₹)
+                </button>
+              </div>
             </div>
 
-            <div className="roi-field">
-              <label>Number of employees</label>
-              <input type="number" inputMode="numeric" min="1" value={v.employees} onChange={update('employees')} />
-            </div>
-            <div className="roi-field">
-              <label>Average employee cost / year</label>
-              <input type="number" inputMode="numeric" min="0" value={v.avgEmployeeCost} onChange={update('avgEmployeeCost')} />
-            </div>
-            <div className="roi-field">
-              <label>Annual technology / SaaS spend</label>
-              <input type="number" inputMode="numeric" min="0" value={v.techSpend} onChange={update('techSpend')} />
-            </div>
-            <div className="roi-field">
-              <label>Number of managers</label>
-              <input type="number" inputMode="numeric" min="0" value={v.managerCount} onChange={update('managerCount')} />
-            </div>
-            <div className="roi-field">
-              <label>Average manager cost / year</label>
-              <input type="number" inputMode="numeric" min="0" value={v.avgManagerCost} onChange={update('avgManagerCost')} />
+            <div className="roi-fields">
+              <div className="roi-field">
+                <label>Number of employees</label>
+                <input type="number" inputMode="numeric" min="1" value={v.employees} onChange={update('employees')} />
+              </div>
+              <div className="roi-field">
+                <label>Avg. employee cost / year</label>
+                <span className="roi-money">
+                  <span aria-hidden="true">{currency === 'usd' ? '$' : '₹'}</span>
+                  <input type="number" inputMode="numeric" min="0" value={v.avgEmployeeCost} onChange={update('avgEmployeeCost')} />
+                </span>
+              </div>
+              <div className="roi-field">
+                <label>Tech &amp; SaaS spend / year</label>
+                <span className="roi-money">
+                  <span aria-hidden="true">{currency === 'usd' ? '$' : '₹'}</span>
+                  <input type="number" inputMode="numeric" min="0" value={v.techSpend} onChange={update('techSpend')} />
+                </span>
+              </div>
+              <div className="roi-field">
+                <label>Number of managers</label>
+                <input type="number" inputMode="numeric" min="0" value={v.managerCount} onChange={update('managerCount')} />
+              </div>
+              <div className="roi-field">
+                <label>Avg. manager cost / year</label>
+                <span className="roi-money">
+                  <span aria-hidden="true">{currency === 'usd' ? '$' : '₹'}</span>
+                  <input type="number" inputMode="numeric" min="0" value={v.avgManagerCost} onChange={update('avgManagerCost')} />
+                </span>
+              </div>
             </div>
 
             <div className="roi-sliders">
@@ -130,13 +149,7 @@ export default function ROICalculator() {
                     <span>{s.label}</span>
                     <strong>{v[s.key]}%</strong>
                   </div>
-                  <input
-                    type="range"
-                    min={s.min}
-                    max={s.max}
-                    value={v[s.key]}
-                    onChange={update(s.key)}
-                  />
+                  <input type="range" min={s.min} max={s.max} value={v[s.key]} onChange={update(s.key)} />
                   <p>{s.desc}</p>
                 </div>
               ))}
@@ -168,6 +181,10 @@ export default function ROICalculator() {
               Discuss this with sales
               <Icon name="arrowRight" size={16} />
             </Link>
+            <p className="roi-note">
+              <Icon name="layers" size={14} />
+              Adjustable assumptions applied to your numbers — a modelling tool, not a guaranteed or verified outcome.
+            </p>
           </div>
         </div>
       </section>

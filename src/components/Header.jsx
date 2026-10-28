@@ -290,9 +290,11 @@ export default function Header() {
                 {openMenu === securityMenu.key && securityMenu.render()}
               </div>
             )}
+            {/* "Sign in" is hidden for now; restore this link to bring it back
             <Link to="/company/contact" className="nav-signin-link hide-mobile">
               Sign in
             </Link>
+            */}
             <TourLink className="btn btn-outline btn-sm">Take a Tour</TourLink>
             <Link to="/book-a-demo" className="btn btn-primary btn-sm">
               Book a Demo
@@ -348,9 +350,11 @@ export default function Header() {
               Pricing
             </Link>
             <div className="mobile-divider" />
+            {/* "Sign in" is hidden for now; restore this link to bring it back
             <Link to="/company/contact" className="mobile-link">
               Sign in
             </Link>
+            */}
             <div className="mobile-cta-row">
               <TourLink className="btn btn-outline btn-block" onClick={() => setMobileOpen(false)}>
                 Take a Tour

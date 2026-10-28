@@ -187,6 +187,111 @@
   border-bottom-right-radius: 4px;
 }
 
+/* the quick sign-in asked for before the first answer (ChatSignIn) */
+.chatbot-msg.chatbot-gate {
+  max-width: 100%;
+  width: 100%;
+}
+
+.chatbot-gate-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-md);
+  background: #fff;
+  box-shadow: var(--shadow-md);
+}
+
+.chatbot-gate-form label {
+  margin-top: 4px;
+  font-family: var(--font-head);
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.chatbot-gate-form input {
+  width: 100%;
+  min-width: 0;
+  padding: 9px 11px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--surface-soft);
+  font-family: var(--font-body);
+  font-size: 0.86rem;
+  color: var(--ink);
+}
+
+.chatbot-gate-form input:focus {
+  outline: none;
+  border-color: var(--pink);
+  background: #fff;
+}
+
+.chatbot-gate-form .field-error {
+  margin: 0;
+  font-size: 0.74rem;
+  color: var(--pink-deep);
+}
+
+/* honeypot: hidden from people, visible to naive bots */
+.chatbot-gate-form .form-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.chatbot-gate-form button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: var(--r-btn);
+  background: var(--grad-cta);
+  color: #fff;
+  font-family: var(--font-head);
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.chatbot-gate-form button:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.chatbot-gate-form small {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.7rem;
+  line-height: 1.45;
+}
+
+.chatbot-gate-form a {
+  color: var(--navy);
+  text-decoration: underline;
+}
+
+.chatbot-gate-error {
+  margin: 6px 0 0;
+  padding: 8px 10px;
+  border-radius: var(--r-sm);
+  background: rgba(226, 31, 92, 0.08);
+  color: var(--pink-deep);
+  font-size: 0.76rem;
+}
+
+.chatbot-input input:disabled {
+  cursor: not-allowed;
+}
+
 .chatbot-bubble ul {
   margin: 8px 0 0;
   padding-left: 18px;

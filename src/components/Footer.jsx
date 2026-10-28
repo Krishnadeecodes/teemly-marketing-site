@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Logo from './Logo.jsx'
+import SocialLinks from './SocialLinks.jsx'
 import { footerColumns, legalLinks, resourcesFooterLinks } from '../data/navigation.js'
 import { useResourceMenu } from '../lib/resourcesApi.js'
 import './footer.css'
@@ -49,6 +50,7 @@ export default function Footer() {
             <span className="pill-tag foot-pill">Own desktop app</span>
             <span className="pill-tag foot-pill">DPDP &amp; GDPR-aligned</span>
           </div>
+          <SocialLinks className="footer-social" />
         </div>
 
         <div className="footer-cols">

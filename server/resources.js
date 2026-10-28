@@ -690,17 +690,17 @@ export function adminRouter() {
     res.send([head.map(cell).join(','), ...lines].join('\r\n'))
   })
 
-  // ---- Product tour sign-ins (see /api/tour/unlock in server/index.js) ----
+  // ---- Website sign-ins: tour and chat assistant (see /api/tour/unlock in server/index.js) ----
   r.get('/tour-signups', async (req, res) => {
     const rows = await query('SELECT * FROM tour_signups ORDER BY created_at DESC LIMIT 500')
     res.json({ signups: rows.map((t) => ({ ...t, consent: !!t.consent, attribution: json(t.attribution, {}) })) })
   })
   r.get('/tour-signups.csv', async (req, res) => {
     const rows = await query('SELECT * FROM tour_signups ORDER BY created_at DESC')
-    const head = ['First sign-in', 'Last visit', 'Visits', 'Name', 'Email', 'Company', 'Role', 'Company size', 'Country', 'Consent', 'UTM source', 'UTM campaign', 'Referrer']
+    const head = ['First sign-in', 'Last visit', 'Visits', 'Source', 'Question asked', 'Name', 'Email', 'Company', 'Role', 'Company size', 'Country', 'Consent', 'UTM source', 'UTM campaign', 'Referrer']
     const lines = rows.map((t) => {
       const a = json(t.attribution, {})
-      return [t.created_at, t.last_seen_at, t.visits, t.name, t.email, t.company, t.role, t.company_size, t.country, t.consent ? 'yes' : 'no', a.utm_source, a.utm_campaign, a.referrer]
+      return [t.created_at, t.last_seen_at, t.visits, t.source === 'chatbot' ? 'Chat' : 'Tour', t.first_question, t.name, t.email, t.company, t.role, t.company_size, t.country, t.consent ? 'yes' : 'no', a.utm_source, a.utm_campaign, a.referrer]
         .map(csvCell)
         .join(',')
     })
