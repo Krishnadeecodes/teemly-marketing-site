@@ -11,6 +11,7 @@ const NAV = [
   { to: '/admin/categories', label: 'Categories', icon: 'layers' },
   { to: '/admin/page-text', label: 'Page text', icon: 'monitor' },
   { to: '/admin/leads', label: 'Download leads', icon: 'download' },
+  { to: '/admin/tour-signups', label: 'Tour sign-ups', icon: 'play' },
   { to: '/admin/users', label: 'Users', icon: 'users', adminOnly: true },
 ]
 

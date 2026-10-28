@@ -19,6 +19,19 @@ export const PROBLEM_OPTIONS = [
 // value can never expand into extra recipients or headers in an email.
 export const EMAIL_RE = /^[A-Za-z0-9._%+'-]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}$/
 
+// Personal mailbox providers, refused where a form asks for a work email.
+export const FREE_EMAIL_DOMAINS = [
+  'gmail.com', 'googlemail.com', 'yahoo.com', 'yahoo.co.in', 'yahoo.co.uk', 'ymail.com', 'rocketmail.com',
+  'hotmail.com', 'hotmail.co.uk', 'outlook.com', 'live.com', 'msn.com', 'aol.com', 'icloud.com', 'me.com',
+  'mac.com', 'proton.me', 'protonmail.com', 'pm.me', 'gmx.com', 'gmx.net', 'mail.com', 'zoho.com',
+  'yandex.com', 'yandex.ru', 'mail.ru', 'rediffmail.com', 'qq.com', '163.com', '126.com', 'tutanota.com',
+]
+
+export function isFreeEmail(email) {
+  const domain = String(email).split('@').pop().toLowerCase()
+  return FREE_EMAIL_DOMAINS.includes(domain)
+}
+
 // Field rules, in display order. `required` holds the message shown when empty.
 export const LEAD_FORMS = {
   contact: {
@@ -48,6 +61,16 @@ export const LEAD_FORMS = {
     company: { required: 'Please enter your company name.', max: 120 },
     consent: { checkbox: true, required: 'Please confirm we may email you about this download.' },
   },
+  // Sign-in that unlocks the product tour (POST /api/tour/unlock in server/index.js)
+  tour: {
+    name: { required: 'Please enter your name.', max: 100 },
+    email: { required: 'Please enter your work email.', email: true, work: true, max: 254 },
+    company: { required: 'Please enter your company name.', max: 120 },
+    role: { required: 'Please select your role.', options: ROLE_OPTIONS },
+    companySize: { required: 'Please select your company size.', options: SIZE_OPTIONS },
+    country: { max: 80 },
+    consent: { checkbox: true, required: 'Please confirm we may contact you about Teemly.' },
+  },
 }
 
 export function validateField(rule, value) {
@@ -56,6 +79,7 @@ export function validateField(rule, value) {
   if (!v) return rule.required || ''
   if (rule.max && v.length > rule.max) return `Please keep this under ${rule.max} characters.`
   if (rule.email && !EMAIL_RE.test(v)) return 'Please enter a valid email address, like jane@company.com.'
+  if (rule.work && isFreeEmail(v)) return 'Please use your work email address, not a personal one.'
   if (rule.options && !rule.options.includes(v)) return 'Please choose one of the listed options.'
   return ''
 }

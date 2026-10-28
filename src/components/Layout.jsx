@@ -3,13 +3,10 @@ import { lazy, Suspense, useEffect, useLayoutEffect, useState } from 'react'
 import Header from './Header.jsx'
 import Footer from './Footer.jsx'
 import { prefetchResourcePage } from '../lib/resourcesApi.js'
-import { TOUR_EVENT, loadTourModal } from '../lib/tour.js'
 
 // The chat assistant (and its answer data) loads once the page is up and the
 // browser is idle, so it never competes with the page's own first paint.
 const ChatbotWidget = lazy(() => import('./ChatbotWidget.jsx'))
-// The "Take a Tour" popup, opened by any TourLink (see lib/tour.js).
-const TourModal = lazy(loadTourModal)
 
 function useWhenIdle() {
   const [ready, setReady] = useState(false)
@@ -32,17 +29,6 @@ function useWhenIdle() {
 export default function Layout() {
   const { pathname, hash, key } = useLocation()
   const chatReady = useWhenIdle()
-  const [tourOpen, setTourOpen] = useState(false)
-
-  useEffect(() => {
-    const open = () => setTourOpen(true)
-    window.addEventListener(TOUR_EVENT, open)
-    return () => window.removeEventListener(TOUR_EVENT, open)
-  }, [])
-
-  // a link inside the tour (e.g. Book a demo) leads to another page: close it
-  useEffect(() => setTourOpen(false), [pathname])
-
   // The app decides where each page starts; the browser's own restoration
   // could re-apply the previous page's scroll position after we jump.
   useEffect(() => {
@@ -101,11 +87,6 @@ export default function Layout() {
         </Suspense>
       </main>
       <Footer />
-      {tourOpen && (
-        <Suspense fallback={<div className="tour-pending" aria-busy="true" aria-label="Loading the tour" />}>
-          <TourModal onClose={() => setTourOpen(false)} />
-        </Suspense>
-      )}
       {chatReady && (
         <Suspense fallback={null}>
           <ChatbotWidget />

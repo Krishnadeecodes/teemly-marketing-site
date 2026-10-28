@@ -10,6 +10,7 @@ import Glossary from './Glossary.jsx'
 import Categories from './Categories.jsx'
 import PageText from './PageText.jsx'
 import Leads from './Leads.jsx'
+import TourSignups from './TourSignups.jsx'
 import Users from './Users.jsx'
 import Account from './Account.jsx'
 import { ToastProvider } from './ui.jsx'
@@ -79,6 +80,7 @@ export default function AdminApp() {
             <Route path="categories" element={<Categories />} />
             <Route path="page-text" element={<PageText />} />
             <Route path="leads" element={<Leads />} />
+            <Route path="tour-signups" element={<TourSignups />} />
             <Route
               path="users"
               element={

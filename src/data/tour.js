@@ -6,6 +6,7 @@ import {
   ReportsMock,
   SettingsMock,
 } from '../components/ProductMockups.jsx'
+import { moduleBySlug } from './modules.js'
 
 // The guided tour on /take-a-tour. Every step shows one of the product
 // screens and spotlights a part of it; `target` is a selector inside that
@@ -120,78 +121,10 @@ export const STEPS = {
   },
 }
 
-// One path per role. `demoRole` / `demoProblem` must be values of the Book a
-// Demo form's options (src/lib/leadForms.js); '' leaves that field for the
-// visitor to choose. `learnMore` is the page to read next.
-export const PATHS = [
-  {
-    id: 'executive',
-    label: 'Executive',
-    icon: 'briefcase',
-    blurb: 'The organisation at a glance, and where to act.',
-    steps: ['score', 'headcount', 'teams', 'reports', 'insights', 'legalGate'],
-    demoRole: 'Executive',
-    demoProblem: 'Organizational Intelligence',
-    learnMore: { to: '/solutions/executives', label: 'Teemly for executives' },
-  },
-  {
-    id: 'manager',
-    label: 'Manager',
-    icon: 'target',
-    blurb: 'Your team’s day, week and focus time.',
-    steps: ['teams', 'live', 'attendance', 'heatmap', 'insights', 'privacyMode'],
-    demoRole: 'Manager',
-    demoProblem: 'Productivity',
-    learnMore: { to: '/solutions/managers', label: 'Teemly for managers' },
-  },
-  {
-    id: 'hr',
-    label: 'HR & People',
-    icon: 'users',
-    blurb: 'Attendance, wellbeing and employee privacy.',
-    steps: ['attendance', 'headcount', 'reports', 'blur', 'privacyMode', 'legalGate'],
-    demoRole: 'HR',
-    demoProblem: 'Employee Experience',
-    learnMore: { to: '/solutions/hr', label: 'Teemly for HR' },
-  },
-  {
-    id: 'operations',
-    label: 'Operations',
-    icon: 'gear',
-    blurb: 'How work flows across teams and hours.',
-    steps: ['week', 'attendance', 'heatmap', 'teams', 'reports', 'roles'],
-    demoRole: 'Operations',
-    demoProblem: 'Workflow Optimization',
-    learnMore: { to: '/solutions/operations', label: 'Teemly for operations' },
-  },
-  {
-    id: 'it',
-    label: 'IT & Security',
-    icon: 'shield',
-    blurb: 'Controls, access and what is never captured.',
-    steps: ['controls', 'roles', 'legalGate', 'blur', 'privacyMode', 'live'],
-    demoRole: 'IT',
-    demoProblem: '',
-    learnMore: { to: '/security', label: 'Security & Trust' },
-  },
-  {
-    id: 'all',
-    label: 'Show me everything',
-    icon: 'layers',
-    blurb: 'Every module, start to finish.',
-    steps: ['score', 'live', 'teams', 'tagged', 'blur', 'attendance', 'heatmap', 'insights', 'controls', 'legalGate'],
-    demoRole: '',
-    demoProblem: '',
-    learnMore: { to: '/product', label: 'All product modules' },
-  },
-]
-
-export function getPath(id) {
-  return PATHS.find((p) => p.id === id) || null
-}
-
-// The tour popup (src/sections/TourModal.jsx) also offers one short tour per
-// product screen, made from that screen's steps above in the order listed.
+// The tour on /take-a-tour is a playlist (src/sections/TourPlaylist.jsx):
+// the overview below, then one entry per module — that screen's steps above,
+// in the order listed. The one-line summary is the module's own, from
+// src/data/modules.js, so the tour never says more than the module pages.
 const MODULE_ICONS = {
   dashboard: 'chart',
   teams: 'users',
@@ -202,12 +135,22 @@ const MODULE_ICONS = {
 }
 
 export const MODULES = Object.entries(SCREENS).map(([id, s]) => ({
-  id: `module-${id}`,
+  id,
   label: s.label,
   icon: MODULE_ICONS[id],
+  summary: moduleBySlug(id).summary,
   steps: Object.keys(STEPS).filter((key) => STEPS[key].screen === id),
 }))
 
-export function getTopic(id) {
-  return getPath(id) || MODULES.find((m) => m.id === id) || null
+// Played first: the whole product in one walkthrough, a few steps from each
+// module, before the modules one by one.
+export const OVERVIEW = {
+  id: 'overview',
+  label: 'Product Overview',
+  icon: 'layers',
+  summary: 'Every module in one walkthrough, start to finish.',
+  steps: ['score', 'live', 'teams', 'tagged', 'blur', 'attendance', 'heatmap', 'insights', 'controls', 'legalGate'],
 }
+
+// The tour's playlist, in order.
+export const PLAYLIST = [OVERVIEW, ...MODULES]

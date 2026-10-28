@@ -180,6 +180,23 @@ const SCHEMA = [
     INDEX (created_at),
     FOREIGN KEY (resource_id) REFERENCES resources(id) ON DELETE SET NULL
   )`,
+  // One row per person who signed in to the product tour (repeat sign-ins
+  // bump visits / last_seen_at instead of adding a row).
+  `CREATE TABLE IF NOT EXISTS tour_signups (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(254) NOT NULL UNIQUE,
+    name VARCHAR(100) NOT NULL,
+    company VARCHAR(120) NOT NULL,
+    role VARCHAR(40) NOT NULL,
+    company_size VARCHAR(20) NOT NULL,
+    country VARCHAR(80) NOT NULL DEFAULT '',
+    consent TINYINT(1) NOT NULL DEFAULT 0,
+    attribution JSON NOT NULL,
+    visits INT UNSIGNED NOT NULL DEFAULT 1,
+    created_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    last_seen_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    INDEX (created_at)
+  )`,
 ]
 
 export let SIGNING_SECRET = ''

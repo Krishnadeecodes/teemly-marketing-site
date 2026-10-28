@@ -9,7 +9,7 @@ import express from 'express'
 import nodemailer from 'nodemailer'
 import { LEAD_FORMS, validateLead } from '../src/lib/leadForms.js'
 import { publicRouter, adminRouter } from './resources.js'
-import { PUBLIC_UPLOAD_DIR, ready as dbReady } from './db.js'
+import { PUBLIC_UPLOAD_DIR, query, ready as dbReady } from './db.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
@@ -477,6 +477,66 @@ app.post('/api/forms/:type', rateLimit, async (req, res) => {
     })
     .then(() => console.log(`${tag} auto-reply sent to ${data.email}`))
     .catch((err) => console.error(`${tag} auto-reply to submitter failed:`, err.message))
+})
+
+// ---- Product tour sign-in: records the visitor and tells the team ----
+// The tour itself ships with the site, so this unlocks it in the browser
+// rather than guarding a secret; what matters here is capturing the lead.
+const TOUR_DEF = {
+  title: 'Product tour sign-in',
+  fields: { name: 'Name', email: 'Work email', company: 'Company', role: 'Role', companySize: 'Company size', country: 'Country' },
+}
+
+app.post('/api/tour/unlock', rateLimit, async (req, res) => {
+  const tag = '[tour]'
+  if (req.body?.website) {
+    console.warn(`${tag} honeypot filled — sign-in not recorded`)
+    return res.json({ ok: true })
+  }
+  const elapsed = Number(req.body?.elapsedMs)
+  if (Number.isFinite(elapsed) && elapsed < MIN_FILL_MS) {
+    console.warn(`${tag} submitted ${elapsed}ms after load — sign-in not recorded`)
+    return res.json({ ok: true })
+  }
+
+  const fields = validateLead('tour', req.body)
+  if (Object.keys(fields).length) {
+    return res.status(400).json({ error: 'Please fix the highlighted fields and try again.', fields })
+  }
+
+  const data = clean(req.body, TOUR_DEF)
+  data.email = data.email.toLowerCase()
+  const attribution = cleanAttribution(req.body?.attribution)
+  try {
+    const result = await query(
+      `INSERT INTO tour_signups (email, name, company, role, company_size, country, consent, attribution)
+       VALUES (?, ?, ?, ?, ?, ?, 1, ?)
+       ON DUPLICATE KEY UPDATE visits = visits + 1, last_seen_at = CURRENT_TIMESTAMP(3)`,
+      [data.email, data.name, data.company, data.role, data.companySize, data.country, JSON.stringify(attribution)],
+    )
+    // affectedRows is 1 for a new row, 2 when an existing email was updated
+    if (result.affectedRows !== 1) return res.json({ ok: true })
+  } catch (err) {
+    console.error(`${tag} could not save sign-in:`, err.message)
+    return res.status(502).json({ error: 'Sorry, we could not unlock the tour just now. Please try again in a moment.' })
+  }
+  res.json({ ok: true })
+
+  const lead = { form: 'tour', submittedAt: new Date().toISOString(), data, attribution, consent: true }
+  const { text, html } = buildEmail(TOUR_DEF, lead)
+  const to = process.env.MAIL_TO_TOUR || MAIL_TO
+  transporter
+    .sendMail({
+      from: `"Teemly Website" <${SMTP_USER}>`,
+      to,
+      replyTo: data.email,
+      subject: `New tour sign-in — ${data.name} (${data.company})`.replace(/[\r\n]+/g, ' '),
+      text,
+      html,
+    })
+    .then(() => console.log(`${tag} sign-in emailed to ${to}`))
+    .catch((err) => console.error(`${tag} notification failed:`, err.message))
+  if (LEAD_WEBHOOK_URL) postToWebhook(lead).catch((err) => console.error(`${tag} webhook failed:`, err.message))
 })
 
 // ---- Serve the built site with SPA fallback ----

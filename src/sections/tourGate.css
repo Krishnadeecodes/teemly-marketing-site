@@ -1,0 +1,311 @@
+/* ================= Product tour sign-in form (TourGate.jsx) ================= */
+.tour-gate-submit {
+  margin-top: 16px;
+}
+
+/* Trust line under the submit button */
+.tour-gate-trust {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 18px;
+  margin: 14px 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.tour-gate-trust span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tour-gate-trust svg {
+  color: var(--status-productive);
+}
+
+/* ================= Sign-up popup over /take-a-tour (TourUnlock.jsx) ================= */
+.tg-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  padding: 24px 16px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: rgba(9, 18, 75, 0.28);
+  animation: tg-fade 0.25s ease both;
+}
+
+@keyframes tg-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.tg-dialog {
+  position: relative;
+  width: min(900px, 100%);
+  /* centred when it fits; starts at the top (and scrolls) when it doesn't */
+  margin: auto;
+  box-shadow: 0 40px 100px -30px rgba(9, 18, 75, 0.45);
+  outline: none;
+  animation: tg-in 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes tg-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+}
+
+.tg-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--surface-soft);
+  color: var(--navy);
+  cursor: pointer;
+}
+
+.tg-close:hover {
+  background: var(--line-soft);
+}
+
+/* the tour behind the popup: visible, but locked until sign-up */
+.tp.is-locked {
+  filter: blur(3px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.tu-card {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: #fff;
+  overflow: hidden;
+}
+
+/* left: a light panel with a soft brand glow */
+.tu-showcase {
+  padding: clamp(22px, 3vw, 32px);
+  background:
+    radial-gradient(70% 45% at 0% 0%, rgba(10, 161, 232, 0.12) 0%, rgba(10, 161, 232, 0) 70%),
+    radial-gradient(60% 40% at 100% 100%, rgba(245, 41, 152, 0.1) 0%, rgba(245, 41, 152, 0) 70%),
+    var(--surface-soft);
+  border-right: 1px solid var(--line-soft);
+}
+
+.tu-showcase h2 {
+  margin: 10px 0 6px;
+  font-size: clamp(1.35rem, 2vw, 1.7rem);
+  line-height: 1.15;
+  color: var(--navy);
+}
+
+.tu-lede {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.tu-stats {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 16px 0 0;
+  padding: 0;
+}
+
+.tu-stats li {
+  padding: 10px 14px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-md);
+  background: #fff;
+}
+
+.tu-stats strong {
+  display: block;
+  font-family: var(--font-head);
+  font-size: 1.4rem;
+  line-height: 1.1;
+  background: var(--grad-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.tu-stats span {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.tu-perks {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+  margin: 16px 0 0;
+  padding: 0;
+}
+
+.tu-perks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+}
+
+.tu-perks svg {
+  flex: none;
+  margin-top: 3px;
+  color: var(--blue);
+}
+
+/* right: the form */
+.tu-form {
+  align-self: center;
+  padding: clamp(22px, 3vw, 32px);
+}
+
+.tu-form-head {
+  margin-bottom: 16px;
+}
+
+.tu-form-head h3 {
+  font-size: clamp(1.2rem, 1.8vw, 1.45rem);
+  color: var(--navy);
+}
+
+.tu-form-head p {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.tu-form .form-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 14px;
+}
+
+.tu-form .form-field input,
+.tu-form .form-field select {
+  width: 100%;
+  min-width: 0;
+}
+
+.tu-form .form-field {
+  margin-bottom: 12px;
+}
+
+.tu-form .form-field input,
+.tu-form .form-field select {
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+
+@media (max-width: 760px) {
+  .tu-card {
+    grid-template-columns: 1fr;
+  }
+
+  .tu-showcase {
+    border-right: 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .tu-stats {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .tu-form .form-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* phones: a compact popup, so the form fits on screen */
+@media (max-width: 600px) {
+  .tg-backdrop {
+    padding: 12px;
+  }
+
+  .tg-close {
+    top: 10px;
+    right: 10px;
+  }
+
+  .tg-dialog .tu-showcase {
+    padding: 16px 52px 14px 18px;
+  }
+
+  .tg-dialog .tu-showcase .eyebrow,
+  .tg-dialog .tu-perks,
+  .tg-dialog .tu-form-head p {
+    display: none;
+  }
+
+  .tg-dialog .tu-showcase h2 {
+    margin: 0 0 4px;
+    font-size: 1.2rem;
+  }
+
+  .tg-dialog .tu-lede {
+    font-size: 0.84rem;
+  }
+
+  .tg-dialog .tu-form {
+    padding: 14px 18px 16px;
+  }
+
+  .tg-dialog .tu-form-head {
+    margin-bottom: 10px;
+  }
+
+  .tg-dialog .form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 10px;
+  }
+
+  /* role and company size share a row; the rest are full width */
+  .tg-dialog .form-field:not(:nth-child(4)):not(:nth-child(5)) {
+    grid-column: 1 / -1;
+  }
+
+  .tg-dialog .form-field {
+    margin-bottom: 8px;
+    gap: 4px;
+  }
+
+  .tg-dialog .consent-check {
+    font-size: 0.78rem;
+  }
+
+  .tg-dialog .tour-gate-submit {
+    margin-top: 10px;
+  }
+
+  .tg-dialog .tour-gate-trust {
+    margin-top: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tg-backdrop,
+  .tg-dialog {
+    animation: none;
+  }
+}

@@ -4,10 +4,15 @@ export const FALLBACK_EMAIL = 'hello@teemly.app'
 
 const TIMEOUT_MS = 20000
 
-export async function submitForm(type, payload) {
+export function submitForm(type, payload) {
+  return postForm(`/api/forms/${type}`, payload)
+}
+
+// POSTs JSON and returns the reply; errors carry `fields` for useLeadForm.
+export async function postForm(url, payload) {
   let res
   try {
-    res = await fetch(`/api/forms/${type}`, {
+    res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),

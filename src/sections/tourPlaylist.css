@@ -1,0 +1,605 @@
+/* ================= Product tour on /take-a-tour (TourPlaylist.jsx) ================= */
+
+/* ---- the page's title (TakeATour.jsx) ---- */
+.tour-page {
+  padding: clamp(20px, 3vw, 32px) 0 clamp(40px, 6vw, 72px);
+}
+
+.tour-page-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 16px;
+  margin-bottom: clamp(16px, 2vw, 22px);
+}
+
+.tour-page-head h1 {
+  margin: 0;
+  font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+  color: var(--navy);
+}
+
+.tour-page-head p {
+  margin: 0;
+  color: var(--muted);
+}
+
+/* ---- layout: player on the left, More Modules on the right ---- */
+.tp {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: clamp(20px, 2.5vw, 32px);
+  align-items: start;
+  scroll-margin-top: 96px;
+}
+
+.tp-main {
+  min-width: 0;
+  scroll-margin-top: 96px;
+}
+
+/* ---- the player ---- */
+.tp-frame {
+  padding: 14px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-lg);
+  background:
+    radial-gradient(60% 50% at 0% 0%, rgba(10, 161, 232, 0.08) 0%, rgba(10, 161, 232, 0) 70%),
+    radial-gradient(50% 40% at 100% 100%, rgba(245, 41, 152, 0.06) 0%, rgba(245, 41, 152, 0) 70%),
+    var(--surface-soft);
+}
+
+.tp-screen {
+  border-radius: var(--r-md);
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+/* one fixed-size box (its height is set from its width in the JSX); every
+   screen sits in its middle, scaled to fill it (--fit), only the current one shown */
+.tp-stage {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-md);
+  background: #fff;
+}
+
+.tp-layer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(var(--fit));
+  visibility: hidden;
+}
+
+.tp-layer.on {
+  visibility: visible;
+  animation: tp-fade 0.35s var(--ease) both;
+}
+
+@keyframes tp-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* the ring dims everything around it with one large shadow */
+.tp-spot {
+  position: absolute;
+  z-index: 3;
+  border-radius: 14px;
+  box-shadow:
+    0 0 0 3px #fff,
+    0 0 0 6px var(--blue),
+    0 0 0 4000px rgba(9, 18, 75, 0.28);
+  pointer-events: none;
+  transition:
+    left 0.35s var(--ease),
+    top 0.35s var(--ease),
+    width 0.35s var(--ease),
+    height 0.35s var(--ease);
+}
+
+.tp-spot::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 18px;
+  border: 2px solid var(--cyan);
+  opacity: 0;
+  animation: tp-ping 2.2s ease-out 0.4s infinite;
+}
+
+@keyframes tp-ping {
+  0% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+}
+
+/* the current text and every other one share one cell, so the box keeps the
+   size of the longest */
+/* the step, under the screen */
+.tp-step {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 14px;
+  padding: 16px 18px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-md);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+/* the current step and every other step's text share one cell, so the box
+   keeps the height of the longest */
+.tp-step-text {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+}
+
+.tp-step-text > * {
+  grid-area: 1 / 1;
+}
+
+.tp-step-sizer {
+  visibility: hidden;
+}
+
+.tp-step-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+
+.tp-chip {
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  background: rgba(10, 161, 232, 0.1);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.tp-trust {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  background: rgba(31, 184, 127, 0.1);
+  color: var(--status-productive);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.tp-step h4 {
+  margin: 0 0 4px;
+  font-size: 1.05rem;
+  color: var(--navy);
+}
+
+.tp-step-text p:last-child {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.tp-step-nav {
+  /* one width whatever the number of steps, so the text beside it never reflows */
+  flex: 0 0 280px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.tp-round {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--navy);
+  cursor: pointer;
+  transition:
+    border-color var(--dur-fast),
+    background var(--dur-fast),
+    opacity var(--dur-fast);
+}
+
+.tp-round:hover:not(:disabled) {
+  border-color: var(--navy);
+}
+
+.tp-round:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.tp-round.primary {
+  border: 0;
+  background: var(--grad-cta);
+  color: #fff;
+  box-shadow: 0 6px 16px -6px rgba(226, 31, 92, 0.6);
+}
+
+.tp-flip {
+  transform: scaleX(-1);
+}
+
+.tp-dots {
+  display: flex;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tp-dots button {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.tp-dots button::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: var(--r-pill);
+  background: var(--line);
+  transition:
+    width var(--dur-fast),
+    background var(--dur-fast);
+}
+
+.tp-dots button[aria-current='step']::before {
+  width: 14px;
+  background: var(--blue);
+}
+
+/* ---- the bar above the player: what is playing, and what's next ---- */
+.tp-info {
+  display: flex;
+  align-items: center;
+  gap: 12px 14px;
+  margin-bottom: 12px;
+}
+
+.tp-info-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--grad-mark);
+  color: #fff;
+}
+
+.tp-info-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.tp-now {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--pink-deep);
+}
+
+.tp-info h3 {
+  margin: 0;
+  font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+  color: var(--navy);
+  outline: none;
+}
+
+.tp-actions {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* one width for every "Next: …" label, so the buttons never shift */
+.tp-actions .btn-primary {
+  width: 270px;
+  justify-content: center;
+}
+
+/* ---- More Modules ---- */
+.tp-list {
+  display: flex;
+  flex-direction: column;
+  padding: 18px 18px 0;
+  border-radius: var(--r-md);
+  background: var(--surface-soft);
+}
+
+.tp-list h3 {
+  margin: 0 0 14px;
+  font-size: 1.15rem;
+  color: var(--navy);
+}
+
+.tp-list ol {
+  display: grid;
+  /* one column, exactly the panel's width: a card never grows to fit a long
+     name or its picture, so every card and picture keeps one size */
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  margin: 0;
+  padding: 0 0 18px;
+  list-style: none;
+}
+
+/* beside the player the panel is never taller than it: the list scrolls inside */
+@media (min-width: 1101px) {
+  .tp-list {
+    align-self: stretch;
+    height: 0;
+    min-height: 100%;
+  }
+
+  .tp-list ol {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    /* the scrollbar's space is always kept, so the cards never change width */
+    scrollbar-gutter: stable;
+    overscroll-behavior: contain;
+    margin-right: -10px;
+    padding-right: 10px;
+  }
+}
+
+.tp-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+  gap: 8px;
+  /* every card has the same padding, so the one playing only changes colour */
+  padding: 8px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  transition:
+    background var(--dur-fast),
+    border-color var(--dur-fast);
+}
+
+/* the name, and "Now playing" beside it on the entry playing */
+.tp-item-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 22px;
+}
+
+/* the name is the button; it covers the whole card */
+.tp-item-head > button {
+  min-width: 0;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-head);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--navy);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.tp-item-head > button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+}
+
+.tp-item-head > button:focus-visible {
+  outline: none;
+}
+
+.tp-item:has(.tp-item-head > button:focus-visible) .tp-thumb {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+/* the picture: the screen on a pastel card, cut off at the bottom */
+.tp-thumb {
+  position: relative;
+  display: block;
+  /* a fixed height, so every card is the same size whatever its screen */
+  height: 150px;
+  padding: 12px 14px 0;
+  overflow: hidden;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  pointer-events: none;
+  transition:
+    border-color var(--dur-fast),
+    transform var(--dur-fast) var(--ease),
+    box-shadow var(--dur-fast);
+}
+
+.tint-0 .tp-thumb {
+  background: linear-gradient(160deg, #dff3fd, #c7eafb);
+}
+
+.tint-1 .tp-thumb {
+  background: linear-gradient(160deg, #fde4f1, #fbd0e7);
+}
+
+.tint-2 .tp-thumb {
+  background: linear-gradient(160deg, #d9fbfa, #c0f4f2);
+}
+
+.tint-3 .tp-thumb {
+  background: linear-gradient(160deg, #ece3fa, #ddd0f5);
+}
+
+.tp-thumb-screen {
+  display: block;
+  height: 100%;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+  background: #fff;
+}
+
+/* the screen at its full width inside a narrower scaled box (see the JSX) */
+.tp-thumb-full {
+  display: block;
+  width: 900px;
+}
+
+.tp-item:hover .tp-thumb {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* the entry playing: a light blue card, with a light pink "Now playing" pill */
+.tp-item.on {
+  border-color: rgba(10, 161, 232, 0.35);
+  background: #eaf6fd;
+}
+
+.tp-item.on .tp-thumb {
+  border-color: rgba(10, 161, 232, 0.55);
+}
+
+.tp-item.on .tp-item-head > button {
+  color: var(--blue);
+}
+
+.tp-playing {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 9px;
+  border-radius: var(--r-pill);
+  background: #fde4f1;
+  color: var(--pink-deep);
+  font-size: 0.7rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.tp-playing::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* ---- smaller screens ---- */
+@media (max-width: 1100px) {
+  .tp {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* More Modules becomes a row that scrolls sideways */
+  .tp-list ol {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+
+  .tp-item {
+    flex: 0 0 220px;
+    width: 220px;
+    scroll-snap-align: start;
+  }
+
+  .tp-item:hover .tp-thumb {
+    transform: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .tp-frame {
+    padding: 8px;
+  }
+
+  .tp-step {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .tp-step-nav {
+    flex: none;
+  }
+
+  .tp-info {
+    flex-wrap: wrap;
+  }
+
+  .tp-actions {
+    width: 100%;
+    flex-direction: row-reverse;
+    flex-wrap: nowrap;
+  }
+
+  .tp-actions .btn,
+  .tp-actions .btn-primary {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  .tp-next-name {
+    display: none;
+  }
+
+  .tp-item {
+    flex-basis: 180px;
+    width: 180px;
+  }
+
+  .tp-thumb {
+    height: 112px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tp-layer.on,
+  .tp-spot::after {
+    animation: none;
+  }
+}

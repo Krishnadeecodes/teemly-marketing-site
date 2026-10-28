@@ -77,6 +77,13 @@ function safeUrl(v, { allowUploads = true } = {}) {
 
 const today = () => new Date().toISOString().slice(0, 10)
 
+// One CSV cell. Prefixes values a spreadsheet would treat as formulas.
+function csvCell(v) {
+  let s = v instanceof Date ? v.toISOString() : String(v ?? '')
+  if (/^[=+\-@\t\r]/.test(s)) s = `'${s}`
+  return `"${s.replace(/"/g, '""')}"`
+}
+
 async function parseResourceInput(body) {
   const fields = {}
   const type = str(body.type, 60)
@@ -672,12 +679,7 @@ export function adminRouter() {
   })
   r.get('/downloads.csv', async (req, res) => {
     const rows = await query('SELECT * FROM downloads ORDER BY created_at DESC')
-    // Prefix cells that a spreadsheet would treat as formulas.
-    const cell = (v) => {
-      let s = v instanceof Date ? v.toISOString() : String(v ?? '')
-      if (/^[=+\-@\t\r]/.test(s)) s = `'${s}`
-      return `"${s.replace(/"/g, '""')}"`
-    }
+    const cell = csvCell
     const head = ['Date', 'Name', 'Email', 'Company', 'Resource', 'Consent', 'UTM source', 'UTM campaign', 'Referrer']
     const lines = rows.map((d) => {
       const a = json(d.attribution, {})
@@ -686,6 +688,25 @@ export function adminRouter() {
     res.setHeader('Content-Type', 'text/csv; charset=utf-8')
     res.setHeader('Content-Disposition', `attachment; filename="teemly-download-leads-${today()}.csv"`)
     res.send([head.map(cell).join(','), ...lines].join('\r\n'))
+  })
+
+  // ---- Product tour sign-ins (see /api/tour/unlock in server/index.js) ----
+  r.get('/tour-signups', async (req, res) => {
+    const rows = await query('SELECT * FROM tour_signups ORDER BY created_at DESC LIMIT 500')
+    res.json({ signups: rows.map((t) => ({ ...t, consent: !!t.consent, attribution: json(t.attribution, {}) })) })
+  })
+  r.get('/tour-signups.csv', async (req, res) => {
+    const rows = await query('SELECT * FROM tour_signups ORDER BY created_at DESC')
+    const head = ['First sign-in', 'Last visit', 'Visits', 'Name', 'Email', 'Company', 'Role', 'Company size', 'Country', 'Consent', 'UTM source', 'UTM campaign', 'Referrer']
+    const lines = rows.map((t) => {
+      const a = json(t.attribution, {})
+      return [t.created_at, t.last_seen_at, t.visits, t.name, t.email, t.company, t.role, t.company_size, t.country, t.consent ? 'yes' : 'no', a.utm_source, a.utm_campaign, a.referrer]
+        .map(csvCell)
+        .join(',')
+    })
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8')
+    res.setHeader('Content-Disposition', `attachment; filename="teemly-tour-signups-${today()}.csv"`)
+    res.send([head.map(csvCell).join(','), ...lines].join('\r\n'))
   })
 
   // ---- Users (admins only) ----
