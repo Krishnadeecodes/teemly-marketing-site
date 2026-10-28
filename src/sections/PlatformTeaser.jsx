@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import Logo from '../components/Logo.jsx'
-import PlatformDashboard from '../components/PlatformDashboard.jsx'
+import { PlatformShot, SHOT_W } from '../components/FeatureShots.jsx'
 import FitScale from '../components/FitScale.jsx'
 import SplitHeading from '../home/SplitHeading.jsx'
 import Reveal from '../home/Reveal.jsx'
@@ -96,10 +96,10 @@ export default function PlatformTeaser() {
                   </div>
                   <h3>{a.title}</h3>
                   <p>{a.desc}</p>
-                  {/* phones and tablets: the same dashboard as the desktop panel, scaled to fit */}
+                  {/* phones and tablets: the same screenshot as the desktop panel, scaled to fit */}
                   <div className="h-pl-inline" aria-hidden="true">
-                    <FitScale width={600}>
-                      <PlatformDashboard index={i} />
+                    <FitScale width={SHOT_W} media="all">
+                      <PlatformShot index={i} />
                     </FitScale>
                   </div>
                   <Link to={a.to} className="h-textlink h-pl-link">
@@ -112,7 +112,10 @@ export default function PlatformTeaser() {
 
           <div className="h-pl-sticky" aria-hidden="true">
             <div className="h-pl-stage">
-              <PlatformDashboard index={active} />
+              {/* the screenshot at its own size, scaled down to fit */}
+              <FitScale width={SHOT_W} media="all">
+                <PlatformShot index={active} />
+              </FitScale>
               <div className="h-pips">
                 {areas.map((a, j) => (
                   <i key={a.to} className={j === active ? 'on' : ''} />

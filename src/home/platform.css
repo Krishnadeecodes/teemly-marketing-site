@@ -6,8 +6,8 @@
    sticky panel on the right shows the active card's product preview. */
 .home-v2 .h-pl-story {
   display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-  gap: clamp(28px, 5vw, 72px);
+  grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+  gap: clamp(28px, 4vw, 56px);
   align-items: start;
 }
 .home-v2 .h-pl-list {
@@ -65,243 +65,6 @@
 .home-v2 .h-pl-sticky {
   position: sticky;
   top: max(96px, calc(50vh - 250px));
-}
-/* ---- Dashboard preview (same frame as the hero dashboard) ---- */
-.home-v2 .h-pd .h-db-main {
-  height: 440px;
-  grid-template-rows: auto minmax(0, 1fr);
-}
-.home-v2 .h-pd-view {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  min-height: 0;
-  animation: h-pl-swap 0.55s var(--ease, ease) both;
-}
-.home-v2 .h-pd-row {
-  flex: 1;
-  min-height: 0;
-  display: grid;
-  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-  gap: 10px;
-}
-.home-v2 .h-pd .h-pd-grow {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-}
-.home-v2 .h-pd-gauge {
-  width: 112px;
-  height: 112px;
-  margin: 6px auto 8px;
-  border-radius: 50%;
-  background: conic-gradient(var(--status-productive) calc(var(--v) * 1%), var(--h-line) 0);
-  display: grid;
-  place-items: center;
-}
-.home-v2 .h-pd-gauge span {
-  width: 86px;
-  height: 86px;
-  border-radius: 50%;
-  background: var(--h-surface);
-  display: grid;
-  place-content: center;
-  text-align: center;
-  line-height: 1;
-}
-.home-v2 .h-pd-gauge b {
-  font: 600 26px/1 var(--h-font-display);
-  color: var(--h-heading);
-}
-.home-v2 .h-pd-gauge small {
-  font-size: 11px;
-  color: var(--h-muted);
-}
-.home-v2 .h-pd-legend {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  font-size: 11px;
-  color: var(--h-muted);
-}
-.home-v2 .h-pd-legend i,
-.home-v2 .h-pd-app > i {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  margin-right: 4px;
-}
-.home-v2 .h-pd .p { background: var(--status-productive); }
-.home-v2 .h-pd .n { background: var(--status-neutral); }
-.home-v2 .h-pd .u { background: var(--h-heading); }
-.home-v2 .h-pd-spark {
-  flex: 1;
-  width: 100%;
-  min-height: 0;
-}
-.home-v2 .h-pd-spark polyline {
-  fill: none;
-  stroke: var(--h-azure);
-  stroke-width: 2.5;
-  stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
-}
-.home-v2 .h-pd em {
-  font-style: normal;
-  font-size: 10.5px;
-  font-weight: 600;
-  padding: 3px 8px;
-  border-radius: var(--h-radius-pill);
-  white-space: nowrap;
-}
-.home-v2 .h-pd em.ok { color: #13875c; background: rgba(31, 184, 127, 0.12); }
-.home-v2 .h-pd em.warn { color: #a8620c; background: rgba(240, 168, 60, 0.16); }
-.home-v2 .h-pd em.pink { color: var(--h-pink); background: rgba(233, 30, 99, 0.1); }
-.home-v2 .h-pd em.info { color: #0763b8; background: var(--h-bg-tint); }
-.home-v2 .h-pd .h-db-kpi em { padding: 0; background: none; white-space: normal; }
-.home-v2 .h-pd .h-db-kpi em.good { color: #13875c; }
-.home-v2 .h-pd .h-db-kpi em.bad { color: var(--h-pink); }
-
-/* workforce */
-.home-v2 .h-pd-teams,
-.home-v2 .h-pd-apps,
-.home-v2 .h-pd-lanes,
-.home-v2 .h-pd-reports {
-  flex: 1;
-  display: grid;
-  align-content: space-evenly;
-  gap: 8px;
-}
-.home-v2 .h-pd-team {
-  display: grid;
-  grid-template-columns: 92px minmax(0, 1fr) 38px 112px;
-  align-items: center;
-  gap: 10px;
-  font-size: 12.5px;
-}
-.home-v2 .h-pd-team b,
-.home-v2 .h-pd-app b,
-.home-v2 .h-pd-lanerow b {
-  font-weight: 600;
-  color: var(--h-heading);
-  white-space: nowrap;
-}
-.home-v2 .h-pd-team em {
-  justify-self: end;
-}
-.home-v2 .h-pd-pct {
-  font-weight: 600;
-  color: var(--h-heading);
-  text-align: right;
-}
-.home-v2 .h-pd .h-db-appfill.warn {
-  background: var(--h-grad-stem);
-}
-
-/* work */
-.home-v2 .h-pd-share {
-  display: flex;
-  gap: 3px;
-  height: 10px;
-  margin: 2px 0 6px;
-}
-.home-v2 .h-pd-share span {
-  border-radius: 9px;
-}
-.home-v2 .h-pd-app {
-  display: grid;
-  grid-template-columns: 12px 92px minmax(0, 1fr) 52px;
-  align-items: center;
-  gap: 8px;
-  font-size: 12.5px;
-}
-.home-v2 .h-pd-app small {
-  text-align: right;
-  font-size: 11.5px;
-  color: var(--h-muted);
-}
-.home-v2 .h-pd-fill {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-}
-
-/* workflow */
-.home-v2 .h-pd-axis {
-  display: flex;
-  justify-content: space-between;
-  margin: 0 82px 2px 100px;
-  font-size: 10.5px;
-  color: var(--h-muted);
-}
-.home-v2 .h-pd-lanerow {
-  display: grid;
-  grid-template-columns: 90px minmax(0, 1fr) 72px;
-  align-items: center;
-  gap: 10px;
-  font-size: 12.5px;
-}
-.home-v2 .h-pd-lanerow em {
-  justify-self: end;
-}
-.home-v2 .h-pd-lane {
-  position: relative;
-  height: 18px;
-  border-radius: 6px;
-  background: var(--h-bg-alt);
-  border: 1px solid var(--h-line);
-}
-.home-v2 .h-pd-lane span {
-  position: absolute;
-  top: 3px;
-  bottom: 3px;
-  border-radius: 4px;
-  background: var(--h-grad-bar);
-}
-
-/* ai */
-.home-v2 .h-pd-report {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 7px 10px;
-  border: 1px solid var(--h-line);
-  border-radius: 10px;
-  background: var(--h-bg-alt);
-}
-.home-v2 .h-pd-ric {
-  width: 28px;
-  height: 28px;
-  flex: 0 0 28px;
-  display: grid;
-  place-items: center;
-  border-radius: 8px;
-  color: #6a3bd8;
-  background: rgba(106, 59, 216, 0.1);
-}
-.home-v2 .h-pd-rtext {
-  flex: 1;
-  min-width: 0;
-  display: grid;
-  line-height: 1.3;
-}
-.home-v2 .h-pd-rtext b {
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--h-heading);
-}
-.home-v2 .h-pd-rtext small {
-  font-size: 11px;
-  color: var(--h-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-@keyframes h-pl-swap {
-  from { opacity: 0; transform: translateY(10px) scale(0.985); }
-  to { opacity: 1; transform: none; }
 }
 .home-v2 .h-pips {
   display: flex;
@@ -395,14 +158,6 @@
   margin-top: 6px;
 }
 
-@media (max-width: 1100px) {
-  .home-v2 .h-pd .h-db-side {
-    display: none;
-  }
-  .home-v2 .h-pd {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
 /* tablets and phones: no sticky panel, every card shows its own preview */
 @media (max-width: 900px) {
   .home-v2 .h-pl-story {
@@ -426,16 +181,16 @@
   .home-v2 .h-pl-list .h-pl-cell::before {
     transform: scaleY(1);
   }
+  .home-v2 .h-pl-list .h-pl-card {
+    min-width: 0;
+    width: 100%;
+  }
   .home-v2 .h-pl-inline {
     display: block;
+    /* as wide as the card, never as wide as the full-size screenshot inside */
+    min-width: 0;
+    width: 100%;
     margin-top: 18px;
-  }
-  /* the inline copy keeps the desktop frame, sidebar included */
-  .home-v2 .h-pl-inline .h-pd {
-    grid-template-columns: 60px minmax(0, 1fr);
-  }
-  .home-v2 .h-pl-inline .h-pd .h-db-side {
-    display: flex;
   }
 }
 @media (max-width: 600px) {
@@ -453,9 +208,6 @@
   .home-v2 .h-pl-card,
   .home-v2 .h-pl-list .h-pl-card {
     transition: none;
-  }
-  .home-v2 .h-pd-view {
-    animation: none;
   }
   .home-v2 .h-pl-card:hover {
     transform: none;

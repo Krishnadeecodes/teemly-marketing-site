@@ -3,6 +3,7 @@ import PageHero from '../components/PageHero.jsx'
 import SectionHead from '../components/SectionHead.jsx'
 import Icon from '../components/Icon.jsx'
 import FitScale from '../components/FitScale.jsx'
+import { SHOT_W } from '../components/FeatureShots.jsx'
 import FinalCTA from '../sections/FinalCTA.jsx'
 import { modules, getModule } from '../data/moduleContent.js'
 import '../sections/sections.css'
@@ -24,10 +25,12 @@ export default function ModulePage() {
 
       <section className="section-tight">
         <div className="container">
-          {/* on phones the screen keeps its desktop layout, scaled to fit */}
-          <FitScale width={900}>
-            <mod.Comp />
-          </FitScale>
+          {/* the feature screenshot, scaled down on narrower screens */}
+          <div className="module-shot">
+            <FitScale width={SHOT_W} media="all">
+              <mod.Comp />
+            </FitScale>
+          </div>
         </div>
       </section>
 

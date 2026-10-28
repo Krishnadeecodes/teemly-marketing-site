@@ -176,8 +176,7 @@ function Player({ item, step, setStep, onNextItem, active }) {
           if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) (dx < 0 ? next : back)()
         }}
       >
-        {/* fit-scale: the screens keep their desktop layout at any size (see mock.css) */}
-        <div className="tp-stage fit-scale" ref={boxRef} style={{ height: fit.height ?? undefined }} aria-hidden="true">
+        <div className="tp-stage" ref={boxRef} style={{ height: fit.height ?? undefined }} aria-hidden="true">
           {ALL_SCREENS.map((id) => {
             const Screen = SCREENS[id].Comp
             const on = id === current.screen

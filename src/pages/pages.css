@@ -1028,3 +1028,9 @@
     padding: 18px 16px;
   }
 }
+
+/* module page: the feature screenshot, at a comfortable reading width */
+.module-shot {
+  max-width: 900px;
+  margin: 0 auto;
+}

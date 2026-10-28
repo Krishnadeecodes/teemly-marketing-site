@@ -5,15 +5,16 @@ import SplitHeading from '../home/SplitHeading.jsx'
 import Reveal from '../home/Reveal.jsx'
 import FitScale from '../components/FitScale.jsx'
 import {
-  DashboardMock,
-  TeamsMock,
-  ScreenshotsMock,
-  AttendanceMock,
-  ReportsMock,
-  SettingsMock,
-  VideoRecordingMock,
-  LocationTrackingMock,
-} from '../components/ProductMockups.jsx'
+  DashboardShot,
+  TeamsShot,
+  ScreenshotsShot,
+  AttendanceShot,
+  ReportsShot,
+  SettingsShot,
+  VideoRecordingShot,
+  LocationTrackingShot,
+  SHOT_W,
+} from '../components/FeatureShots.jsx'
 import '../home/explorer.css'
 
 const modules = [
@@ -29,7 +30,7 @@ const modules = [
       'Productive vs. unproductive hours, visualised day by day',
       'A live feed of who is working, idle, or in privacy mode right now',
     ],
-    Comp: DashboardMock,
+    Comp: DashboardShot,
   },
   {
     key: 'teams',
@@ -43,7 +44,7 @@ const modules = [
       'Team cards ranked by productivity, not headcount',
       'A full profile per employee, down to a 24-hour activity timeline',
     ],
-    Comp: TeamsMock,
+    Comp: TeamsShot,
   },
   {
     key: 'screenshots',
@@ -57,7 +58,7 @@ const modules = [
       'Automatic tagging, no manual review required',
       'Employees pause capture themselves via Privacy Mode, no override',
     ],
-    Comp: ScreenshotsMock,
+    Comp: ScreenshotsShot,
   },
   {
     key: 'video-recording',
@@ -71,7 +72,7 @@ const modules = [
       'Privacy blur per employee — original recording never stored when on',
       'Silent recording under stealth mode, gated behind the same legal consent as Silent Tracking',
     ],
-    Comp: VideoRecordingMock,
+    Comp: VideoRecordingShot,
   },
   {
     key: 'location-tracking',
@@ -85,7 +86,7 @@ const modules = [
       'Geofence entry/exit alerts for defined work zones',
       'Privacy Mode pauses GPS too — no separate override, ever',
     ],
-    Comp: LocationTrackingMock,
+    Comp: LocationTrackingShot,
   },
   {
     key: 'attendance',
@@ -99,7 +100,7 @@ const modules = [
       'A shared timeline across the whole team, not a spreadsheet',
       'Late arrivals and absences flagged automatically',
     ],
-    Comp: AttendanceMock,
+    Comp: AttendanceShot,
   },
   {
     key: 'reports',
@@ -113,7 +114,7 @@ const modules = [
       'Underused software licences flagged, with the monthly cost attached',
       'Every report scoped to the org, a team, or one person',
     ],
-    Comp: ReportsMock,
+    Comp: ReportsShot,
   },
   {
     key: 'settings',
@@ -127,7 +128,7 @@ const modules = [
       'A deliberate legal step before silent monitoring can ever switch on',
       'Org-wide defaults, overridden per person when needed',
     ],
-    Comp: SettingsMock,
+    Comp: SettingsShot,
   },
 ]
 
@@ -175,8 +176,8 @@ export default function ProductExplorer() {
             </Link>
           </div>
           <div className="h-explorer-visual">
-            {/* on phones the screen keeps its desktop layout, scaled to fit */}
-            <FitScale width={560}>
+            {/* the screen at desktop size, scaled down to fit like a screenshot */}
+            <FitScale width={SHOT_W} media="all">
               <mod.Comp />
             </FitScale>
           </div>

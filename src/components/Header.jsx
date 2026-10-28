@@ -6,7 +6,7 @@ import MegaMenu from './MegaMenu.jsx'
 import Icon from './Icon.jsx'
 import Logo from './Logo.jsx'
 import ModulePreview from './ModulePreview.jsx'
-import { DashboardMock, ReportsMock, TeamsMock } from './ProductMockups.jsx'
+import { DashboardShot, ReportsShot, TeamsShot } from './FeatureShots.jsx'
 import {
   platformLinks,
   solutionsLinks,
@@ -20,7 +20,7 @@ function PlatformFeature() {
   return (
     <div className="mega-feature-card">
       <div className="mega-feature-visual">
-        <ModulePreview Comp={DashboardMock} scale={0.34} height={150} />
+        <ModulePreview Comp={DashboardShot} scale={0.34} height={150} />
       </div>
       <div>
         <span className="mega-feature-eyebrow">The record underneath</span>
@@ -38,7 +38,7 @@ function SolutionsFeature() {
   return (
     <div className="mega-feature-card">
       <div className="mega-feature-visual">
-        <ModulePreview Comp={ReportsMock} scale={0.3} height={150} />
+        <ModulePreview Comp={ReportsShot} scale={0.3} height={150} />
       </div>
       <div>
         <span className="mega-feature-eyebrow">Not sure which fits?</span>
@@ -56,7 +56,7 @@ function WhyTeemlyFeature() {
   return (
     <div className="mega-feature-card">
       <div className="mega-feature-visual">
-        <ModulePreview Comp={TeamsMock} scale={0.34} height={150} />
+        <ModulePreview Comp={TeamsShot} scale={0.34} height={150} />
       </div>
       <div>
         <span className="mega-feature-eyebrow">Built, not licensed</span>

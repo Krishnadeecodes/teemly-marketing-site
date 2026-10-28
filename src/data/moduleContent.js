@@ -1,13 +1,13 @@
 import {
-  DashboardMock,
-  TeamsMock,
-  ScreenshotsMock,
-  AttendanceMock,
-  ReportsMock,
-  SettingsMock,
-  VideoRecordingMock,
-  LocationTrackingMock,
-} from '../components/ProductMockups.jsx'
+  DashboardShot,
+  TeamsShot,
+  ScreenshotsShot,
+  AttendanceShot,
+  ReportsShot,
+  SettingsShot,
+  VideoRecordingShot,
+  LocationTrackingShot,
+} from '../components/FeatureShots.jsx'
 import { MODULES } from './modules.js'
 
 const content = [
@@ -17,7 +17,7 @@ const content = [
     title: 'Everything worth knowing, the moment you log in',
     intro:
       "The landing screen for every Client Admin and Client Manager login — a real-time snapshot of the organisation or assigned team, refreshed automatically as Teemly's agent sends events.",
-    Comp: DashboardMock,
+    Comp: DashboardShot,
     roleAccess: [
       { feature: 'Full organisation view', admin: 'All teams, all employees', manager: 'Assigned teams only' },
       { feature: 'Team & date range filters', admin: 'All teams selectable', manager: 'Assigned teams only' },
@@ -41,7 +41,7 @@ const content = [
     title: "Every team, then every person inside it",
     intro:
       'Three depths in one module: an organisation-wide team summary, a team detail view with a monthly heat map, and a full employee profile down to the hour.',
-    Comp: TeamsMock,
+    Comp: TeamsShot,
     roleAccess: [
       { feature: 'View all teams', admin: 'Yes', manager: 'Assigned teams only' },
       { feature: 'View employee profiles', admin: 'All employees', manager: 'Assigned members only' },
@@ -62,7 +62,7 @@ const content = [
     title: 'Visual proof of work, without exposing the whole screen',
     intro:
       "Screenshots are captured at a plan-defined interval, stored in Teemly's own cloud storage, and served through a gallery with productivity filters and a full-screen detail view.",
-    Comp: ScreenshotsMock,
+    Comp: ScreenshotsShot,
     roleAccess: [
       { feature: 'View screenshots — all employees', admin: 'Yes', manager: 'No' },
       { feature: 'View screenshots — assigned team', admin: 'Yes', manager: 'Yes' },
@@ -84,7 +84,7 @@ const content = [
     title: 'Continuous visual audit, without the manual review',
     intro:
       'Screen recording is captured in configurable segments per employee and organised by session, with in-browser playback — no download required to review a day.',
-    Comp: VideoRecordingMock,
+    Comp: VideoRecordingShot,
     roleAccess: [
       { feature: 'View recordings — all employees', admin: 'Yes', manager: 'No' },
       { feature: 'View recordings — assigned team', admin: 'Yes', manager: 'Yes' },
@@ -106,7 +106,7 @@ const content = [
     title: 'GPS visibility for remote, hybrid and field teams',
     intro:
       'Location is captured at a configurable interval and plotted against the working day, with geofencing to confirm presence at the office, a client site, or home.',
-    Comp: LocationTrackingMock,
+    Comp: LocationTrackingShot,
     roleAccess: [
       { feature: 'Team location view', admin: 'Yes', manager: 'Assigned teams only' },
       { feature: 'Location history per employee', admin: 'Yes', manager: 'Assigned members only' },
@@ -128,7 +128,7 @@ const content = [
     title: 'Attendance derived from activity, not typed in',
     intro:
       "There is no manual check-in system. Check-in is the first EXE activity event of the working day; check-out is the last — or 'Active' if the employee is still working.",
-    Comp: AttendanceMock,
+    Comp: AttendanceShot,
     roleAccess: [
       { feature: "View all employees' attendance", admin: 'Yes', manager: 'Assigned team only' },
       { feature: 'Export CSV', admin: 'Yes', manager: 'No' },
@@ -148,7 +148,7 @@ const content = [
     title: 'Six reports, each built to end in a decision',
     intro:
       'Work Pulse, Burnout & Wellbeing, Focus Score, Tool Intelligence, Attendance & Punctuality and Team Leaderboard — every report supports org-wide, by-team or by-employee scope, and closes with AI-generated, plain-language insight cards.',
-    Comp: ReportsMock,
+    Comp: ReportsShot,
     roleAccess: [
       { feature: 'Org-wide reports', admin: 'Yes', manager: 'No' },
       { feature: 'Team- and employee-level reports', admin: 'Yes', manager: 'Assigned teams only' },
@@ -172,7 +172,7 @@ const content = [
     title: 'Every default, and every exception to it',
     intro:
       'Settings are organised into seven sections under three categories — Organisation & People, Work & Monitoring, and Access & Controls — accessible only to Client Admins.',
-    Comp: SettingsMock,
+    Comp: SettingsShot,
     roleAccess: [
       { feature: 'Teams & Structure, People & Roles', admin: 'Full access', manager: 'No access' },
       { feature: 'Work Policy, Monitoring Controls', admin: 'Full access', manager: 'No access' },
