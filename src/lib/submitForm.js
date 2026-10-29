@@ -1,6 +1,6 @@
 // Posts a form payload to the Node server (server/index.js), which emails it.
 // Shown alongside errors so visitors always have a route that bypasses the form.
-export const FALLBACK_EMAIL = 'hello@teemly.app'
+export const FALLBACK_EMAIL = 'info@teemly.co'
 
 const TIMEOUT_MS = 20000
 
