@@ -22,7 +22,7 @@ try {
   // No .env file — rely on the process environment.
 }
 
-const { SMTP_USER, SMTP_PASS, MAIL_TO, PORT = 3001 } = process.env
+const { SMTP_USER, SMTP_PASS, MAIL_TO, SMTP_HOST = 'smtp.gmail.com', SMTP_PORT = '465', PORT = 3001 } = process.env
 // Public site URL for links in auto-reply emails (optional, no trailing slash)
 const SITE_URL = (process.env.SITE_URL || '').replace(/\/+$/, '')
 
@@ -42,9 +42,9 @@ if (!SMTP_USER || !SMTP_PASS || !MAIL_TO) {
 }
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 465,
-  secure: true,
+  host: SMTP_HOST,
+  port: Number(SMTP_PORT),
+  secure: Number(SMTP_PORT) === 465, // 465 = SSL, 587 = STARTTLS
   auth: { user: SMTP_USER, pass: SMTP_PASS },
 })
 
