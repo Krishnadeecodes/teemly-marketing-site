@@ -21,9 +21,8 @@ const GROUPS = [
       ['kicker', 'Kicker', 'input'],
       ['title', 'Heading', 'input'],
       ['desc', 'Intro', 'textarea'],
-      ['cardTitle', 'Card title', 'input'],
-      ['cardDesc', 'Card text', 'input'],
     ],
+    note: 'The cards below this text fill themselves: Featured resources first, then the latest ones, then the glossary.',
   },
 ]
 
@@ -62,6 +61,7 @@ function Group({ group, value, defaults }) {
           {group.where}
         </a>
       </h2>
+      {group.note && <p className="adm-muted">{group.note}</p>}
       {group.fields.map(([k, label, kind]) => (
         <Field key={k} label={label} id={`${group.key}-${k}`}>
           {kind === 'textarea' ? (
@@ -90,7 +90,7 @@ export default function PageText() {
     <>
       <PageHead
         title="Page text"
-        desc="Once real content is live, update the “the rest is on the way” wording here. Empty fields fall back to the original text."
+        desc="Headings and intros for the Resource Center and the home page. Empty fields fall back to the original text."
       />
       <ErrorBox>{error}</ErrorBox>
       {loading && !data ? <Loading /> : data && GROUPS.map((g) => <Group key={g.key} group={g} value={data[g.key]} defaults={data.defaults[g.key]} />)}

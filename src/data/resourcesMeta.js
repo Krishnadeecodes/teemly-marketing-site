@@ -37,14 +37,16 @@ export const glossaryTerms = [
 export const DEFAULT_SETTINGS = {
   hub: {
     eyebrow: 'Resource Center',
-    title: 'Start with the glossary — the rest is on the way',
-    desc: "The glossary is live today. Research, guides, reports and case studies are being published as they're genuinely ready.",
+    title: 'Learn how organisations really work',
+    desc: 'Guides, research and a plain-language glossary from the Teemly team. New pieces are added as they’re ready.',
   },
   teaser: {
     kicker: 'Resources',
-    title: 'Start with the glossary, the rest is on the way',
-    desc: "The Resource Center is live today with an Organizational Intelligence glossary. Research, guides and case studies are being published as they're ready — nothing placeholder gets dressed up as finished content.",
-    cardTitle: 'Organizational Intelligence Glossary',
-    cardDesc: "Teemly's core terms, defined in plain language — available now.",
+    title: 'Learn how organisations really work',
+    desc: 'Guides, research and a plain-language glossary from the Teemly team. New pieces are added as they’re ready.',
   },
 }
+
+// Wording used before real content went live. Saved settings still matching
+// it are replaced with the defaults above when the server starts (server/db.js).
+export const RETIRED_TITLE = /the rest is on the way/i
