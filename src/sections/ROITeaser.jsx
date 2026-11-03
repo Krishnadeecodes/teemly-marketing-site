@@ -7,11 +7,12 @@ import { gsap, isPhone, prefersReducedMotion } from '../home/useHomeScroll.js'
 import { whenInView } from '../home/reveal.js'
 import '../home/roi.css'
 
-const DEMO = { employees: 250, cost: 45000, pct: 3 }
+// ₹ to match the rest of the site (same default cost as the ROI Calculator)
+const DEMO = { employees: 250, cost: 800000, pct: 3 }
 const TARGET = Math.round((DEMO.employees * DEMO.cost * DEMO.pct) / 100)
 
 function fmt(v) {
-  return '$' + Math.round(v).toLocaleString('en-US')
+  return '₹' + Math.round(v).toLocaleString('en-IN')
 }
 
 export default function ROITeaser() {
@@ -68,7 +69,7 @@ export default function ROITeaser() {
         <Reveal as="div" className="h-roi-out">
           <h3>Estimated annual opportunity</h3>
           <div className="h-roi-big" ref={numRef}>
-            $0
+            ₹0
           </div>
           <p className="h-roi-assume">
             <strong>{DEMO.employees} employees</strong> × <strong>{fmt(DEMO.cost)}/yr</strong> × <strong>{DEMO.pct}% productivity opportunity</strong>.

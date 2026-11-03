@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react'
+import { Fragment, useLayoutEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import HeroDashboard from '../components/HeroDashboard.jsx'
@@ -115,11 +115,15 @@ export default function Hero() {
           </span>
 
           <h1>
-            <span className="h-split" ref={l1Ref} aria-hidden="true">
+            {/* real spaces between the word spans, so the heading reads as a
+                sentence to search engines and screen readers */}
+            <span className="h-split" ref={l1Ref}>
               {'Turn everyday work signals into'.split(' ').map((w, i) => (
-                <span className="w" key={i}>
-                  <span>{w}</span>
-                </span>
+                <Fragment key={i}>
+                  <span className="w">
+                    <span>{w}</span>
+                  </span>{' '}
+                </Fragment>
               ))}
             </span>
             <span className="h-l2" ref={l2Ref}>

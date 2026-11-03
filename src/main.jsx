@@ -10,6 +10,22 @@ import './styles/mobile.css'
 
 captureAttribution()
 
+// Error reports to Sentry — off until VITE_SENTRY_DSN is set in .env at build
+// time. Loaded after first paint so it never slows the page down.
+if (import.meta.env.VITE_SENTRY_DSN) {
+  import('@sentry/react')
+    .then((Sentry) =>
+      Sentry.init({
+        dsn: import.meta.env.VITE_SENTRY_DSN,
+        environment: import.meta.env.MODE,
+        sendDefaultPii: false,
+        // the admin panel is internal; report only the public site
+        beforeSend: (event) => (location.pathname.startsWith('/admin') ? null : event),
+      }),
+    )
+    .catch(() => {})
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     {/* startTransition: while the next page's code loads, the current page

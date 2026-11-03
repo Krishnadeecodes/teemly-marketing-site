@@ -4,8 +4,10 @@ import Icon from '../components/Icon.jsx'
 import TourPlaylist from '../sections/TourPlaylist.jsx'
 import FinalCTA from '../sections/FinalCTA.jsx'
 import './pages.css'
+import { usePageSEO } from '../lib/useSEO.js'
 
 export default function TakeATour() {
+  usePageSEO('/take-a-tour')
   return (
     <>
       <section className="tour-page">

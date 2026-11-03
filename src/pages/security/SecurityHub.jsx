@@ -6,8 +6,10 @@ import FinalCTA from '../../sections/FinalCTA.jsx'
 import { securityTopics } from '../../data/securityTopics.js'
 import '../../sections/sections.css'
 import '../pages.css'
+import { usePageSEO } from '../../lib/useSEO.js'
 
 export default function SecurityHub() {
+  usePageSEO('/security')
   return (
     <>
       <PageHero

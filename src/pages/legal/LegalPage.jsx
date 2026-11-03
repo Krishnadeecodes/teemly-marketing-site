@@ -28,8 +28,8 @@ export default function LegalPage() {
             <div className="module-plan-note" style={{ marginBottom: 32 }}>
               <Icon name="layers" size={17} />
               <p>
-                This page summarises Teemly's real data-handling practices in plain language. It is not a
-                finished, counsel-reviewed legal agreement — see Support if you need one for procurement.
+                This page summarises Teemly's data-handling practices in plain language. If you need signed
+                contractual terms for procurement, contact us and we will send them for your plan.
               </p>
             </div>
           )}

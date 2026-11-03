@@ -7,7 +7,7 @@ import path from 'node:path'
 import { randomBytes } from 'node:crypto'
 import { fileURLToPath } from 'node:url'
 import mysql from 'mysql2/promise'
-import { resourceTypes, glossaryTerms, DEFAULT_SETTINGS } from '../src/data/resourcesMeta.js'
+import { resourceTypes, glossaryTerms, DEFAULT_SETTINGS, RETIRED_TITLE } from '../src/data/resourcesMeta.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
@@ -238,6 +238,16 @@ async function init() {
       }
     })
     console.log('[db] seeded categories and glossary from src/data/resourcesMeta.js')
+  }
+
+  // Retire the old "the rest is on the way" page text now that real content is live.
+  for (const name of ['hub', 'teaser']) {
+    const row = await one('SELECT value FROM settings WHERE name = ?', [name])
+    const saved = row && json(row.value, null)
+    if (saved && RETIRED_TITLE.test(saved.title || '')) {
+      await setSetting(name, DEFAULT_SETTINGS[name])
+      console.log(`[db] replaced the old "${name}" page text with the new default wording`)
+    }
   }
 
   // Server-side secret for signing gated download links (never sent to clients).

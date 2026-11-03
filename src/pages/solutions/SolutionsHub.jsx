@@ -5,8 +5,10 @@ import FinalCTA from '../../sections/FinalCTA.jsx'
 import { solutions } from '../../data/solutions.js'
 import '../../sections/sections.css'
 import '../pages.css'
+import { usePageSEO } from '../../lib/useSEO.js'
 
 export default function SolutionsHub() {
+  usePageSEO('/solutions')
   return (
     <>
       <PageHero

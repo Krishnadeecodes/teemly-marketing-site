@@ -9,6 +9,7 @@ import Icon from '../components/Icon.jsx'
 import { plans } from '../data/plans.js'
 import { comparisonGroups, planNames } from '../data/comparison.js'
 import './pages.css'
+import { usePageSEO } from '../lib/useSEO.js'
 
 const seatSteps = [5, 10, 25, 50, 100, 250]
 
@@ -19,7 +20,7 @@ const faqs = [
   },
   {
     q: 'How is attendance calculated — do employees check in manually?',
-    a: 'No manual check-in exists in Phase 1. Check-in is the first EXE activity event of the day and check-out is the last. If no events are received on a working day, the employee is marked absent.',
+    a: 'There is no manual check-in. Check-in is the first EXE activity event of the day and check-out is the last. If no events are received on a working day, the employee is marked absent.',
   },
   {
     q: 'What happens when an employee turns on Privacy Mode?',
@@ -36,6 +37,7 @@ const faqs = [
 ]
 
 export default function Pricing() {
+  usePageSEO('/pricing')
   const [cycle, setCycle] = useState('monthly')
   const [seatIdx, setSeatIdx] = useState(1)
   const seats = seatSteps[seatIdx]

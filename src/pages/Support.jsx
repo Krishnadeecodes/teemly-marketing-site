@@ -4,6 +4,7 @@ import SectionHead from '../components/SectionHead.jsx'
 import Icon from '../components/Icon.jsx'
 import FinalCTA from '../sections/FinalCTA.jsx'
 import './pages.css'
+import { usePageSEO } from '../lib/useSEO.js'
 
 const categories = [
   { icon: 'dollar', title: 'Contact Sales', desc: 'Pricing, plans and a live walkthrough.', action: { label: 'Book a Demo', to: '/book-a-demo', internal: true } },
@@ -22,6 +23,7 @@ const slaRows = [
 ]
 
 export default function Support() {
+  usePageSEO('/support')
   return (
     <>
       <PageHero

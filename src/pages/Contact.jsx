@@ -9,11 +9,12 @@ import { SIZE_OPTIONS } from '../lib/leadForms.js'
 import { FALLBACK_EMAIL } from '../lib/submitForm.js'
 import '../sections/sections.css'
 import './pages.css'
+import { usePageSEO } from '../lib/useSEO.js'
 
 const info = [
   { icon: 'mail', title: 'Email us', desc: FALLBACK_EMAIL },
   { icon: 'clock', title: 'Response time', desc: 'Within 24 hours on business days' },
-  { icon: 'cpu', title: 'Our own desktop agent', desc: 'Built in-house, with no third-party tools' },
+  { icon: 'cpu', title: 'Our own desktop agent', desc: 'Built in-house, with no third-party monitoring SDK' },
   { icon: 'shield', title: 'Enterprise inquiry?', desc: "Mention your team size and we'll route you to a custom Enterprise quote." },
 ]
 
@@ -23,6 +24,7 @@ const trust = [
 ]
 
 export default function Contact() {
+  usePageSEO('/company/contact')
   const { values, errors, status, formError, field, handleSubmit } = useLeadForm('contact', {
     name: '',
     email: '',

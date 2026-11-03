@@ -31,18 +31,15 @@ export const whyTeemlyLinks = [
   { to: '/why-teemly/difference', label: 'How Teemly Is Different', desc: 'Our own software, not a licensed plugin', icon: 'sparkle', tone: 'blue' },
   { to: '/why-teemly/business-impact', label: 'Business Impact', desc: 'Where the value actually shows up', icon: 'trendingUp', tone: 'green' },
   { to: '/why-teemly/roi', label: 'ROI', desc: 'How to think about return before you buy', icon: 'dollar', tone: 'amber' },
-  { to: '/resources/case-studies', label: 'Use Cases', desc: 'How teams put Teemly to work', icon: 'book', tone: 'purple' },
+  { to: '/solutions', label: 'Use Cases', desc: 'How teams put Teemly to work', icon: 'book', tone: 'purple' },
   { to: '/customers', label: 'Customer Stories', desc: 'Who we build Teemly for', icon: 'heart', tone: 'cyan' },
 ]
 
+// Shown until the live list loads (or if the API is down). The live list
+// (useResourceMenu) leaves out categories with nothing published, so only
+// categories that have content belong here.
 export const resourcesLinks = [
-  { to: '/resources/research', label: 'Research', desc: 'Original analysis on organisational intelligence', icon: 'chart', tone: 'blue' },
-  { to: '/resources/reports', label: 'Reports', desc: 'In-depth reports on workforce data', icon: 'fileText', tone: 'purple' },
   { to: '/resources/guides', label: 'Guides', desc: 'Practical guides to rolling out Teemly', icon: 'book', tone: 'pink' },
-  { to: '/resources/case-studies', label: 'Case Studies', desc: 'Real deployments, in detail', icon: 'target', tone: 'green' },
-  { to: '/resources/blog', label: 'Blog', desc: 'Product updates and perspective', icon: 'monitor', tone: 'cyan' },
-  { to: '/resources/webinars', label: 'Webinars', desc: 'Live and recorded sessions', icon: 'play', tone: 'amber' },
-  { to: '/resources/videos', label: 'Videos', desc: 'Short product walkthroughs', icon: 'play', tone: 'blue' },
   { to: '/resources/glossary', label: 'Glossary', desc: 'Organisational intelligence, defined', icon: 'book', tone: 'purple' },
 ]
 

@@ -4,12 +4,13 @@ import Icon from '../components/Icon.jsx'
 import FinalCTA from '../sections/FinalCTA.jsx'
 import '../sections/sections.css'
 import './pages.css'
+import { usePageSEO } from '../lib/useSEO.js'
 
 const values = [
   {
     icon: 'cpu',
     title: 'Own the whole stack',
-    desc: 'Teemly ships its own EXE agent, its own storage, its own scoring — no third-party dependency sits between your data and your dashboard.',
+    desc: 'Teemly ships its own EXE agent, its own storage, its own scoring — no third-party monitoring software sits between your data and your dashboard.',
   },
   {
     icon: 'eyeOff',
@@ -24,6 +25,7 @@ const values = [
 ]
 
 export default function About() {
+  usePageSEO('/company/about')
   return (
     <>
       <PageHero

@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { LEAD_FORMS, validateField, validateLead } from './leadForms.js'
 import { getAttribution } from './attribution.js'
 import { submitForm } from './submitForm.js'
+import { getTurnstileToken } from './turnstile.js'
 
 // State + validation for a lead form. Fields validate on blur, re-validate as
 // the visitor fixes them, and the whole form validates on submit (focusing the
@@ -64,7 +65,15 @@ export function useLeadForm(type, initial, submit = submitForm) {
     setStatus('sending')
     setFormError('')
     try {
-      setResult(await submit(type, { ...values, attribution: getAttribution(), elapsedMs: Date.now() - startedAt.current }))
+      const turnstileToken = await getTurnstileToken()
+      setResult(
+        await submit(type, {
+          ...values,
+          attribution: getAttribution(),
+          elapsedMs: Date.now() - startedAt.current,
+          ...(turnstileToken && { turnstileToken }),
+        }),
+      )
       setStatus('success')
     } catch (err) {
       setStatus('idle')

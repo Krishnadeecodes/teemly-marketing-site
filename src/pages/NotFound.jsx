@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import './pages.css'
+import { useSEO } from '../lib/useSEO.js'
 
 export default function NotFound() {
+  useSEO({ title: 'Page not found', noindex: true })
   return (
     <div className="notfound">
       <span className="big">404</span>

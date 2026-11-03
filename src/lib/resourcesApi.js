@@ -10,7 +10,7 @@ const cache = new Map()
 
 const fallbacks = {
   hub: () => ({
-    categories: resourceTypes.map((r, i) => ({ ...r, sort: i, visible: true, count: r.slug === 'glossary' ? glossaryTerms.length : 0 })),
+    categories: resourceTypes.map((r, i) => ({ ...r, sort: i, visible: true, count: r.slug === 'glossary' ? glossaryTerms.length : 0 })).filter((c) => c.count > 0),
     featured: [],
     latest: [],
     settings: DEFAULT_SETTINGS,

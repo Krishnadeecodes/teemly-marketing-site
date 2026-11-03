@@ -8,9 +8,11 @@ import FinalCTA from '../sections/FinalCTA.jsx'
 import { modules, getModule } from '../data/moduleContent.js'
 import '../sections/sections.css'
 import './pages.css'
+import { usePageSEO } from '../lib/useSEO.js'
 
 export default function ModulePage() {
   const { slug } = useParams()
+  usePageSEO(`/product/${slug}`)
   const mod = getModule(slug)
 
   if (!mod) return <Navigate to="/product" replace />

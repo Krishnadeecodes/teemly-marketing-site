@@ -5,6 +5,7 @@ import Icon from '../components/Icon.jsx'
 import FinalCTA from '../sections/FinalCTA.jsx'
 import './pages.css'
 import './roi.css'
+import { usePageSEO } from '../lib/useSEO.js'
 
 // Money amounts are entered in the selected currency, so each currency has
 // its own realistic starting figures (roughly the same scenario at ~₹83 to
@@ -17,7 +18,7 @@ const MONEY_DEFAULTS = {
 
 const defaults = {
   employees: 200,
-  ...MONEY_DEFAULTS.usd,
+  ...MONEY_DEFAULTS.inr,
   managerCount: 20,
   productivityPct: 5,
   wastePct: 15,
@@ -31,8 +32,9 @@ function fmt(n, currency) {
 }
 
 export default function ROICalculator() {
+  usePageSEO('/roi-calculator')
   const [v, setV] = useState(defaults)
-  const [currency, setCurrency] = useState('usd')
+  const [currency, setCurrency] = useState('inr') // ₹ by default, matching the rest of the site
 
   function chooseCurrency(next) {
     setCurrency(next)

@@ -5,8 +5,10 @@ import FinalCTA from '../../sections/FinalCTA.jsx'
 import { industries } from '../../data/industries.js'
 import '../../sections/sections.css'
 import '../pages.css'
+import { usePageSEO } from '../../lib/useSEO.js'
 
 export default function IndustriesHub() {
+  usePageSEO('/industries')
   return (
     <>
       <PageHero

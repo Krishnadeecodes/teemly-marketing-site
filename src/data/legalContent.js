@@ -1,7 +1,6 @@
-// Legal page content. These pages summarise Teemly's real, verified data-handling
-// practices in plain language. They are deliberately NOT presented as finished,
-// binding legal agreements — drafting those requires counsel review, not an
-// automated rebuild of the marketing site.
+// Legal page content: Teemly's real, verified data-handling practices in plain
+// language. These are summaries, not the counsel-drafted agreements — replace
+// the privacy, terms and DPA sections with the lawyer's text once it is ready.
 
 export const legalPages = [
   {
@@ -12,7 +11,7 @@ export const legalPages = [
     sections: [
       {
         heading: 'What this page covers',
-        body: 'This is a plain-language summary of how Teemly handles data today, grounded in the same facts published on the Security & Trust pages. It is not a substitute for the formal Privacy Policy, which is being finalised with legal counsel.',
+        body: 'This is a plain-language summary of how Teemly handles data today, grounded in the same facts published on the Security & Trust pages. Questions about this policy can be sent through the Contact page.',
       },
       {
         heading: 'What we collect',
@@ -28,7 +27,7 @@ export const legalPages = [
       },
       {
         heading: 'Your rights',
-        body: 'Employees have the right to access their own data and the right to erasure, which triggers a database soft-delete plus storage cleanup. A grievance officer is published at teemly.io/privacy.',
+        body: 'Employees have the right to access their own data and the right to erasure, which triggers a database soft-delete plus storage cleanup. To exercise these rights or raise a grievance about how your data is handled, contact us through the Contact page (teemly.co/company/contact) and we will respond within the timelines required by the DPDP Act.',
       },
     ],
   },
@@ -39,8 +38,8 @@ export const legalPages = [
     pendingNotice: true,
     sections: [
       {
-        heading: 'Status of this page',
-        body: "Teemly's formal Terms of Service is being finalised with legal counsel and is not yet published. We would rather say that plainly than publish contractual language that hasn't been reviewed.",
+        heading: 'About this page',
+        body: "This page summarises what governs your use of Teemly. Contractual terms for your plan are provided with your order; contact us if you need them for procurement or legal review.",
       },
       {
         heading: 'What is published today',
@@ -48,7 +47,7 @@ export const legalPages = [
       },
       {
         heading: 'Questions before you sign',
-        body: 'If you need contractual terms ahead of a purchase — for procurement or legal review — contact Support and we will provide what is available for your plan.',
+        body: 'If you need contractual terms ahead of a purchase — for procurement or legal review — contact us and we will send them for your plan.',
       },
     ],
   },
@@ -75,8 +74,8 @@ export const legalPages = [
     pendingNotice: true,
     sections: [
       {
-        heading: 'Status of this page',
-        body: "A formal, counsel-reviewed Data Processing Agreement template is available on request for Enterprise customers. This page summarises the data-handling facts it will reference.",
+        heading: 'About this page',
+        body: "A Data Processing Agreement is available on request for Enterprise customers. This page summarises the data-handling commitments it covers.",
       },
       {
         heading: 'Sub-processors',

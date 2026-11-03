@@ -7,6 +7,7 @@ import { useLeadForm } from '../lib/useLeadForm.js'
 import { PROBLEM_OPTIONS, ROLE_OPTIONS, SIZE_OPTIONS } from '../lib/leadForms.js'
 import { FALLBACK_EMAIL } from '../lib/submitForm.js'
 import './pages.css'
+import { usePageSEO } from '../lib/useSEO.js'
 
 const valueProps = [
   { icon: 'cpu', text: 'See the Teemly desktop agent and live dashboard in action' },
@@ -28,6 +29,7 @@ const nextSteps = [
 ]
 
 export default function BookADemo() {
+  usePageSEO('/book-a-demo')
   // Arriving from the end of the guided tour: start from the visitor's role
   // and what they viewed. Only values the form itself offers are used.
   const tour = useLocation().state?.tour

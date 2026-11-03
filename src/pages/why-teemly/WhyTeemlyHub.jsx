@@ -5,8 +5,10 @@ import FinalCTA from '../../sections/FinalCTA.jsx'
 import { whyTeemlyPages } from '../../data/whyTeemly.js'
 import '../../sections/sections.css'
 import '../pages.css'
+import { usePageSEO } from '../../lib/useSEO.js'
 
 export default function WhyTeemlyHub() {
+  usePageSEO('/why-teemly')
   return (
     <>
       <PageHero

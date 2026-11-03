@@ -32,6 +32,7 @@ import {
 } from './auth.js'
 import { validateLead, EMAIL_RE } from '../src/lib/leadForms.js'
 import { TEMPLATES } from '../src/lib/resourceTemplates.js'
+import { verifyTurnstile } from './turnstile.js'
 
 const ICONS = ['chart', 'fileText', 'book', 'target', 'monitor', 'play', 'sparkle', 'layers', 'trendingUp', 'users', 'globe', 'briefcase', 'shield', 'cpu', 'bolt', 'download']
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
@@ -209,6 +210,39 @@ function category(c) {
 const LIVE = `r.status = 'published' AND (r.published_at IS NULL OR r.published_at <= UTC_DATE())
   AND EXISTS (SELECT 1 FROM categories c WHERE c.slug = r.type AND c.visible = 1)`
 
+// Visible categories with the number of live items (glossary: terms).
+async function categoriesWithCounts() {
+  const cats = await query(
+    `SELECT c.*, (SELECT COUNT(*) FROM resources r WHERE r.type = c.slug AND ${LIVE}) AS count
+     FROM categories c WHERE c.visible = 1 ORDER BY c.sort, c.label`,
+  )
+  const { n: glossaryCount } = await one('SELECT COUNT(*) AS n FROM glossary')
+  return cats.map((c) => ({ ...c, count: Number(c.slug === 'glossary' ? glossaryCount : c.count) }))
+}
+
+// ---------- For server-rendered <head> tags and sitemap.xml (server/seo.js) ----------
+// Returns { title, description, empty? } for a Resource Center page, or null if it doesn't exist.
+export async function resourcePageMeta(type, slug) {
+  if (slug) {
+    const item = await one(`SELECT title, summary, type FROM resources r WHERE r.type = ? AND r.slug = ? AND ${LIVE}`, [type, slug])
+    if (!item) return null
+    const cat = await one('SELECT label FROM categories WHERE slug = ?', [item.type])
+    return { title: `${item.title} — ${cat?.label || 'Resources'}`, description: item.summary }
+  }
+  const cat = (await categoriesWithCounts()).find((c) => c.slug === type)
+  if (!cat) return null
+  return { title: `${cat.label} — Resources`, description: cat.description, empty: cat.count === 0 }
+}
+
+export async function liveResourcePaths() {
+  const cats = (await categoriesWithCounts()).filter((c) => c.count > 0)
+  const items = await query(`SELECT r.type, r.slug, r.updated_at FROM resources r WHERE ${LIVE}`)
+  return [
+    ...cats.map((c) => ({ path: `/resources/${c.slug}` })),
+    ...items.map((i) => ({ path: `/resources/${i.type}/${i.slug}`, lastmod: i.updated_at })),
+  ]
+}
+
 // ---------- Signed download links for PDFs ----------
 function sign(id, exp) {
   return createHmac('sha256', SIGNING_SECRET).update(`${id}.${exp}`).digest('base64url')
@@ -247,16 +281,13 @@ export function publicRouter({ notifyDownload }) {
   })
 
   r.get('/', async (req, res) => {
-    const cats = await query(
-      `SELECT c.*, (SELECT COUNT(*) FROM resources r WHERE r.type = c.slug AND ${LIVE}) AS count
-       FROM categories c WHERE c.visible = 1 ORDER BY c.sort, c.label`,
-    )
-    const { n: glossaryCount } = await one('SELECT COUNT(*) AS n FROM glossary')
+    // Empty categories are left out until they have something to show.
+    const cats = (await categoriesWithCounts()).filter((c) => c.count > 0)
     const featured = await query(`SELECT * FROM resources r WHERE ${LIVE} AND r.featured = 1 ORDER BY r.published_at DESC LIMIT 6`)
     const latest = await query(`SELECT * FROM resources r WHERE ${LIVE} ORDER BY r.published_at DESC, r.id DESC LIMIT 60`)
     const downloads = await query(`SELECT * FROM resources r WHERE ${LIVE} AND r.file_id IS NOT NULL ORDER BY r.featured DESC, r.published_at DESC LIMIT 4`)
     res.json({
-      categories: cats.map((c) => ({ ...category(c), count: Number(c.slug === 'glossary' ? glossaryCount : c.count) })),
+      categories: cats.map((c) => ({ ...category(c), count: c.count })),
       featured: featured.map(card),
       latest: latest.map(card),
       downloads: downloads.map(card),
@@ -266,7 +297,7 @@ export function publicRouter({ notifyDownload }) {
 
   // Lightweight list for the site header and footer menus.
   r.get('/categories', async (req, res) => {
-    const cats = await query('SELECT * FROM categories WHERE visible = 1 ORDER BY sort, label')
+    const cats = (await categoriesWithCounts()).filter((c) => c.count > 0)
     res.json({ categories: cats.map(({ slug, label, description, icon }) => ({ slug, label, description, icon })) })
   })
 
@@ -306,7 +337,7 @@ export function publicRouter({ notifyDownload }) {
   // Lead capture for gated PDFs: validates, records the lead, notifies the
   // team, then returns a short-lived signed download link.
   const unlockHits = new Map()
-  r.post('/:type/:slug/unlock', async (req, res) => {
+  r.post('/:type/:slug/unlock', verifyTurnstile, async (req, res) => {
     const now = Date.now()
     const recent = (unlockHits.get(req.ip) || []).filter((t) => now - t < 10 * 60 * 1000)
     if (recent.length >= 10) throw new HttpError(429, 'Too many requests. Please try again in a few minutes.')

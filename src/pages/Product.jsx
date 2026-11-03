@@ -7,11 +7,13 @@ import Trust from '../sections/Trust.jsx'
 import FinalCTA from '../sections/FinalCTA.jsx'
 import '../sections/sections.css'
 import './pages.css'
+import { usePageSEO } from '../lib/useSEO.js'
 
 // Modules with a section in the walkthrough below link to it; the rest open their own page.
 const TOUR_IDS = ['dashboard', 'teams', 'screenshots', 'attendance', 'reports', 'settings']
 
 export default function Product() {
+  usePageSEO('/product')
   return (
     <>
       <PageHero

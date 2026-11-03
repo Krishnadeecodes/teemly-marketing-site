@@ -10,6 +10,8 @@ import nodemailer from 'nodemailer'
 import { LEAD_FORMS, validateLead } from '../src/lib/leadForms.js'
 import { SOCIAL } from '../src/data/social.js'
 import { publicRouter, adminRouter } from './resources.js'
+import { seoRouter } from './seo.js'
+import { verifyTurnstile } from './turnstile.js'
 import { PUBLIC_UPLOAD_DIR, query, ready as dbReady } from './db.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -382,6 +384,7 @@ setInterval(() => {
 
 // ---- App ----
 const app = express()
+app.disable('x-powered-by') // don't advertise the framework
 app.set('trust proxy', 1) // behind Nginx: use X-Forwarded-For for req.ip
 
 // Resource Center + admin panel (mounted before the global JSON parser: they
@@ -400,7 +403,7 @@ app.use(
 
 app.use(express.json({ limit: '50kb' }))
 
-app.post('/api/forms/:type', rateLimit, async (req, res) => {
+app.post('/api/forms/:type', rateLimit, verifyTurnstile, async (req, res) => {
   const def = FORMS[req.params.type]
   if (!def) return res.status(404).json({ error: 'Unknown form' })
 
@@ -493,7 +496,7 @@ const TOUR_DEF = {
 }
 const SIGNIN_SOURCES = { tour: 'Product tour', chatbot: 'Chat assistant' }
 
-app.post('/api/tour/unlock', rateLimit, async (req, res) => {
+app.post('/api/tour/unlock', rateLimit, verifyTurnstile, async (req, res) => {
   const tag = '[tour]'
   if (req.body?.website) {
     console.warn(`${tag} honeypot filled — sign-in not recorded`)
@@ -557,13 +560,12 @@ app.post('/api/tour/unlock', rateLimit, async (req, res) => {
   if (LEAD_WEBHOOK_URL) postToWebhook(lead).catch((err) => console.error(`${tag} webhook failed:`, err.message))
 })
 
-// ---- Serve the built site with SPA fallback ----
+// ---- Serve the built site ----
+// Static files first (index: false so "/" also goes through the SEO router),
+// then every page with its own <head> tags and a real 404 for unknown URLs.
 const DIST = path.join(ROOT, 'dist')
-app.use(express.static(DIST))
-app.use((req, res, next) => {
-  if (req.method !== 'GET' || req.path.startsWith('/api/') || req.path.startsWith('/uploads/')) return next()
-  res.sendFile(path.join(DIST, 'index.html'))
-})
+app.use(express.static(DIST, { index: false }))
+app.use(seoRouter({ distDir: DIST, siteUrl: SITE_URL, securityContact: process.env.SECURITY_CONTACT }))
 
 try {
   await dbReady

@@ -5,10 +5,12 @@ import Icon from '../components/Icon.jsx'
 import FinalCTA from '../sections/FinalCTA.jsx'
 import { securityTopics, getSecurityTopic } from '../data/securityTopics.js'
 import './pages.css'
+import { usePageSEO } from '../lib/useSEO.js'
 
 const compliance = getSecurityTopic('compliance').complianceTable
 
 export default function TrustCenter() {
+  usePageSEO('/trust-center')
   return (
     <>
       <PageHero
@@ -74,8 +76,8 @@ export default function TrustCenter() {
           <div className="module-plan-note">
             <Icon name="layers" size={17} />
             <p>
-              Published sub-processors: AWS, Vercel, Datadog and Sentry. A grievance officer is published at
-              teemly.io/privacy. Data residency is AWS Mumbai (ap-south-1).
+              Published sub-processors: AWS, Vercel, Datadog and Sentry. Data-protection requests and
+              grievances go through the contact details in our Privacy Policy. Data residency is AWS Mumbai (ap-south-1).
             </p>
           </div>
         </div>

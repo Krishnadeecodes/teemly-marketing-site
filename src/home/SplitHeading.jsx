@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react'
+import { Fragment, useLayoutEffect, useRef } from 'react'
 import { gsap, isPhone, prefersReducedMotion } from './useHomeScroll.js'
 import { reveal, whenInView } from './reveal.js'
 import './splitHeading.css'
@@ -48,10 +48,15 @@ export default function SplitHeading({ as: Tag = 'h2', text, className = '', mod
 
   return (
     <Tag className={`h-split ${className}`} ref={ref} aria-label={text}>
+      {/* a real space between words (not a CSS margin), so search engines and
+          copy-paste read a sentence instead of one long word */}
       {words.map((w, i) => (
-        <span className="w" key={i} aria-hidden="true">
-          <span>{w}</span>
-        </span>
+        <Fragment key={i}>
+          {i > 0 && ' '}
+          <span className="w" aria-hidden="true">
+            <span>{w}</span>
+          </span>
+        </Fragment>
       ))}
     </Tag>
   )

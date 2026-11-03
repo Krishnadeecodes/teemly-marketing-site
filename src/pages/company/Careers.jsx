@@ -2,8 +2,10 @@ import PageHero from '../../components/PageHero.jsx'
 import Icon from '../../components/Icon.jsx'
 import FinalCTA from '../../sections/FinalCTA.jsx'
 import '../pages.css'
+import { usePageSEO } from '../../lib/useSEO.js'
 
 export default function Careers() {
+  usePageSEO('/company/careers')
   return (
     <>
       <PageHero

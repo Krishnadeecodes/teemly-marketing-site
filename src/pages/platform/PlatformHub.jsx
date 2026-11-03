@@ -6,6 +6,7 @@ import FinalCTA from '../../sections/FinalCTA.jsx'
 import { platformPillars } from '../../data/platformPillars.js'
 import '../../sections/sections.css'
 import '../pages.css'
+import { usePageSEO } from '../../lib/useSEO.js'
 
 const principles = [
   'Secure by design',
@@ -17,6 +18,7 @@ const principles = [
 ]
 
 export default function PlatformHub() {
+  usePageSEO('/platform')
   return (
     <>
       <PageHero

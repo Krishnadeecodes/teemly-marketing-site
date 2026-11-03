@@ -280,7 +280,8 @@
   vertical-align: top;
   padding-bottom: 0.08em;
   margin-bottom: -0.08em;
-  margin-right: 0.26em;
+  /* word gap comes from a real space between the spans, so the text reads
+     as words to search engines and screen readers */
 }
 .home-v2 .h-split .w > span {
   display: inline-block;
