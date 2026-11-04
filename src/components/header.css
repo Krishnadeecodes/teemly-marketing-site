@@ -313,18 +313,18 @@
 
 /* ---- Compact trust/glossary visuals (no product mock available) ---- */
 .mega-trust-visual {
-  padding: 16px 14px;
+  padding: 12px;
   background: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   text-align: center;
 }
 
 .mega-trust-visual .tile-icon {
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
   background: linear-gradient(160deg, rgba(106, 44, 199, 0.12), rgba(245, 41, 152, 0.12));
   color: var(--purple);
 }

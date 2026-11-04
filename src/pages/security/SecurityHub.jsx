@@ -15,7 +15,7 @@ export default function SecurityHub() {
       <PageHero
         eyebrow="Security & Trust"
         title="Built to be trusted with sensitive workforce data"
-        desc="Multi-tenant isolation, encryption in transit and at rest, and privacy controls that are enforced in the product — not just promised in a policy document."
+        desc="Organization-level data isolation, encryption in transit and at rest, and privacy controls that are enforced in the product — not just promised in a policy document."
       />
 
       <section className="section-tight">

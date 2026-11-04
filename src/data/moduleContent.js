@@ -127,7 +127,7 @@ const content = [
     tag: 'Attendance',
     title: 'Attendance derived from activity, not typed in',
     intro:
-      "There is no manual check-in system. Check-in is the first EXE activity event of the working day; check-out is the last — or 'Active' if the employee is still working.",
+      "There is no manual check-in system. Check-in is the first Teemly Desktop App activity event of the working day; check-out is the last — or 'Active' if the employee is still working.",
     Comp: AttendanceShot,
     roleAccess: [
       { feature: "View all employees' attendance", admin: 'Yes', manager: 'Assigned team only' },
@@ -181,7 +181,7 @@ const content = [
     ],
     highlights: [
       { title: 'Teams & Structure', desc: 'Create, rename and delete teams — each shown with a member count and a productivity ring.' },
-      { title: 'People & Roles', desc: 'Invite employees, assign teams and roles, and see EXE install status and last-sync time per person.' },
+      { title: 'People & Roles', desc: 'Invite employees, assign teams and roles, and see Teemly Desktop App install status and last-sync time per person.' },
       { title: 'Work Policy', desc: 'Working days, productivity targets, expected hours and check-in time — configurable per employee.' },
       { title: 'Monitoring Controls', desc: 'Screenshot capture, blur and interval, plus idle-detection thresholds, saved per employee.' },
       { title: 'Silent Tracking', desc: 'Invisible monitoring, locked behind a mandatory legal-consent acknowledgement before it can ever switch on.' },

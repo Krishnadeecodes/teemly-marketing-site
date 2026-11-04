@@ -108,11 +108,11 @@ export const solutions = [
     whyInsufficient:
       'Procurement data shows what was purchased, not what is actually used — and a licensed third-party monitoring SDK adds a dependency IT does not control.',
     howTeemlyHelps:
-      'Tool Intelligence shows real adoption rates and flags underused licenses with cost attached, while the agent itself is built and owned by Teemly end to end — code-signed, HMAC-signed payloads, AES-256 at rest.',
+      'Tool Intelligence shows real adoption rates and flags underused licenses with cost attached, while the agent itself is built and owned by Teemly end to end — verified and signed, with cryptographically verified data transfer and enterprise-grade encryption.',
     capabilities: [
       'Tool Intelligence — adoption rates, underused-license detection',
-      'Own EXE agent — Windows EV certificate, macOS notarized',
-      'HMAC-SHA256 signed payloads, replay-attack prevention',
+      'Own Teemly Desktop App — verified and signed for Windows and macOS',
+      'Cryptographically verified data transfer with replay protection',
       'API access for integrations on Premium and Enterprise',
     ],
     relevantModules: ['settings'],
@@ -238,7 +238,7 @@ export const solutions = [
     capabilities: [
       'Privacy Mode — employee-controlled, no admin override, ever',
       'Screenshot and video blur — original never stored once enabled',
-      'Privacy notice shown at EXE installation, before tracking begins',
+      'Privacy notice shown at Teemly Desktop App installation, before tracking begins',
       'Silent Tracking locked behind mandatory legal acknowledgement',
     ],
     relevantModules: ['screenshots', 'settings'],

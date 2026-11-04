@@ -107,7 +107,7 @@ export const intents = [
     label: 'Do you have an Enterprise plan?',
     keywords: ['enterprise', 'large company', 'big team', 'unlimited', 'on-prem', 'on prem', 'onprem', 'premise', 'self host', 'self-host', 'minio', 'dedicated', 'custom quote'],
     text:
-      'Yes. Enterprise includes unlimited employees, custom intervals and retention across every module, unlimited custom roles, a dedicated account manager and a 4-hour support SLA. Full on-premise deployment (using MinIO) is available when data cannot leave your premises.',
+      'Yes. Enterprise includes unlimited employees, custom intervals and retention across every module, unlimited custom roles, a dedicated account manager and a 4-hour support SLA. Full private on-premise deployment is available when data cannot leave your premises.',
     links: [
       { label: 'Talk to sales', to: '/company/contact' },
       { label: 'Enterprise industry page', to: '/industries/enterprise' },
@@ -195,7 +195,7 @@ export const intents = [
     label: 'How secure is my data?',
     keywords: ['secur', 'safe', 'encrypt', 'hack', 'breach', 'protect', 'access control', 'rbac', 'role', 'permission', 'audit', 'waf', 'firewall'],
     text:
-      'Data is encrypted at rest and in transit at every layer — database, file storage and agent payloads. Access control is role-based and organization-scoped on every API request, sensitive views are written to an audit log, and the infrastructure runs in private subnets behind a WAF with rotating secrets.',
+      'Data is encrypted at rest and in transit at every layer — database, file storage and agent payloads. Access control is role-based and organization-scoped on every API request, sensitive views are written to an audit log, and the infrastructure is network-isolated behind a managed web application firewall with rotating secrets.',
     links: [
       { label: 'Security overview', to: '/security' },
       { label: 'Encryption', to: '/security/encryption' },
@@ -223,7 +223,7 @@ export const intents = [
     label: 'Where is my data stored?',
     keywords: ['where is', 'stored', 'storage', 'data residency', 'residency', 'server', 'aws', 'cloud', 'region', 'india', 'mumbai', 'host', 'retention', 'delete', 'erasure', 'how long'],
     text:
-      'Cloud plans store data in AWS Mumbai (ap-south-1), giving India data residency. Enterprise customers can deploy fully on-premise with MinIO. Retention is enforced per plan with automatic deletion at expiry, and employees can request erasure of their data.',
+      'Cloud plans use secure cloud hosting in India, giving India data residency. Enterprise customers can deploy fully on-premise with private on-premise storage. Retention is enforced per plan with automatic deletion at expiry, and employees can request erasure of their data.',
     links: [
       { label: 'Data platform', to: '/platform/data-platform' },
       { label: 'Infrastructure', to: '/security/infrastructure' },
@@ -235,7 +235,7 @@ export const intents = [
     label: 'How does the desktop agent work?',
     keywords: ['agent', 'exe', 'install', 'download', 'setup', 'set up', 'windows', 'mac', 'macos', 'linux', 'desktop', 'software', 'application', 'lightweight', 'performance', 'slow'],
     text:
-      'Teemly runs on its own desktop agent — not a licensed third-party plugin. It is a sub-2MB installer for Windows and macOS, code-signed with a Windows EV certificate and notarized for macOS. It sends signed, encrypted payloads to the platform, and shows a privacy notice at install before tracking begins.',
+      'Teemly runs on its own desktop app — not a licensed third-party plugin. It is a lightweight installer for Windows and macOS, verified and signed for both. It sends verified, encrypted data to the platform, and shows a privacy notice at install before tracking begins.',
     links: [
       { label: 'Our own agent', to: '/why-teemly/difference' },
       { label: 'Data platform', to: '/platform/data-platform' },

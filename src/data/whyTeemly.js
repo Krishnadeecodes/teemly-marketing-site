@@ -31,7 +31,7 @@ export const whyTeemlyPages = [
     body: [
       {
         heading: 'We built the agent ourselves',
-        text: 'No third-party monitoring SDK sits between your data and your dashboard. The sub-2MB EXE agent is code-signed, HMAC-signs every payload, and is owned end to end by Teemly.',
+        text: 'No third-party monitoring SDK sits between your data and your dashboard. The lightweight Teemly Desktop App is verified and signed, sends only cryptographically verified data, and is owned end to end by Teemly.',
       },
       {
         heading: 'Privacy is a code path, not a policy page',

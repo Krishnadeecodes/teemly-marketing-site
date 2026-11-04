@@ -77,7 +77,7 @@ export default function TrustCenter() {
             <Icon name="layers" size={17} />
             <p>
               Published sub-processors: AWS, Vercel, Datadog and Sentry. Data-protection requests and
-              grievances go through the contact details in our Privacy Policy. Data residency is AWS Mumbai (ap-south-1).
+              grievances go through the contact details in our Privacy Policy. Data residency is in India.
             </p>
           </div>
         </div>

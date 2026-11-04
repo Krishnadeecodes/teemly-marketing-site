@@ -29,7 +29,7 @@ export default function Customers() {
                 <Icon name="clock" size={20} />
               </span>
               <h3>Live in a day, not a quarter</h3>
-              <p>A sub-2MB installer means onboarding doesn't require an IT rollout project.</p>
+              <p>A lightweight installer means onboarding doesn't require an IT rollout project.</p>
             </div>
             <div className="tile-card">
               <span className="tile-icon">

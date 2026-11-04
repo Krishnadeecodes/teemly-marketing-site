@@ -20,7 +20,7 @@ const faqs = [
   },
   {
     q: 'How is attendance calculated — do employees check in manually?',
-    a: 'There is no manual check-in. Check-in is the first EXE activity event of the day and check-out is the last. If no events are received on a working day, the employee is marked absent.',
+    a: 'There is no manual check-in. Check-in is the first Teemly Desktop App activity event of the day and check-out is the last. If no events are received on a working day, the employee is marked absent.',
   },
   {
     q: 'What happens when an employee turns on Privacy Mode?',

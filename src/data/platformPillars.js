@@ -43,7 +43,7 @@ export const platformPillars = [
       },
       {
         heading: 'Attendance that enforces itself',
-        text: 'Check-in is the first EXE activity event of the day; check-out is the last. Late arrivals and absences are flagged automatically, with a shared Gantt timeline available from the Professional plan up.',
+        text: 'Check-in is the first Teemly Desktop App activity event of the day; check-out is the last. Late arrivals and absences are flagged automatically, with a shared Gantt timeline available from the Professional plan up.',
       },
     ],
     facts: [
@@ -102,7 +102,7 @@ export const platformPillars = [
       'Work Policy — working days, expected hours, check-in time, per-employee targets',
       'Gantt timeline view — shared time axis across the whole team (Professional plan up)',
       'Tool adoption rates and SaaS spend waste alerts',
-      'Settings sync to the EXE agent within 1 hour of saving',
+      'Settings sync to the Teemly Desktop App within 1 hour of saving',
     ],
     relatedModules: ['settings', 'attendance'],
     relatedReports: ['Tool Intelligence', 'Work Pulse'],
@@ -142,19 +142,19 @@ export const platformPillars = [
       "Teemly builds and ships its own desktop agent rather than licensing a third party — because workforce data is too sensitive to route through someone else's SDK.",
     body: [
       {
-        heading: 'The EXE agent',
-        text: 'A sub-2MB installer for Windows and macOS, code-signed with a Windows EV certificate and notarized for macOS. It captures activity at the OS level every 60 seconds and streams HMAC-SHA256 signed payloads to the API over HTTPS, with offline tracking that syncs once reconnected.',
+        heading: 'The Teemly Desktop App',
+        text: 'A lightweight installer for Windows and macOS, verified and signed for both. It captures activity natively at regular intervals and sends cryptographically verified data to the platform, with offline tracking that syncs once reconnected.',
       },
       {
         heading: 'Storage and retention',
-        text: 'Screenshots, video recordings and location data are stored in a private AWS S3 bucket in Mumbai (ap-south-1), served only via signed URLs with a 15-minute expiry. The database is encrypted at rest (AES-256) and lives in a private subnet with no public endpoint. Enterprise clients can deploy MinIO on-premise instead, with the same signed-URL and blur-before-write guarantees.',
+        text: 'Screenshots, video recordings and location data are held in private, encrypted cloud storage in India, available only through time-limited secure access. The database is encrypted and network-isolated with no public access. Enterprise clients can deploy on-premise with the same guarantees.',
       },
     ],
     facts: [
-      'Own EXE agent — no third-party monitoring SDK, Windows & macOS',
-      'HMAC-SHA256 signed payloads with replay-attack prevention',
-      'AWS S3 (Mumbai, ap-south-1) for cloud plans · MinIO on-premise for Enterprise',
-      'AES-256 encryption at rest, TLS 1.2 minimum in transit',
+      'Own Teemly Desktop App — no third-party monitoring SDK, Windows & macOS',
+      'Cryptographically verified data transfer with replay protection',
+      'Secure cloud hosting in India for cloud plans · Private on-premise storage for Enterprise',
+      'Enterprise-grade encryption, in storage and in transit',
     ],
     relatedModules: ['settings'],
     relatedReports: [],
@@ -173,7 +173,7 @@ export const platformPillars = [
       },
       {
         heading: 'Built to connect, when it is verified',
-        text: "The agent's own signed-payload architecture (HMAC-SHA256, HTTPS, org-scoped) is the same pattern any future integration would need to meet. We'd rather ship that honestly than list connectors that don't exist yet.",
+        text: "The agent's own verified data-transfer architecture is the same standard any future integration would need to meet. We'd rather ship that honestly than list connectors that don't exist yet.",
       },
     ],
     facts: [
@@ -195,16 +195,16 @@ export const platformPillars = [
     body: [
       {
         heading: 'The real path',
-        text: 'EXE Agent (Windows/macOS) → HMAC-signed HTTPS payload → API (JWT auth, RBAC, org-scoped on every query) → PostgreSQL (encrypted) + private S3 (screenshots, video, location, via signed URLs) → Dashboard, Reports and AI insight cards → admin or manager action.',
+        text: 'Teemly Desktop App → Verified, encrypted transfer → Secure platform layer → Encrypted data and media storage → Dashboard, Reports and AI insight cards → Admin or manager action.',
       },
       {
         heading: 'Principles we can actually stand behind',
-        text: 'Secure by design, API-first, privacy-first, and role-aware access are not slogans here — they map directly to the JWT/RBAC middleware, org-scoped database queries, and the Silent Tracking legal gate described on the Security pages.',
+        text: 'Secure by design, API-first, privacy-first and role-aware access are not slogans here. They are enforced in the platform, as described on the Security pages.',
       },
     ],
     facts: [
-      'Secure by design — RBAC middleware enforced on every API route',
-      'Org-scoped — every database query is scoped by org_id from the JWT, never the request body',
+      'Secure by design — role-based access enforced on every request',
+      'Org-scoped — strict organization-level data isolation on every request',
       'Privacy-first — Silent Tracking locked behind an explicit legal acknowledgement',
       'Observable — every admin action and every screenshot/recording/location view is logged',
     ],

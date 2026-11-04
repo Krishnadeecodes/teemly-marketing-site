@@ -58,7 +58,7 @@ export const comparisonGroups = [
   {
     group: 'Security',
     rows: [
-      { f: 'JWT + RBAC authentication, DPDP-aligned', v: [true, true, true, true] },
+      { f: 'Enterprise authentication and role-based access, DPDP-aligned', v: [true, true, true, true] },
       { f: 'Admin action audit log', v: [false, true, true, true] },
       { f: 'On-premise deployment', v: [false, false, false, true] },
     ],

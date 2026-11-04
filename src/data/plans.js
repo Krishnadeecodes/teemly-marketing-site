@@ -79,7 +79,7 @@ export const plans = [
     features: [
       'Unlimited employees',
       'Custom interval & retention across every module',
-      'On-premise deployment available (MinIO)',
+      'Private on-premise deployment available',
       'Unlimited custom roles & module-level permissions',
       'Dedicated account manager',
       '4-hour support SLA',

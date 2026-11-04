@@ -113,8 +113,8 @@ function SecurityFeature() {
           Security & Trust, documented
         </div>
         <div className="mega-trust-chips">
-          <span>AES-256</span>
-          <span>TLS 1.2+</span>
+          <span>Enterprise Encryption</span>
+          <span>Role-Based Access</span>
           <span>GDPR-aligned</span>
         </div>
       </div>
@@ -181,8 +181,8 @@ const menus = [
     render: () => (
       <MegaMenu
         items={securityLinks}
-        columns={1}
-        width={340}
+        columns={2}
+        width={520}
         align="start"
         footerLink={{ to: '/trust-center', label: 'Visit the Trust Center' }}
         feature={<SecurityFeature />}

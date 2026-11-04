@@ -5,7 +5,7 @@ const cards = [
   {
     icon: 'cpu',
     title: 'An agent Teemly owns, end to end',
-    desc: 'No browser extension, no licensed third-party SDK. A sub-2MB installer for Windows and macOS captures activity natively, at the OS level.',
+    desc: 'No browser extension, no licensed third-party SDK. A lightweight installer for Windows and macOS captures activity natively, at the OS level.',
   },
   {
     icon: 'sparkle',

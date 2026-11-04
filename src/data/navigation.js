@@ -45,11 +45,11 @@ export const resourcesLinks = [
 
 export const securityLinks = [
   { to: '/security/data-privacy', label: 'Data Privacy', desc: 'What we collect, and what we never do', icon: 'eyeOff', tone: 'blue' },
-  { to: '/security/encryption', label: 'Encryption', desc: 'AES-256 at rest, TLS 1.2+ in transit', icon: 'lock', tone: 'purple' },
-  { to: '/security/access-control', label: 'Access Control', desc: 'RBAC, tokens and organization scoping', icon: 'shield', tone: 'green' },
-  { to: '/security/governance', label: 'Governance', desc: 'How Silent Tracking is gated and audited', icon: 'scale', tone: 'amber' },
+  { to: '/security/encryption', label: 'Encryption', desc: 'Enterprise-grade protection, in storage and in transit', icon: 'lock', tone: 'purple' },
+  { to: '/security/access-control', label: 'Access Control', desc: 'Role-based access with organization-level isolation', icon: 'shield', tone: 'green' },
+  { to: '/security/governance', label: 'Governance', desc: 'How sensitive capabilities are governed and audited', icon: 'scale', tone: 'amber' },
   { to: '/security/compliance', label: 'Compliance', desc: 'DPDP progress and GDPR-aligned architecture', icon: 'check', tone: 'cyan' },
-  { to: '/security/infrastructure', label: 'Infrastructure Security', desc: 'AWS WAF, Shield and private subnets', icon: 'server', tone: 'blue' },
+  { to: '/security/infrastructure', label: 'Infrastructure Security', desc: 'Network-isolated infrastructure with layered defenses', icon: 'server', tone: 'blue' },
   { to: '/security/ai-security', label: 'AI Security', desc: 'How AI insight generation is scoped and governed', icon: 'sparkle', tone: 'pink' },
 ]
 

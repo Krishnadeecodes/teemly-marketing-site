@@ -10,7 +10,7 @@ const values = [
   {
     icon: 'cpu',
     title: 'Own the whole stack',
-    desc: 'Teemly ships its own EXE agent, its own storage, its own scoring — no third-party monitoring software sits between your data and your dashboard.',
+    desc: 'Teemly ships its own desktop app, its own storage, its own scoring — no third-party monitoring software sits between your data and your dashboard.',
   },
   {
     icon: 'eyeOff',
@@ -20,7 +20,7 @@ const values = [
   {
     icon: 'target',
     title: 'Built for how you actually work',
-    desc: 'Per-seat pricing, a sub-2MB agent and a one-day setup — enterprise-grade visibility without enterprise-grade rollout.',
+    desc: 'Per-seat pricing, a lightweight desktop app and a one-day setup — enterprise-grade visibility without enterprise-grade rollout.',
   },
 ]
 
