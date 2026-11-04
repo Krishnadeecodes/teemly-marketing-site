@@ -76,7 +76,7 @@ function ResourcesFeature() {
       <div className="mega-feature-visual mega-glossary-visual">
         <span className="term">Organizational Intelligence</span>
         <p className="pos">noun</p>
-        <p className="def">The continuous model connecting people, work and technology signals into one record — the foundation every Teemly report rolls up from.</p>
+        <p className="def">One continuous model of people, work and technology signals.</p>
       </div>
       <Link to="/resources/glossary" className="mega-feature-cta">
         Open the glossary <Icon name="arrowRight" size={14} />
@@ -85,13 +85,16 @@ function ResourcesFeature() {
   )
 }
 
-// Category links come from the admin (Categories page).
+// Category links come from the admin (Categories page). One or two links
+// stack in a narrower column, so they fill the height of the feature rail.
 function ResourcesMenu() {
+  const items = useResourceMenu()
+  const compact = items.length <= 2
   return (
     <MegaMenu
-      items={useResourceMenu()}
-      columns={2}
-      width={480}
+      items={items}
+      columns={compact ? 1 : 2}
+      width={compact ? 320 : 480}
       align="start"
       footerLink={{ to: '/resources', label: 'Visit the Resource Center' }}
       feature={<ResourcesFeature />}
