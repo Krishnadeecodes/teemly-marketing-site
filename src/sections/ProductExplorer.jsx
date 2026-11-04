@@ -24,10 +24,10 @@ const modules = [
     icon: 'chart',
     tag: 'DASHBOARD',
     title: 'Everything worth knowing, before your first coffee',
-    desc: "Checked-in counts, absentees, a live productivity score and today's activity feed — refreshed the moment your agent reports in, not at end of day.",
+    desc: "Checked-in counts, absentees, a live Org Intelligence Score and today's activity feed — refreshed the moment your agent reports in, not at end of day.",
     points: [
-      'One productivity score for the whole org, updated continuously',
-      'Productive vs. unproductive hours, visualised day by day',
+      'One Org Intelligence Score for the whole company, updated continuously',
+      'Productive vs. unproductive hours, visualized day by day',
       'A live feed of who is working, idle, or in privacy mode right now',
     ],
     Comp: DashboardShot,
@@ -66,7 +66,7 @@ const modules = [
     icon: 'monitor',
     tag: 'VIDEO RECORDING',
     title: 'Continuous visual audit, in configurable segments',
-    desc: 'Screen recording captured in 5–30 minute segments per employee, organised by session, with in-browser playback — no download required to review a day.',
+    desc: 'Screen recording captured in 5–30 minute segments per employee, organized by session, with in-browser playback — no download required to review a day.',
     points: [
       'Gallery view with thumbnail preview, playable right in the browser',
       'Privacy blur per employee — original recording never stored when on',
@@ -111,7 +111,7 @@ const modules = [
     desc: 'Work rhythm, burnout risk, focus quality, tool spend, punctuality and team ranking — each report closes with a plain-language note on what to do about it.',
     points: [
       "Notes like 'Friday afternoons are your quietest window' — not just charts",
-      'Underused software licences flagged, with the monthly cost attached',
+      'Underused software licenses flagged, with the monthly cost attached',
       'Every report scoped to the org, a team, or one person',
     ],
     Comp: ReportsShot,

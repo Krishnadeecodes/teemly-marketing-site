@@ -6,7 +6,7 @@ import '../home/quickFacts.css'
 const facts = [
   { icon: 'cpu', big: '<2MB', label: 'Lightweight desktop app, with no browser extension or third-party software' },
   { icon: 'layers', big: `${MODULES.length} modules`, label: MODULES.map((m) => m.shortLabel || m.label).join(', ') },
-  { icon: 'bolt', big: '1 day', label: "From install to your org's first productivity score" },
+  { icon: 'bolt', big: '1 day', label: "From install to your first Org Intelligence Score" },
   { icon: 'eyeOff', big: '0', label: 'Keystrokes, emails or clipboard content ever captured' },
 ]
 

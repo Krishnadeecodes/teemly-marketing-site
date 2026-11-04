@@ -65,7 +65,7 @@ export default function ROICalculator() {
     {
       key: 'wastePct',
       label: 'Technology waste',
-      desc: 'Share of technology spend on underused or unused licences, per Tool Intelligence',
+      desc: 'Share of technology spend on underused or unused licenses, per Tool Intelligence',
       min: 1,
       max: 30,
     },
@@ -185,7 +185,7 @@ export default function ROICalculator() {
             </Link>
             <p className="roi-note">
               <Icon name="layers" size={14} />
-              Adjustable assumptions applied to your numbers — a modelling tool, not a guaranteed or verified outcome.
+              Adjustable assumptions applied to your numbers — a modeling tool, not a guaranteed or verified outcome.
             </p>
           </div>
         </div>

@@ -88,7 +88,7 @@ export default function Contact() {
                 <FormSuccess
                   ref={successRef}
                   title="Thanks — message received"
-                  message="A Teemly specialist will read it and reply to you directly. For Enterprise enquiries, we'll prepare a quote for your organisation."
+                  message="A Teemly specialist will read it and reply to you directly. For Enterprise inquiries, we'll prepare a quote for your organization."
                   email={values.email}
                   reply="Within one business day"
                   links={[
@@ -146,7 +146,7 @@ export default function Contact() {
                     </div>
                   </div>
                   <p className="form-notice">
-                    We'll use these details only to respond to your enquiry. See our <Link to="/legal/privacy">Privacy Policy</Link>.
+                    We'll use these details only to respond to your inquiry. See our <Link to="/legal/privacy">Privacy Policy</Link>.
                   </p>
                   {formError && (
                     <div className="form-error" role="alert">

@@ -362,7 +362,7 @@ function attrAnswer(plan, attrs) {
     out.push(`${p.name} keeps ${parts.join(', ')}.`)
   }
   if (attrs.support) out.push(`${p.name} comes with ${l.support}.`)
-  if (attrs.roles) out.push(l.roles ? `${p.name} includes ${l.roles}.` : `${p.name} doesn't include custom roles — they start on Professional (up to 5).`)
+  if (attrs.roles) out.push(l.roles ? `${p.name} includes ${l.roles}.` : `${p.name} doesn't include custom roles — they start on Professional (up to 2).`)
   return { text: out.join(' '), links: [LINKS.pricing], followUps: ['compare-plans', 'pricing'] }
 }
 

@@ -1,6 +1,6 @@
 import { SOCIAL } from '../data/social.js'
 
-// Brand marks for the social profiles (24×24, filled with the text colour).
+// Brand marks for the social profiles (24×24, filled with the text color).
 const MARKS = {
   youtube: (
     <path

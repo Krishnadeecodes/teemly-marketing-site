@@ -13,7 +13,7 @@ const principles = [
   'API-first',
   'Privacy-first',
   'Role-aware access',
-  'Organisation-scoped data separation',
+  'Organization-scoped data separation',
   'Observable — every sensitive view is logged',
 ]
 
@@ -24,7 +24,7 @@ export default function PlatformHub() {
       <PageHero
         eyebrow="Platform"
         title="One intelligence layer, not six disconnected tools"
-        desc="Every pillar below reads from the same real-time record the Teemly agent writes to — organisational context is the model that ties them together."
+        desc="Every pillar below reads from the same real-time record the Teemly agent writes to — organizational context is the model that ties them together."
       />
 
       <section className="section-tight">

@@ -1,6 +1,6 @@
 # QC — teemly.co audit fixes
 
-Last updated: 3 Nov 2026 · Branch: `audit-fixes`
+Last updated: 4 Nov 2026 · Branch: `master` (audit fixes are pushed; the Part A answers below are not committed yet)
 
 Source: Claude browser-extension audit of teemly.co (security, SEO, content, legal).
 The fixes are split into **Part B** (done in code) and **Part A** (needs the owner's input or server access).
@@ -18,7 +18,10 @@ The fixes are split into **Part B** (done in code) and **Part A** (needs the own
 | nginx security headers | 🟡 Config written, **must be applied on the server** |
 | Turnstile spam check, Sentry | 🟡 Built in, **off until keys are added** |
 | Legal pages (Privacy, Terms, DPA) | 🔴 Waiting on lawyer |
-| Grievance officer, company details, roles, trial, spelling… | 🔴 Waiting on owner's answers (Part A) |
+| Roles, trial buttons, spelling, score name, Plausible, contact emails | ✅ Done in code, not committed or deployed |
+| Plausible analytics | 🟡 Built in, **off until `VITE_PLAUSIBLE_DOMAIN` is set** |
+| Text stored in the database (glossary, categories, resources) | 🔴 Still British/old wording; needs a decision |
+| Company details, grievance officer name, customer login URL | 🔴 Waiting on owner's answers (Part A) |
 
 ---
 
@@ -62,27 +65,28 @@ The fixes are split into **Part B** (done in code) and **Part A** (needs the own
 - [ ] **Legal wording I wrote** — Terms page says contract terms "are provided with your order"; DPA page says "available on request for Enterprise". Change if not true.
 - [ ] **Turnstile** — set `VITE_TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` **together**, or every form submission fails.
 - [ ] **CSP** — after applying nginx, click through home, a resource with a video, the contact form and /admin with the console open; add any blocked domain to the CSP line.
-- [ ] Review the diff on branch `audit-fixes` and merge into `master`.
+- [ ] Commit `5102f8c` (marked WIP, Resources wording) is on `master`: check it before deploying.
+- [ ] **Temporary contacts** — grievance and security both use `info@teemly.co` for now.
 
 ---
 
 ## Part A — waiting on the owner
 
-### Answers needed (send these and the code changes take ~1 hour)
-- [ ] **A1** Grievance officer name + email (Privacy & Compliance pages)
-- [ ] **A2** Legal entity name, registered address, GSTIN (footer)
-- [ ] **A3** Professional plan: **2 or 5** custom roles? (`plans.js` says 5, `comparison.js` says 2)
-- [ ] **A4** Free trial: build signup/login, or change buttons to "Book a demo"? Login URL for existing customers?
-- [ ] **A5** Spelling: British ("organisation") or American ("organization")?
-- [ ] **A6** Score name: "Org Productivity Score" or "Org Intelligence Score"?
-- [ ] **A7** Analytics: Plausible (no cookie banner) or GA4 (needs banner)?
-- [ ] **A8** Security contact email (for security.txt — currently `security@teemly.co`)
+### Answers
+- [ ] **A1** Grievance officer: `info@teemly.co` is live on the Privacy & Compliance pages for now. **Name still needed**; email to change later
+- [ ] **A2** Legal entity name, registered address, GSTIN (footer) — skipped for now
+- [x] **A3** Professional plan = **2** custom roles — `plans.js`, `chatbotPlans.js`
+- [x] **A4** Trial buttons → "Book a Demo" (`/book-a-demo`); Pricing FAQ, chatbot and final CTA reworded. **Login URL for existing customers still needed**
+- [x] **A5** American spelling across site code. Database text not done (see status table)
+- [x] **A6** "Org Intelligence Score" for the org-level score. Per-employee "productivity score" unchanged
+- [x] **A7** Plausible built in — `src/main.jsx`, CSP in `deploy/nginx/teemly.conf`, Cookie Policy
+- [x] **A8** Security contact = `info@teemly.co` (temporary) — `server/seo.js`, `Support.jsx`
 - [ ] **A9** Optional: one pilot customer quote, or founder/Deecodes lines for the Customers page
 
 ### Owner's tasks
 - [ ] **A10** Lawyer drafts real Privacy Policy, Terms, DPA, Cookie Policy (slowest — start first)
 - [ ] **A11** Apply `deploy/nginx/teemly.conf` on the server (`sudo nginx -t && sudo systemctl reload nginx`)
-- [ ] **A12** Accounts: Google Search Console, Plausible/GA4, Cloudflare Turnstile keys, Sentry DSN, uptime/status page
+- [ ] **A12** Accounts: Google Search Console, Plausible (add the site, then set `VITE_PLAUSIBLE_DOMAIN=teemly.co` and rebuild), Cloudflare Turnstile keys, Sentry DSN, uptime/status page
 - [ ] **A13** Send a test lead through the contact form; confirm it reaches the inbox/CRM
 - [ ] **A14** After deploy: securityheaders.com, SSL Labs, PageSpeed Insights, re-run the extension audit
 

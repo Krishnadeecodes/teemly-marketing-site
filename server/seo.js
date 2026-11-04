@@ -106,7 +106,7 @@ export function seoRouter({ distDir, siteUrl, securityContact }) {
     const expires = new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).toISOString().replace(/\.\d+Z$/, 'Z')
     res.type('text').send(
       [
-        `Contact: ${securityContact || 'mailto:security@teemly.co'}`,
+        `Contact: ${securityContact || 'mailto:info@teemly.co'}`,
         `Expires: ${expires}`,
         'Preferred-Languages: en',
         `Canonical: ${SITE}/.well-known/security.txt`,

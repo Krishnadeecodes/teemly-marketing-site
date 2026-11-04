@@ -22,11 +22,11 @@ const cards = [
     icon: 'cpu',
     title: 'Technology',
     color: '#E91E63',
-    desc: 'Software licences renew whether or not anyone uses them, and the waste only shows up on the invoice.',
+    desc: 'Software licenses renew whether or not anyone uses them, and the waste only shows up on the invoice.',
   },
 ]
 
-// Draws each connector from the edge of its card to the edge of the centre
+// Draws each connector from the edge of its card to the edge of the center
 // circle, using layout positions (not transforms) so the lines always land on
 // the nodes, whatever the screen size or animation state.
 function drawLinks(stage, svg, core, silos) {

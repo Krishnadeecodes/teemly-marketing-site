@@ -69,7 +69,7 @@ export function DashboardMock() {
         ]}
       />
       <div className="mock-main-grid">
-        <Card title="Org Productivity Score" meta="Today" className="mock-panel">
+        <Card title="Org Intelligence Score" meta="Today" className="mock-panel">
           <div className="mk-gauge">
             <span className="mk-gauge-ring">
               <Donut
@@ -781,7 +781,7 @@ export function ReportsMock() {
         {[
           ['Friday productivity drop', 'Org-wide focus falls 18% after 3 PM on Fridays — consider lighter meeting loads.', 'warn', 'Attention'],
           ['Engineering focus up 22%', 'Deep-focus sessions rose sharply in week 3 — the sprint cadence is working.', 'ok', 'Improving'],
-          ['Best window: 10–11 AM', 'The organisation does its best work here — protect it for focus blocks.', 'info', 'Insight'],
+          ['Best window: 10–11 AM', 'The organization does its best work here — protect it for focus blocks.', 'info', 'Insight'],
         ].map(([t, d, tone, tag]) => (
           <div className="ps-card mk-insight" key={t}>
             <span className="mk-insight-head">
@@ -801,7 +801,7 @@ export function ReportsMock() {
 
 /* ================= 8. Settings ================= */
 const SETTINGS_NAV = [
-  ['Organisation & People', [['Teams & Structure'], ['People & Roles']]],
+  ['Organization & People', [['Teams & Structure'], ['People & Roles']]],
   ['Work & Monitoring', [['Work Policy'], ['Monitoring Controls', true], ['Silent Tracking', false, true]]],
   ['Access & Controls', [['Org Defaults'], ['Permissions & Access']]],
 ]

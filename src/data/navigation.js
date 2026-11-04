@@ -13,11 +13,11 @@ export const platformLinks = [
 ]
 
 export const solutionsLinks = [
-  { to: '/solutions/executives', label: 'Executive Intelligence', desc: 'Organisation-wide visibility for leadership', icon: 'briefcase', tone: 'blue' },
+  { to: '/solutions/executives', label: 'Executive Intelligence', desc: 'Organization-wide visibility for leadership', icon: 'briefcase', tone: 'blue' },
   { to: '/solutions/hr', label: 'HR Intelligence', desc: 'Workforce health, attendance and experience', icon: 'users', tone: 'purple' },
   { to: '/solutions/managers', label: 'Manager Intelligence', desc: 'Team capacity, bottlenecks and coaching', icon: 'target', tone: 'pink' },
   { to: '/solutions/operations', label: 'Enterprise Operations', desc: 'Workflow and process friction, surfaced', icon: 'gear', tone: 'green' },
-  { to: '/solutions/it', label: 'IT & Technology Intelligence', desc: 'Tool adoption, unused software and licence spend', icon: 'cpu', tone: 'cyan' },
+  { to: '/solutions/it', label: 'IT & Technology Intelligence', desc: 'Tool adoption, unused software and license spend', icon: 'cpu', tone: 'cyan' },
   { to: '/solutions/finance', label: 'Capacity & Resource Planning', desc: 'Workforce cost and capacity planning', icon: 'dollar', tone: 'amber' },
   { to: '/solutions/productivity', label: 'Productivity Intelligence', desc: 'Focus, rhythm and distraction sources', icon: 'bolt', tone: 'blue' },
   { to: '/solutions/workforce', label: 'Workforce Optimization', desc: 'Right-sizing teams against real work patterns', icon: 'chart', tone: 'purple' },
@@ -27,7 +27,7 @@ export const solutionsLinks = [
 ]
 
 export const whyTeemlyLinks = [
-  { to: '/why-teemly/problem', label: 'The Problem', desc: 'Why organisational data stays fragmented', icon: 'puzzle', tone: 'pink' },
+  { to: '/why-teemly/problem', label: 'The Problem', desc: 'Why organizational data stays fragmented', icon: 'puzzle', tone: 'pink' },
   { to: '/why-teemly/difference', label: 'How Teemly Is Different', desc: 'Our own software, not a licensed plugin', icon: 'sparkle', tone: 'blue' },
   { to: '/why-teemly/business-impact', label: 'Business Impact', desc: 'Where the value actually shows up', icon: 'trendingUp', tone: 'green' },
   { to: '/why-teemly/roi', label: 'ROI', desc: 'How to think about return before you buy', icon: 'dollar', tone: 'amber' },
@@ -40,13 +40,13 @@ export const whyTeemlyLinks = [
 // categories that have content belong here.
 export const resourcesLinks = [
   { to: '/resources/guides', label: 'Guides', desc: 'Practical guides to rolling out Teemly', icon: 'book', tone: 'pink' },
-  { to: '/resources/glossary', label: 'Glossary', desc: 'Organisational intelligence, defined', icon: 'book', tone: 'purple' },
+  { to: '/resources/glossary', label: 'Glossary', desc: 'Organizational intelligence, defined', icon: 'book', tone: 'purple' },
 ]
 
 export const securityLinks = [
   { to: '/security/data-privacy', label: 'Data Privacy', desc: 'What we collect, and what we never do', icon: 'eyeOff', tone: 'blue' },
   { to: '/security/encryption', label: 'Encryption', desc: 'AES-256 at rest, TLS 1.2+ in transit', icon: 'lock', tone: 'purple' },
-  { to: '/security/access-control', label: 'Access Control', desc: 'RBAC, tokens and organisation scoping', icon: 'shield', tone: 'green' },
+  { to: '/security/access-control', label: 'Access Control', desc: 'RBAC, tokens and organization scoping', icon: 'shield', tone: 'green' },
   { to: '/security/governance', label: 'Governance', desc: 'How Silent Tracking is gated and audited', icon: 'scale', tone: 'amber' },
   { to: '/security/compliance', label: 'Compliance', desc: 'DPDP progress and GDPR-aligned architecture', icon: 'check', tone: 'cyan' },
   { to: '/security/infrastructure', label: 'Infrastructure Security', desc: 'AWS WAF, Shield and private subnets', icon: 'server', tone: 'blue' },

@@ -53,7 +53,7 @@ const transporter = nodemailer.createTransport({
 // ---- Form definitions: which fields each form accepts, in email order ----
 const FORMS = {
   contact: {
-    title: 'Contact / Sales enquiry',
+    title: 'Contact / Sales inquiry',
     mailTo: MAIL_TO_CONTACT,
     fields: {
       name: 'Full name',
@@ -62,19 +62,19 @@ const FORMS = {
       seats: 'Team size',
       message: 'What are you hoping to solve?',
     },
-    subject: (d) => `New contact enquiry — ${d.name}${d.company ? ` (${d.company})` : ''}`,
+    subject: (d) => `New contact inquiry — ${d.name}${d.company ? ` (${d.company})` : ''}`,
     autoReply: {
       subject: 'Thank you for contacting Teemly',
-      preheader: 'We have received your enquiry and will reply within one business day.',
-      heading: 'We’ve received your enquiry',
+      preheader: 'We have received your inquiry and will reply within one business day.',
+      heading: 'We’ve received your inquiry',
       firstName: (d) => d.name.split(/\s+/)[0],
       paragraphs: [
-        'Thank you for contacting Teemly. Your enquiry has been received and a member of our team will respond within one business day.',
+        'Thank you for contacting Teemly. Your inquiry has been received and a member of our team will respond within one business day.',
       ],
       nextSteps: [
-        'Our team reviews your enquiry.',
+        'Our team reviews your inquiry.',
         'A Teemly specialist replies to you directly, usually within one business day.',
-        'For Enterprise enquiries, we prepare a quote tailored to your organisation.',
+        'For Enterprise inquiries, we prepare a quote tailored to your organization.',
       ],
       links: [
         { label: 'See pricing', path: '/pricing' },

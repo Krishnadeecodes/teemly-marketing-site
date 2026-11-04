@@ -69,7 +69,7 @@ function ImageView({ node, updateAttributes, deleteNode, selected, editor }) {
               <span className="rte-sep" />
               {[
                 ['left', 'Float left — text wraps on the right'],
-                ['center', 'Centre'],
+                ['center', 'Center'],
                 ['right', 'Float right — text wraps on the left'],
               ].map(([a, title]) => (
                 <button key={a} type="button" title={title} aria-pressed={align === a} onClick={() => updateAttributes({ align: a })}>
@@ -248,7 +248,7 @@ function Toolbar({ editor, onImage, uploading }) {
       <Btn title="Align left" on={s.alignLeft} onClick={() => chain().setTextAlign('left').run()}>
         <AlignIcon dir="left" />
       </Btn>
-      <Btn title="Align centre" on={s.alignCenter} onClick={() => chain().setTextAlign('center').run()}>
+      <Btn title="Align center" on={s.alignCenter} onClick={() => chain().setTextAlign('center').run()}>
         <AlignIcon dir="center" />
       </Btn>
       <Btn title="Align right" on={s.alignRight} onClick={() => chain().setTextAlign('right').run()}>
@@ -298,7 +298,7 @@ export default function RichTextEditor({ value, onChange, placeholder = 'Start w
   const toast = useToast()
   const fileInput = useRef()
   const [uploading, setUploading] = useState(false)
-  const baseline = useRef(null) // HTML right after load, to tell real edits from normalisation
+  const baseline = useRef(null) // HTML right after load, to tell real edits from normalization
   const onChangeRef = useRef(onChange)
   onChangeRef.current = onChange
   const original = useRef(value)

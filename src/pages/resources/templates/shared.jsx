@@ -359,7 +359,7 @@ export function Media({ item, className = '' }) {
   return item.coverUrl ? <img className={`res-cover ${className}`} src={item.coverUrl} alt="" /> : null
 }
 
-// Cover image, or generated cover art in the category's accent colour (t-<type> sets --accent).
+// Cover image, or generated cover art in the category's accent color (t-<type> sets --accent).
 export function Cover({ item, icon = 'fileText', label, showTitle = false, className = '' }) {
   return (
     <div className={`rt-cover t-${item.type} ${className}`}>

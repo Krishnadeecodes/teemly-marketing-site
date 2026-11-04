@@ -28,7 +28,7 @@ export const TEMPLATES = {
   },
   blog: {
     name: 'Editorial article',
-    layout: 'Magazine-style article: centred reading column, author byline, reading time and share links.',
+    layout: 'Magazine-style article: centered reading column, author byline, reading time and share links.',
     extras: [],
   },
   webinars: {

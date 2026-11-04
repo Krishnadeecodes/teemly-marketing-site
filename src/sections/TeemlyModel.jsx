@@ -200,7 +200,7 @@ const steps = [
     color: '#03A6DD',
     tag: 'Context',
     title: 'Connect',
-    desc: 'Everything is organised by company, team and person, so every view has the right context.',
+    desc: 'Everything is organized by company, team and person, so every view has the right context.',
     Screen: ConnectScreen,
   },
   {
@@ -224,7 +224,7 @@ const steps = [
     color: '#F62DA0',
     tag: 'Action',
     title: 'Act',
-    desc: 'Turn recommendations into actions, such as policy changes, coaching or licence clean-ups, and track each one.',
+    desc: 'Turn recommendations into actions, such as policy changes, coaching or license clean-ups, and track each one.',
     Screen: ActScreen,
   },
   {

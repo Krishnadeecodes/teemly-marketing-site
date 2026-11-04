@@ -36,7 +36,7 @@ export const plans = [
       'Video Recording (7-day) & Location Tracking (30-day)',
       'Privacy blur, Silent Tracking (legal-gated) & audit logs',
       'Work Pulse, Tool Intelligence & AI-generated insights',
-      'Up to 5 custom roles · 48-hour support SLA',
+      'Up to 2 custom roles · 48-hour support SLA',
     ],
     limits: {
       employees: 200,
@@ -44,13 +44,13 @@ export const plans = [
       retention: '90 days',
       video: '7 days',
       location: '30 days',
-      roles: 'up to 5 custom roles',
+      roles: 'up to 2 custom roles',
       support: 'a 48-hour support SLA',
     },
   },
   {
     name: 'Premium',
-    tagline: 'Full intelligence suite for scaling organisations',
+    tagline: 'Full intelligence suite for scaling organizations',
     usd: 18,
     inr: 1499,
     features: [

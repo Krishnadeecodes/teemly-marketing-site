@@ -216,7 +216,7 @@ export function DashboardShot() {
   return (
     <Shot url="dashboard">
       <div className="fs-grid" style={{ gridTemplateColumns: '0.85fr 1.15fr' }}>
-        <Card title="Org Productivity Score" meta="Today">
+        <Card title="Org Intelligence Score" meta="Today">
           <div className="fs-center">
             <ScoreRing />
             <Legend
@@ -616,7 +616,7 @@ function OrgArea() {
       <div className="fs-org-col">
         <span className="fs-org-label">Intelligence</span>
         <div className="ps-card fs-org-score">
-          <small>Org productivity score</small>
+          <small>Org Intelligence Score</small>
           <ScoreRing label="/ 100" target={null} />
           <span className="fs-org-delta">↑ 3 pts vs last month</span>
           <svg className="fs-org-trend" viewBox="0 0 200 44" preserveAspectRatio="none" aria-hidden="true">
@@ -776,7 +776,7 @@ function AiArea() {
   const reports = [
     ['heart', 'Burnout & Wellbeing', '3 people above their usual hours for 2 weeks.', ['warn', 'Attention']],
     ['target', 'Focus Score', 'Engineering focus time is up 22% this sprint.', ['ok', 'Improving']],
-    ['dollar', 'Tool Intelligence', '6 unused design licences — ₹14,400 a month.', ['pink', 'Save']],
+    ['dollar', 'Tool Intelligence', '6 unused design licenses — ₹14,400 a month.', ['pink', 'Save']],
   ]
   return (
     <>

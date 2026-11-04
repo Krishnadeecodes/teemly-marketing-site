@@ -18,16 +18,16 @@ export const solutions = [
     slug: 'executives',
     icon: 'briefcase',
     navLabel: 'Executive Intelligence',
-    title: 'Organisation-wide visibility, without waiting for the quarterly review',
+    title: 'Organization-wide visibility, without waiting for the quarterly review',
     problem:
       'Leadership typically sees workforce health in quarterly summaries, assembled by hand, from data nobody fully trusts by the time it reaches the boardroom.',
     whyInsufficient:
       'Dashboards built from spreadsheets are stale the moment they are compiled, and they rarely connect productivity, attendance and technology spend into one picture.',
     howTeemlyHelps:
-      'The Dashboard gives a real-time, organisation-wide productivity score, attendance summary and activity feed — the same record every team-level report rolls up from, not a separate executive deck.',
+      'The Dashboard gives a real-time Org Intelligence Score, attendance summary and activity feed — the same record every team-level report rolls up from, not a separate executive deck.',
     capabilities: [
-      'Org-wide productivity score, refreshed continuously',
-      'Team Leaderboard — rankings and rank movement across the organisation',
+      'Org Intelligence Score, refreshed continuously',
+      'Team Leaderboard — rankings and rank movement across the organization',
       'Burnout & Wellbeing signal, visible before it becomes attrition',
       'Tool Intelligence — SaaS spend waste, with the monthly cost attached',
     ],
@@ -108,10 +108,10 @@ export const solutions = [
     whyInsufficient:
       'Procurement data shows what was purchased, not what is actually used — and a licensed third-party monitoring SDK adds a dependency IT does not control.',
     howTeemlyHelps:
-      'Tool Intelligence shows real adoption rates and flags underused licences with cost attached, while the agent itself is built and owned by Teemly end to end — code-signed, HMAC-signed payloads, AES-256 at rest.',
+      'Tool Intelligence shows real adoption rates and flags underused licenses with cost attached, while the agent itself is built and owned by Teemly end to end — code-signed, HMAC-signed payloads, AES-256 at rest.',
     capabilities: [
-      'Tool Intelligence — adoption rates, underused-licence detection',
-      'Own EXE agent — Windows EV certificate, macOS notarised',
+      'Tool Intelligence — adoption rates, underused-license detection',
+      'Own EXE agent — Windows EV certificate, macOS notarized',
       'HMAC-SHA256 signed payloads, replay-attack prevention',
       'API access for integrations on Premium and Enterprise',
     ],
@@ -132,7 +132,7 @@ export const solutions = [
       'Attendance and Teams data give a real record of hours worked per person and per team, and Tool Intelligence quantifies software spend that is not being used — both exportable to CSV for your own models.',
     capabilities: [
       'Real attendance and work-hours data, exportable to CSV',
-      'Tool Intelligence — underused licences with monthly cost attached',
+      'Tool Intelligence — underused licenses with monthly cost attached',
       'Per-seat pricing that scales predictably with headcount',
       'Team-level and org-level scope on every report',
     ],
@@ -154,7 +154,7 @@ export const solutions = [
     capabilities: [
       'Work Pulse — hourly heat map, day-of-week breakdown, distraction sources',
       'Focus Score — 0–100, context switches per hour, deep-work streaks',
-      'Org Productivity Score, refreshed continuously',
+      'Org Intelligence Score, refreshed continuously',
       'AI-generated insight cards on every report',
     ],
     relevantModules: ['dashboard', 'reports'],
@@ -171,7 +171,7 @@ export const solutions = [
     whyInsufficient:
       'Org charts do not show which teams are stretched and which have slack — that only shows up in burnout or in missed deadlines, much later.',
     howTeemlyHelps:
-      'The Teams work-hours heat map and Team Leaderboard make comparative workload and productivity visible across the organisation, side by side.',
+      'The Teams work-hours heat map and Team Leaderboard make comparative workload and productivity visible across the organization, side by side.',
     capabilities: [
       'Work-hours calendar heat map, per team, per month',
       'Team Leaderboard — rankings and 4-week rank-movement trend',
@@ -209,7 +209,7 @@ export const solutions = [
     navLabel: 'AI Impact',
     title: 'Where AI-era productivity gains actually show up',
     problem:
-      'Organisations adopting AI tools rarely have a way to see whether that adoption is changing how work actually gets done.',
+      'Organizations adopting AI tools rarely have a way to see whether that adoption is changing how work actually gets done.',
     whyInsufficient:
       "We don't run a dedicated AI-adoption tracker today — if we said otherwise, it would be a feature that doesn't exist.",
     howTeemlyHelps:
@@ -243,7 +243,7 @@ export const solutions = [
     ],
     relevantModules: ['screenshots', 'settings'],
     relevantReports: ['Burnout & Wellbeing'],
-    outcome: 'Visibility the organisation can use, and employees can actually trust.',
+    outcome: 'Visibility the organization can use, and employees can actually trust.',
   },
 ]
 

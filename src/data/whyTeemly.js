@@ -3,9 +3,9 @@ export const whyTeemlyPages = [
     slug: 'problem',
     icon: 'puzzle',
     label: 'The Problem',
-    title: 'The problem with fragmented organisational data',
+    title: 'The problem with fragmented organizational data',
     intro:
-      'Every organisation generates signals about how people, work and technology behave. The problem has never been a lack of data — it is that the data stays scattered, delayed and disconnected from the decision that needs it.',
+      'Every organization generates signals about how people, work and technology behave. The problem has never been a lack of data — it is that the data stays scattered, delayed and disconnected from the decision that needs it.',
     body: [
       {
         heading: 'People data lags',
@@ -17,7 +17,7 @@ export const whyTeemlyPages = [
       },
       {
         heading: 'Technology data goes unchecked',
-        text: 'Software licences renew automatically whether anyone uses them or not. Waste is usually only noticed when the invoice arrives, not when the usage actually dropped.',
+        text: 'Software licenses renew automatically whether anyone uses them or not. Waste is usually only noticed when the invoice arrives, not when the usage actually dropped.',
       },
     ],
   },
@@ -53,7 +53,7 @@ export const whyTeemlyPages = [
     body: [
       {
         heading: 'Software spend, right-sized',
-        text: 'Tool Intelligence flags underused licences automatically, with the monthly cost attached.',
+        text: 'Tool Intelligence flags underused licenses automatically, with the monthly cost attached.',
       },
       {
         heading: 'Burnout caught earlier',
@@ -71,7 +71,7 @@ export const whyTeemlyPages = [
     label: 'ROI',
     title: 'How to think about ROI before you buy',
     intro:
-      'Teemly\'s ROI calculator is a modelling tool, not a guarantee — every assumption is visible and adjustable, and the result should be read as an estimate, not a verified outcome.',
+      'Teemly\'s ROI calculator is a modeling tool, not a guarantee — every assumption is visible and adjustable, and the result should be read as an estimate, not a verified outcome.',
     body: [
       {
         heading: 'What goes in',
@@ -79,7 +79,7 @@ export const whyTeemlyPages = [
       },
       {
         heading: 'What comes out',
-        text: 'An estimated annual opportunity broken into productivity, technology optimisation, workflow and capacity categories — clearly labelled as a model, never presented as a verified customer result.',
+        text: 'An estimated annual opportunity broken into productivity, technology optimization, workflow and capacity categories — clearly labeled as a model, never presented as a verified customer result.',
       },
     ],
   },

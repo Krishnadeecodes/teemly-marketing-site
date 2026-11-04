@@ -4,9 +4,9 @@ import Logo from './Logo.jsx'
 import '../home/heroDashboard.css'
 
 // The Teemly "Organization overview" shown in the home hero: insight about
-// how the organisation works (scores, signals and teams) rather than who is
+// how the organization works (scores, signals and teams) rather than who is
 // doing what right now. All numbers are illustrative sample data (the hero
-// is labelled "Illustrative example") and match the rest of the site.
+// is labeled "Illustrative example") and match the rest of the site.
 
 // the five intelligence areas
 const SIDEBAR = [
@@ -21,7 +21,7 @@ const KPIS = [
   { icon: 'target', label: 'Org Intelligence Score', value: '78', suffix: '/100', trend: '3 pts', dir: 'up', note: 'vs last month' },
   { icon: 'users', label: 'Teams on track', value: '5', suffix: '/6', note: 'Sales needs attention' },
   { icon: 'clock', label: 'Avg focus session', value: '47', suffix: ' min', trend: '6 min', dir: 'up', note: 'vs last month' },
-  { icon: 'dollar', label: 'Savings found', value: '₹14,400', suffix: '/mo', note: 'unused licences' },
+  { icon: 'dollar', label: 'Savings found', value: '₹14,400', suffix: '/mo', note: 'unused licenses' },
 ]
 
 const MONTHS = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep']

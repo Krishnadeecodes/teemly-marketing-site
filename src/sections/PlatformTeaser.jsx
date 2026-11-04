@@ -41,7 +41,7 @@ export default function PlatformTeaser() {
   const cellRefs = useRef([])
   const [active, setActive] = useState(0)
 
-  // On every scroll, the card whose centre is nearest the middle of the screen
+  // On every scroll, the card whose center is nearest the middle of the screen
   // is the active one, and the sticky panel shows its dashboard. Measuring on
   // each update (rather than per-card enter/leave events) means a fast scroll
   // can never leave the panel showing the wrong topic.

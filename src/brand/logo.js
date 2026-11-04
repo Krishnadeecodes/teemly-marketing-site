@@ -19,7 +19,7 @@ export const MARK = {
   fold: 'M257 212H389L257 300Z',
 }
 
-// The wordmark is monoline, so each letter is a stroked centre line.
+// The wordmark is monoline, so each letter is a stroked center line.
 // `tracking` opens the letters up slightly so the "e" counters stay clear at
 // header sizes; `strokeWidth` is a touch lighter than the print artwork.
 export const WORDMARK = {

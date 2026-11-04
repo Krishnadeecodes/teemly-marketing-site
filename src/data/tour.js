@@ -27,8 +27,8 @@ export const STEPS = {
   score: {
     screen: 'dashboard',
     target: { sel: '.mock-main-grid > .mock-panel', index: 0 },
-    title: 'One score for the whole organisation',
-    body: 'The Org Productivity Score sums up the company in a single number, refreshed continuously as the Teemly agent reports in — not batched together overnight.',
+    title: 'One score for the whole organization',
+    body: 'The Org Intelligence Score sums up the company in a single number, refreshed continuously as the Teemly agent reports in — not batched together overnight.',
   },
   headcount: {
     screen: 'dashboard',
@@ -59,7 +59,7 @@ export const STEPS = {
     screen: 'teams',
     target: { sel: '.team-grid' },
     title: 'From the org-wide average to each team',
-    body: 'Team cards summarise every group and are ranked by productivity automatically, so the team that needs attention — here, Sales — surfaces on its own.',
+    body: 'Team cards summarize every group and are ranked by productivity automatically, so the team that needs attention — here, Sales — surfaces on its own.',
   },
   tagged: {
     screen: 'screenshots',
@@ -89,14 +89,14 @@ export const STEPS = {
   heatmap: {
     screen: 'reports',
     target: { sel: '.mock-panel', index: 0 },
-    title: 'When the organisation actually focuses',
+    title: 'When the organization actually focuses',
     body: 'The hourly heat map shows each team’s productive hours across the day, so meeting loads and focus time can be planned around real patterns.',
   },
   insights: {
     screen: 'reports',
     target: { sel: '.insight-row' },
     title: 'Every report ends with what to do next',
-    body: 'Plain-language AI insights close each report — like a Friday-afternoon dip, or the window when the whole organisation does its best work.',
+    body: 'Plain-language AI insights close each report — like a Friday-afternoon dip, or the window when the whole organization does its best work.',
   },
   controls: {
     screen: 'settings',
@@ -109,7 +109,7 @@ export const STEPS = {
     screen: 'settings',
     target: { sel: '.settings-nav' },
     title: 'Access follows the org chart',
-    body: 'Client Admins see the whole organisation; Client Managers see only their own teams. Permissions and access sit in their own settings group.',
+    body: 'Client Admins see the whole organization; Client Managers see only their own teams. Permissions and access sit in their own settings group.',
     trust: true,
   },
   legalGate: {

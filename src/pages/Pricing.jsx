@@ -15,8 +15,8 @@ const seatSteps = [5, 10, 25, 50, 100, 250]
 
 const faqs = [
   {
-    q: 'Is there a free trial, and do I need a credit card?',
-    a: 'Yes — every plan starts with a free trial and no credit card is required. Invite your team and Teemly starts reporting from day one.',
+    q: 'How do I get started, and do I need a credit card?',
+    a: "Start by booking a demo. We'll walk you through Teemly and answer your questions, and you don't need a credit card. Once your team is set up, Teemly starts reporting from day one.",
   },
   {
     q: 'How is attendance calculated — do employees check in manually?',
@@ -28,7 +28,7 @@ const faqs = [
   },
   {
     q: 'Can I switch plans as my team grows?',
-    a: 'Yes. Plans are per-seat and scoped by employee count, screenshot interval and retention window — you can move up a tier at any time as your organisation grows.',
+    a: 'Yes. Plans are per-seat and scoped by employee count, screenshot interval and retention window — you can move up a tier at any time as your organization grows.',
   },
   {
     q: 'Do you offer on-premise deployment?',

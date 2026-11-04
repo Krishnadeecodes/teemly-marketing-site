@@ -19,7 +19,7 @@ export default function FinalCTA() {
             <div className="h-final-inner">
               <SplitHeading as="h2" text="Ready to see how your organization really works?" />
               <Reveal as="div">
-                <p>Book a demo, take a self-guided tour, or start free and get your first Org Productivity Score today.</p>
+                <p>Book a demo or take a self-guided tour, and see your first Org Intelligence Score within a day of install.</p>
                 <div className="h-final-ctas">
                   <Link to="/book-a-demo" className="h-btn h-btn-primary">
                     Book a Demo
@@ -30,7 +30,7 @@ export default function FinalCTA() {
                   <TourLink className="h-btn h-btn-ghost">Take a Tour</TourLink>
                 </div>
                 <p className="h-final-note">
-                  No credit card required · Live in a day ·{' '}
+                  Live in a day ·{' '}
                   <Link to="/pricing" className="h-textlink">
                     See pricing
                   </Link>

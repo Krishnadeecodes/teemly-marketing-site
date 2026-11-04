@@ -44,7 +44,7 @@ export const industries = [
     icon: 'briefcase',
     label: 'Professional Services',
     context:
-      'Utilisation and client-site work make tool usage and time allocation the two numbers that actually drive billing and staffing decisions.',
+      'Utilization and client-site work make tool usage and time allocation the two numbers that actually drive billing and staffing decisions.',
     relevantModules: ['attendance', 'location-tracking'],
     relevantReports: ['Tool Intelligence', 'Work Pulse'],
   },
@@ -53,7 +53,7 @@ export const industries = [
     icon: 'building',
     label: 'Enterprise',
     context:
-      'Multi-team organisations need role-based access that actually scales — custom roles, organisation-scoped data, and an on-premise option where cloud storage is not an option.',
+      'Multi-team organizations need role-based access that actually scales — custom roles, organization-scoped data, and an on-premise option where cloud storage is not an option.',
     relevantModules: ['settings'],
     relevantReports: ['Team Leaderboard'],
   },

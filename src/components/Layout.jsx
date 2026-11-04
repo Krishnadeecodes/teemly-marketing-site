@@ -45,7 +45,7 @@ export default function Layout() {
       }
     }
     // Jump without animation. 'instant' overrides the global smooth scrolling
-    // (meant for in-page anchors), but some mobile browsers don't honour it
+    // (meant for in-page anchors), but some mobile browsers don't honor it
     // and glide up from the old position instead, starting at the new page's
     // footer. So smooth scrolling is also switched off for this one jump;
     // reading the computed style makes the browser apply that before it scrolls.

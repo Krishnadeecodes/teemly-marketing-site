@@ -9,7 +9,7 @@ import { usePageSEO } from '../lib/useSEO.js'
 const categories = [
   { icon: 'dollar', title: 'Contact Sales', desc: 'Pricing, plans and a live walkthrough.', action: { label: 'Book a Demo', to: '/book-a-demo', internal: true } },
   { icon: 'gear', title: 'Contact Support', desc: 'Existing customers with a product question.', action: { label: 'Email Support', to: 'mailto:hello@teemly.app' } },
-  { icon: 'shield', title: 'Security Inquiry', desc: 'Questions for the security or compliance team.', action: { label: 'Email Security', to: 'mailto:hello@teemly.app' } },
+  { icon: 'shield', title: 'Security Inquiry', desc: 'Questions for the security or compliance team.', action: { label: 'Email Security', to: 'mailto:info@teemly.co' } },
   { icon: 'puzzle', title: 'Partnership Inquiry', desc: 'Reseller, implementation or integration partnerships.', action: { label: 'See Partners', to: '/company/partners', internal: true } },
   { icon: 'fileText', title: 'Media Inquiry', desc: 'Press and media requests.', action: { label: 'See News', to: '/company/news', internal: true } },
   { icon: 'mail', title: 'General Inquiry', desc: 'Anything else.', action: { label: 'Contact Us', to: '/company/contact', internal: true } },

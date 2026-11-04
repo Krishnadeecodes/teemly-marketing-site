@@ -71,7 +71,7 @@ export const intents = [
     label: 'How long does setup take?',
     keywords: ['setup', 'set up', 'install', 'installation', 'onboard', 'onboarding', 'get started', 'getting started', 'go live', 'implementation', 'implement', 'roll out', 'rollout', 'deploy', 'how long does it take', 'how long to', 'how long does setup', 'setup take', 'set up take', 'take to set', 'take to install', 'up and running', 'time to set'],
     text:
-      'Most teams are live in a day: install Teemly’s lightweight desktop agent, invite your team, and Teemly starts reporting from day one. Every plan starts with a free trial, no credit card required.',
+      'Most teams are live in a day: install Teemly’s lightweight desktop agent, invite your team, and Teemly starts reporting from day one. Book a demo and we’ll walk you through it.',
     links: [
       { label: 'How the agent works', to: '/platform/architecture' },
       { label: 'Book a demo', to: '/book-a-demo' },
@@ -92,10 +92,10 @@ export const intents = [
   },
   {
     id: 'trial',
-    label: 'Is there a free trial?',
+    label: 'Can I try Teemly first?',
     keywords: ['trial', 'free', 'try', 'credit card', 'test it', 'try it'],
     text:
-      'Yes — every plan starts with a free trial and no credit card is required. Invite your team and Teemly starts reporting from day one.',
+      'We start with a guided demo instead of a self-serve trial, and you don’t need a credit card to book one. We’ll walk you through Teemly and answer your questions.',
     links: [
       { label: 'View plans', to: '/pricing' },
       { label: 'Book a demo', to: '/book-a-demo' },
@@ -152,7 +152,7 @@ export const intents = [
     keywords: ['support', 'help desk', 'helpdesk', 'sla', 'issue', 'problem with', 'not working', 'bug', 'ticket', 'customer service'],
     text: 'Support response times depend on your plan:',
     bullets: ['Starter — email support', 'Professional — 48-hour SLA', 'Premium — 24-hour SLA', 'Enterprise — 4-hour SLA with a dedicated account manager'],
-    links: [{ label: 'Support centre', to: '/support' }],
+    links: [{ label: 'Support center', to: '/support' }],
     followUps: ['contact', 'pricing'],
   },
   {
@@ -195,11 +195,11 @@ export const intents = [
     label: 'How secure is my data?',
     keywords: ['secur', 'safe', 'encrypt', 'hack', 'breach', 'protect', 'access control', 'rbac', 'role', 'permission', 'audit', 'waf', 'firewall'],
     text:
-      'Data is encrypted at rest and in transit at every layer — database, file storage and agent payloads. Access control is role-based and organisation-scoped on every API request, sensitive views are written to an audit log, and the infrastructure runs in private subnets behind a WAF with rotating secrets.',
+      'Data is encrypted at rest and in transit at every layer — database, file storage and agent payloads. Access control is role-based and organization-scoped on every API request, sensitive views are written to an audit log, and the infrastructure runs in private subnets behind a WAF with rotating secrets.',
     links: [
       { label: 'Security overview', to: '/security' },
       { label: 'Encryption', to: '/security/encryption' },
-      { label: 'Trust centre', to: '/trust-center' },
+      { label: 'Trust center', to: '/trust-center' },
     ],
     followUps: ['compliance', 'data-storage', 'privacy'],
   },
@@ -209,7 +209,7 @@ export const intents = [
     keywords: ['gdpr', 'dpdp', 'complian', 'iso', '27001', 'soc', 'soc2', 'soc 2', 'certif', 'regulation', 'legal', 'law', 'audit report'],
     text: 'We publish exactly where certification stands today:',
     bullets: [
-      'GDPR — aligned architecture (data minimisation, right-to-erasure by design)',
+      'GDPR — aligned architecture (data minimization, right-to-erasure by design)',
       'DPDP Act (India) — aligned: processing policies, consent flows and employee notice in place',
       'ISO 27001 — planned',
       'SOC 2 Type II — audit planned, not yet available',
@@ -235,7 +235,7 @@ export const intents = [
     label: 'How does the desktop agent work?',
     keywords: ['agent', 'exe', 'install', 'download', 'setup', 'set up', 'windows', 'mac', 'macos', 'linux', 'desktop', 'software', 'application', 'lightweight', 'performance', 'slow'],
     text:
-      'Teemly runs on its own desktop agent — not a licensed third-party plugin. It is a sub-2MB installer for Windows and macOS, code-signed with a Windows EV certificate and notarised for macOS. It sends signed, encrypted payloads to the platform, and shows a privacy notice at install before tracking begins.',
+      'Teemly runs on its own desktop agent — not a licensed third-party plugin. It is a sub-2MB installer for Windows and macOS, code-signed with a Windows EV certificate and notarized for macOS. It sends signed, encrypted payloads to the platform, and shows a privacy notice at install before tracking begins.',
     links: [
       { label: 'Our own agent', to: '/why-teemly/difference' },
       { label: 'Data platform', to: '/platform/data-platform' },
@@ -295,12 +295,12 @@ export const intents = [
   {
     id: 'reports',
     label: 'What reports do I get?',
-    keywords: ['report', 'analytics', 'insight', 'burnout', 'wellbeing', 'focus score', 'leaderboard', 'work pulse', 'tool intelligence', 'productivity score', 'heat map', 'dashboard'],
+    keywords: ['report', 'analytics', 'insight', 'burnout', 'wellbeing', 'focus score', 'leaderboard', 'work pulse', 'tool intelligence', 'productivity score', 'intelligence score', 'heat map', 'dashboard'],
     text: 'Six reports, each built to end in a decision — at org, team or employee level:',
     bullets: [
       'Attendance & Punctuality — every plan',
       'Work Pulse — peak productivity windows and distraction sources (Professional+)',
-      'Tool Intelligence — where time goes, plus underused-licence cost alerts (Professional+)',
+      'Tool Intelligence — where time goes, plus underused-license cost alerts (Professional+)',
       'Burnout & Wellbeing — flags overworked and at-risk employees (Premium+)',
       'Focus Score — uninterrupted streaks and context switches (Premium+)',
       'Team Leaderboard — rankings, 4-week trends and coaching callouts (Premium+)',
@@ -334,7 +334,7 @@ export const intents = [
     label: 'What ROI can I expect?',
     keywords: ['roi', 'return on investment', 'worth it', 'save money', 'savings', 'value', 'benefit', 'business impact', 'payback'],
     text:
-      'Teemly shows value through recovered productive hours, fewer unused software licences (Tool Intelligence attaches the monthly cost), and earlier burnout signals. Use the ROI calculator to estimate it for your team size.',
+      'Teemly shows value through recovered productive hours, fewer unused software licenses (Tool Intelligence attaches the monthly cost), and earlier burnout signals. Use the ROI calculator to estimate it for your team size.',
     links: [
       { label: 'ROI calculator', to: '/roi-calculator' },
       { label: 'Business impact', to: '/why-teemly/business-impact' },
@@ -356,7 +356,7 @@ export const intents = [
     keywords: ['hr', 'human resource', 'manager', 'executive', 'ceo', 'founder', 'operations', 'finance team', 'it team', 'remote team', 'hybrid', 'work from home', 'wfh', 'team lead', 'use case', 'workforce planning', 'capacity planning'],
     text: 'Teemly has dedicated solutions for each team:',
     bullets: [
-      'Executives — organisation-wide visibility',
+      'Executives — organization-wide visibility',
       'HR — workforce health, attendance and experience',
       'Managers — team capacity and coaching opportunities',
       'Operations — where process friction happens',

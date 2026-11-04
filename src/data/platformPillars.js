@@ -9,20 +9,20 @@ export const platformPillars = [
     label: 'Organizational Intelligence',
     title: 'The umbrella view that ties people, work and technology together',
     intro:
-      'Organizational Intelligence is the model underneath every other pillar: Signals → Context → Intelligence → Action → Outcomes. It is what turns six separate modules into one coherent read on the organisation.',
+      'Organizational Intelligence is the model underneath every other pillar: Signals → Context → Intelligence → Action → Outcomes. It is what turns six separate modules into one coherent read on the organization.',
     body: [
       {
         heading: 'Context, not just data',
-        text: "The Dashboard is where this comes together — four KPI stat cards, an org-wide productivity score gauge, a work summary chart, a live activity feed and an attendance summary, all refreshed in real time via server-sent events rather than a nightly batch job.",
+        text: "The Dashboard is where this comes together — four KPI stat cards, an Org Intelligence Score gauge, a work summary chart, a live activity feed and an attendance summary, all refreshed in real time via server-sent events rather than a nightly batch job.",
       },
       {
         heading: 'Scoped by who is looking',
-        text: 'The same organisational context is visible to admins across the whole company, and scoped down to assigned teams only for managers — role-based access enforced at the API level, not just hidden in the UI.',
+        text: 'The same organizational context is visible to admins across the whole company, and scoped down to assigned teams only for managers — role-based access enforced at the API level, not just hidden in the UI.',
       },
     ],
     facts: [
       '4 KPI stat cards: employees, checked in, absent, average work hours',
-      'Org productivity score gauge (0–100) for the selected date range',
+      'Org Intelligence Score gauge (0–100) for the selected date range',
       'Live activity list — Work / Privacy / Offline status per employee, updating without a refresh',
       'Filters by date range, team and business-hours toggle',
     ],
@@ -61,7 +61,7 @@ export const platformPillars = [
     label: 'Work Intelligence',
     title: 'How work actually happens, app by app and session by session',
     intro:
-      'Work Intelligence is the visual and behavioural record of work itself — screenshots, screen recordings and the Tool Intelligence report that tells you where the time actually goes.',
+      'Work Intelligence is the visual and behavioral record of work itself — screenshots, screen recordings and the Tool Intelligence report that tells you where the time actually goes.',
     body: [
       {
         heading: 'Visual proof, with privacy built in',
@@ -69,14 +69,14 @@ export const platformPillars = [
       },
       {
         heading: 'Where the time actually goes',
-        text: 'Tool Intelligence turns raw app and website usage into productivity classification per tool, underused-licence detection, and SaaS spend waste alerts — not just a list of open windows.',
+        text: 'Tool Intelligence turns raw app and website usage into productivity classification per tool, underused-license detection, and SaaS spend waste alerts — not just a list of open windows.',
       },
     ],
     facts: [
       'Screenshot and video intervals scale by plan: 5/2/1 min or custom',
       'Privacy blur — original never stored once enabled, server-side guarantee',
       'In-browser video playback, no download required',
-      'Underused software licences flagged with the monthly cost attached',
+      'Underused software licenses flagged with the monthly cost attached',
     ],
     relatedModules: ['screenshots', 'video-recording'],
     relatedReports: ['Tool Intelligence', 'Focus Score'],
@@ -95,7 +95,7 @@ export const platformPillars = [
       },
       {
         heading: 'Friction, surfaced not mined',
-        text: "The Attendance Gantt timeline puts every employee on a shared time axis so bottlenecks in coverage are visible at a glance, while Tool Intelligence's adoption-rate and licence-waste data points at where tooling itself is the friction.",
+        text: "The Attendance Gantt timeline puts every employee on a shared time axis so bottlenecks in coverage are visible at a glance, while Tool Intelligence's adoption-rate and license-waste data points at where tooling itself is the friction.",
       },
     ],
     facts: [
@@ -121,12 +121,12 @@ export const platformPillars = [
       },
       {
         heading: 'Where scoring is applied',
-        text: 'The same automated analysis layer powers the Org Productivity Score, Focus Score and Burnout & Wellbeing signal — derived metrics, not raw surveillance data, and never shown to an employee\'s peers.',
+        text: 'The same automated analysis layer powers the Org Intelligence Score, Focus Score and Burnout & Wellbeing signal — derived metrics, not raw surveillance data, and never shown to an employee\'s peers.',
       },
     ],
     facts: [
       '3 AI-generated insight cards on every report, automatically',
-      'Org Productivity Score, Focus Score and Burnout signal are all derived metrics',
+      'Org Intelligence Score, Focus Score and Burnout signal are all derived metrics',
       'No manual report writing required',
       'Insight generation reads the same org-scoped record as every other module',
     ],
@@ -143,7 +143,7 @@ export const platformPillars = [
     body: [
       {
         heading: 'The EXE agent',
-        text: 'A sub-2MB installer for Windows and macOS, code-signed with a Windows EV certificate and notarised for macOS. It captures activity at the OS level every 60 seconds and streams HMAC-SHA256 signed payloads to the API over HTTPS, with offline tracking that syncs once reconnected.',
+        text: 'A sub-2MB installer for Windows and macOS, code-signed with a Windows EV certificate and notarized for macOS. It captures activity at the OS level every 60 seconds and streams HMAC-SHA256 signed payloads to the API over HTTPS, with offline tracking that syncs once reconnected.',
       },
       {
         heading: 'Storage and retention',

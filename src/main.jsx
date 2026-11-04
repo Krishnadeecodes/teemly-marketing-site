@@ -26,6 +26,17 @@ if (import.meta.env.VITE_SENTRY_DSN) {
     .catch(() => {})
 }
 
+// Visit counts via Plausible — off until VITE_PLAUSIBLE_DOMAIN is set in .env at
+// build time. It sets no cookies, so no consent banner is needed, and it follows
+// route changes by itself. The admin panel is internal, so it is not counted.
+if (import.meta.env.VITE_PLAUSIBLE_DOMAIN && !location.pathname.startsWith('/admin')) {
+  const script = document.createElement('script')
+  script.defer = true
+  script.dataset.domain = import.meta.env.VITE_PLAUSIBLE_DOMAIN
+  script.src = 'https://plausible.io/js/script.js'
+  document.head.appendChild(script)
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     {/* startTransition: while the next page's code loads, the current page

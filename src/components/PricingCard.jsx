@@ -29,8 +29,8 @@ export default function PricingCard({ plan, featured = false, cycle = 'monthly',
         </p>
       )}
 
-      <Link to="/contact" className={`btn ${featured ? 'btn-primary' : 'btn-outline'} btn-block`}>
-        {isCustom ? 'Talk to Sales' : 'Start Free Trial'}
+      <Link to={isCustom ? '/contact' : '/book-a-demo'} className={`btn ${featured ? 'btn-primary' : 'btn-outline'} btn-block`}>
+        {isCustom ? 'Talk to Sales' : 'Book a Demo'}
       </Link>
 
       <ul className="price-features">

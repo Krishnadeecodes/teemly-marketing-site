@@ -31,14 +31,14 @@ const QA = [
   },
   {
     q: 'Are we paying for software nobody uses?',
-    a: 'A design tool licence has gone unused for 21 days across 6 seats — a candidate to right-size next renewal.',
+    a: 'A design tool license has gone unused for 21 days across 6 seats — a candidate to right-size next renewal.',
     bars: [
       ['Design tool', 14, true],
       ['Core suite', 94],
       ['Analytics', 61],
       ['Comms', 88],
     ],
-    label: 'Seat utilisation by tool, last 30 days',
+    label: 'Seat utilization by tool, last 30 days',
   },
 ]
 
@@ -198,7 +198,7 @@ export default function TeemlyAISection() {
           <span className="h-kicker pink">Teemly AI</span>
           <SplitHeading as="h2" text="Ask your organization a question. Get an answer with context." />
           <p className="h-ai-lede">
-            Plain-language answers grounded in your organisational record, with the source behind every number.
+            Plain-language answers grounded in your organizational record, with the source behind every number.
           </p>
           <div className="h-prompts">
             {QA.map((item, i) => (

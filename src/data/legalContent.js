@@ -27,7 +27,7 @@ export const legalPages = [
       },
       {
         heading: 'Your rights',
-        body: 'Employees have the right to access their own data and the right to erasure, which triggers a database soft-delete plus storage cleanup. To exercise these rights or raise a grievance about how your data is handled, contact us through the Contact page (teemly.co/company/contact) and we will respond within the timelines required by the DPDP Act.',
+        body: 'Employees have the right to access their own data and the right to erasure, which triggers a database soft-delete plus storage cleanup. To exercise these rights or raise a grievance about how your data is handled, email our Grievance Officer at info@teemly.co and we will respond within the timelines required by the DPDP Act.',
       },
     ],
   },
@@ -39,7 +39,7 @@ export const legalPages = [
     sections: [
       {
         heading: 'About this page',
-        body: "This page summarises what governs your use of Teemly. Contractual terms for your plan are provided with your order; contact us if you need them for procurement or legal review.",
+        body: "This page summarizes what governs your use of Teemly. Contractual terms for your plan are provided with your order; contact us if you need them for procurement or legal review.",
       },
       {
         heading: 'What is published today',
@@ -59,7 +59,7 @@ export const legalPages = [
     sections: [
       {
         heading: 'This website',
-        body: 'This marketing website does not set tracking or advertising cookies.',
+        body: 'This marketing website does not set tracking or advertising cookies. We use Plausible Analytics to count page visits. It works without cookies and does not identify individual visitors.',
       },
       {
         heading: 'The Teemly product',
@@ -75,7 +75,7 @@ export const legalPages = [
     sections: [
       {
         heading: 'About this page',
-        body: "A Data Processing Agreement is available on request for Enterprise customers. This page summarises the data-handling commitments it covers.",
+        body: "A Data Processing Agreement is available on request for Enterprise customers. This page summarizes the data-handling commitments it covers.",
       },
       {
         heading: 'Sub-processors',

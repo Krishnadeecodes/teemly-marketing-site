@@ -29,7 +29,7 @@ const ALL_STEPS = Object.keys(STEPS)
 const SCREEN_W = 900
 const BOX_RATIO = 472 / SCREEN_W
 
-/** Scales every screen layer inside `boxRef` to fit the box, centred. */
+/** Scales every screen layer inside `boxRef` to fit the box, centered. */
 function useScreenFit(boxRef) {
   const [fit, setFit] = useState({ height: null, scales: {} })
 

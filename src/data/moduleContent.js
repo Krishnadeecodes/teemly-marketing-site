@@ -16,17 +16,17 @@ const content = [
     tag: 'Dashboard',
     title: 'Everything worth knowing, the moment you log in',
     intro:
-      "The landing screen for every Client Admin and Client Manager login — a real-time snapshot of the organisation or assigned team, refreshed automatically as Teemly's agent sends events.",
+      "The landing screen for every Client Admin and Client Manager login — a real-time snapshot of the organization or assigned team, refreshed automatically as Teemly's agent sends events.",
     Comp: DashboardShot,
     roleAccess: [
-      { feature: 'Full organisation view', admin: 'All teams, all employees', manager: 'Assigned teams only' },
+      { feature: 'Full organization view', admin: 'All teams, all employees', manager: 'Assigned teams only' },
       { feature: 'Team & date range filters', admin: 'All teams selectable', manager: 'Assigned teams only' },
       { feature: 'Live status scroller', admin: 'All employees', manager: 'Assigned team only' },
       { feature: 'Export / download', admin: 'Yes', manager: 'No' },
     ],
     highlights: [
       { title: 'Four summary stat cards', desc: 'Total Employees, Checked In, Absent and Avg Productivity/Day — each with a trend arrow against the prior period.' },
-      { title: 'Org Productivity Score', desc: 'A circular gauge from 0–100 for the selected date range, with a dotted target line and a productive / idle legend.' },
+      { title: 'Org Intelligence Score', desc: 'A circular gauge from 0–100 for the selected date range, with a dotted target line and a productive / idle legend.' },
       { title: 'Work Summary chart', desc: "Productive vs. unproductive hours per day, with today's bar highlighted and an hourly tooltip on hover." },
       { title: 'Live screenshot feed', desc: 'The most recent captures across the org, blurred automatically if privacy mode is on for that employee.' },
       { title: 'Live Activity list', desc: "Every employee's current status — Work Mode, Privacy Mode, Offline, or Not Installed — updating without a refresh." },
@@ -40,7 +40,7 @@ const content = [
     tag: 'Teams',
     title: "Every team, then every person inside it",
     intro:
-      'Three depths in one module: an organisation-wide team summary, a team detail view with a monthly heat map, and a full employee profile down to the hour.',
+      'Three depths in one module: an organization-wide team summary, a team detail view with a monthly heat map, and a full employee profile down to the hour.',
     Comp: TeamsShot,
     roleAccess: [
       { feature: 'View all teams', admin: 'Yes', manager: 'Assigned teams only' },
@@ -50,7 +50,7 @@ const content = [
     ],
     highlights: [
       { title: 'Team list view', desc: 'Every team as a card — productivity %, average work time, live working/privacy/offline counts and member avatars — sorted by productivity.' },
-      { title: 'Work Hours Calendar', desc: 'A monthly heat map of average productive hours per day, colour-coded from excellent to low, per team.' },
+      { title: 'Work Hours Calendar', desc: 'A monthly heat map of average productive hours per day, color-coded from excellent to low, per team.' },
       { title: 'Team members table', desc: 'Status, check-in time, active hours, productivity score and most-used app, filterable by working / privacy / offline.' },
       { title: 'Employee profile', desc: 'A 24-hour activity timeline, an app-and-website usage breakdown, attendance history and recent daily records — for any one person.' },
     ],
@@ -83,7 +83,7 @@ const content = [
     tag: 'Video Recording',
     title: 'Continuous visual audit, without the manual review',
     intro:
-      'Screen recording is captured in configurable segments per employee and organised by session, with in-browser playback — no download required to review a day.',
+      'Screen recording is captured in configurable segments per employee and organized by session, with in-browser playback — no download required to review a day.',
     Comp: VideoRecordingShot,
     roleAccess: [
       { feature: 'View recordings — all employees', admin: 'Yes', manager: 'No' },
@@ -92,7 +92,7 @@ const content = [
       { feature: 'Change blur setting', admin: 'Yes, via Settings', manager: 'No' },
     ],
     highlights: [
-      { title: 'Configurable segments', desc: 'Recording is captured in 5, 10, 15 or 30-minute segments and stored per employee, per day, organised by session.' },
+      { title: 'Configurable segments', desc: 'Recording is captured in 5, 10, 15 or 30-minute segments and stored per employee, per day, organized by session.' },
       { title: 'Gallery & in-browser playback', desc: 'All recordings listed chronologically with a thumbnail preview — no download needed to watch one back.' },
       { title: 'Privacy blur, per employee', desc: 'When blur is on for a recording, the original is never written to storage — same server-side guarantee as screenshots.' },
       { title: 'Silent recording', desc: 'When stealth mode is active there is no visible indicator — gated behind the same legal consent requirement as Silent Tracking.' },
@@ -159,7 +159,7 @@ const content = [
       { title: 'Work Pulse', desc: 'Peak productivity windows, an hourly heat map by team or person, and a ranked list of top distraction sources.' },
       { title: 'Burnout & Wellbeing', desc: 'Flags overworked and at-risk employees from overtime, after-hours sessions and weekend activity. Premium plan and above.' },
       { title: 'Focus Score', desc: 'Uninterrupted work streaks, context switches per hour, and a 0–100 focus score per employee. Premium plan and above.' },
-      { title: 'Tool Intelligence', desc: 'Where time actually goes across apps and sites, plus an underused-licence alert with the monthly cost attached.' },
+      { title: 'Tool Intelligence', desc: 'Where time actually goes across apps and sites, plus an underused-license alert with the monthly cost attached.' },
       { title: 'Attendance & Punctuality', desc: 'Daily attendance rate, late-arrival distribution, and an individual log with streaks and status badges.' },
       { title: 'Team Leaderboard', desc: 'Rankings by productivity score, a 4-week trend table, and a coaching-opportunity callout. Premium plan and above.' },
     ],
@@ -171,7 +171,7 @@ const content = [
     tag: 'Settings & Controls',
     title: 'Every default, and every exception to it',
     intro:
-      'Settings are organised into seven sections under three categories — Organisation & People, Work & Monitoring, and Access & Controls — accessible only to Client Admins.',
+      'Settings are organized into seven sections under three categories — Organization & People, Work & Monitoring, and Access & Controls — accessible only to Client Admins.',
     Comp: SettingsShot,
     roleAccess: [
       { feature: 'Teams & Structure, People & Roles', admin: 'Full access', manager: 'No access' },

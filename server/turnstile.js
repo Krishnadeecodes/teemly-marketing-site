@@ -22,7 +22,7 @@ export async function verifyTurnstile(req, res, next) {
     return res.status(400).json({ error: 'The spam check failed. Please reload the page and try again.' })
   } catch (err) {
     // Cloudflare unreachable: let the lead through (honeypot and rate limits
-    // still apply) rather than lose a real enquiry.
+    // still apply) rather than lose a real inquiry.
     console.error('[turnstile] verify failed, allowing request:', err.message)
     return next()
   }

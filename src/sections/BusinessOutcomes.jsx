@@ -61,7 +61,7 @@ export default function BusinessOutcomes() {
             <div className="h-oc-top">
               <h3>Software spend, right-sized</h3>
             </div>
-            <p>Tool Intelligence flags underused licences automatically, with the monthly cost attached — not buried in a spreadsheet nobody opens.</p>
+            <p>Tool Intelligence flags underused licenses automatically, with the monthly cost attached — not buried in a spreadsheet nobody opens.</p>
             <div className="h-oc-ring">
               <svg viewBox="0 0 36 36">
                 <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(11,20,66,0.08)" strokeWidth="4" />
@@ -86,7 +86,7 @@ export default function BusinessOutcomes() {
                   </linearGradient>
                 </defs>
               </svg>
-              <span>72% seat utilisation, modelled</span>
+              <span>72% seat utilization, modeled</span>
             </div>
           </Reveal>
 

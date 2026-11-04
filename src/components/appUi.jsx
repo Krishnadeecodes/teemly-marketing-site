@@ -267,7 +267,7 @@ function ThumbContent({ kind }) {
 
 /**
  * A stand-in for a captured screen: an app window drawn in blocks, in the
- * app's colour. `kind` picks the layout: code, design, doc, chat or video.
+ * app's color. `kind` picks the layout: code, design, doc, chat or video.
  */
 export function ScreenThumb({ kind = 'doc', color = '#0aa1e8', blur = false }) {
   return (

@@ -70,7 +70,7 @@ export default function BookADemo() {
                 Book a Demo
               </span>
               <h1>See Teemly on a live call</h1>
-              <p>Tell us a little about your organisation and we'll schedule a guided walkthrough — no sales bot in between.</p>
+              <p>Tell us a little about your organization and we'll schedule a guided walkthrough — no sales bot in between.</p>
               <ul className="demo-points">
                 {valueProps.map((v) => (
                   <li key={v.text}>
@@ -157,7 +157,7 @@ export default function BookADemo() {
                       <input {...field('jobTitle')} autoComplete="organization-title" />
                       <FieldError id="jobTitle" error={errors.jobTitle} />
                     </div>
-                    <span className="demo-group">Your organisation</span>
+                    <span className="demo-group">Your organization</span>
                     <div className="form-field">
                       <label htmlFor="company">Company</label>
                       <input {...field('company')} required autoComplete="organization" />
