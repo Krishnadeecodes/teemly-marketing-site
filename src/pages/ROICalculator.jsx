@@ -114,32 +114,32 @@ export default function ROICalculator() {
 
             <div className="roi-fields">
               <div className="roi-field">
-                <label>Number of employees</label>
-                <input type="number" inputMode="numeric" min="1" value={v.employees} onChange={update('employees')} />
+                <label htmlFor="roi-employees">Number of employees</label>
+                <input id="roi-employees" type="number" inputMode="numeric" min="1" value={v.employees} onChange={update('employees')} />
               </div>
               <div className="roi-field">
-                <label>Avg. employee cost / year</label>
+                <label htmlFor="roi-employee-cost">Avg. employee cost / year</label>
                 <span className="roi-money">
                   <span aria-hidden="true">{currency === 'usd' ? '$' : '₹'}</span>
-                  <input type="number" inputMode="numeric" min="0" value={v.avgEmployeeCost} onChange={update('avgEmployeeCost')} />
+                  <input id="roi-employee-cost" type="number" inputMode="numeric" min="0" value={v.avgEmployeeCost} onChange={update('avgEmployeeCost')} />
                 </span>
               </div>
               <div className="roi-field">
-                <label>Tech &amp; SaaS spend / year</label>
+                <label htmlFor="roi-tech-spend">Tech &amp; SaaS spend / year</label>
                 <span className="roi-money">
                   <span aria-hidden="true">{currency === 'usd' ? '$' : '₹'}</span>
-                  <input type="number" inputMode="numeric" min="0" value={v.techSpend} onChange={update('techSpend')} />
+                  <input id="roi-tech-spend" type="number" inputMode="numeric" min="0" value={v.techSpend} onChange={update('techSpend')} />
                 </span>
               </div>
               <div className="roi-field">
-                <label>Number of managers</label>
-                <input type="number" inputMode="numeric" min="0" value={v.managerCount} onChange={update('managerCount')} />
+                <label htmlFor="roi-managers">Number of managers</label>
+                <input id="roi-managers" type="number" inputMode="numeric" min="0" value={v.managerCount} onChange={update('managerCount')} />
               </div>
               <div className="roi-field">
-                <label>Avg. manager cost / year</label>
+                <label htmlFor="roi-manager-cost">Avg. manager cost / year</label>
                 <span className="roi-money">
                   <span aria-hidden="true">{currency === 'usd' ? '$' : '₹'}</span>
-                  <input type="number" inputMode="numeric" min="0" value={v.avgManagerCost} onChange={update('avgManagerCost')} />
+                  <input id="roi-manager-cost" type="number" inputMode="numeric" min="0" value={v.avgManagerCost} onChange={update('avgManagerCost')} />
                 </span>
               </div>
             </div>
@@ -151,7 +151,7 @@ export default function ROICalculator() {
                     <span>{s.label}</span>
                     <strong>{v[s.key]}%</strong>
                   </div>
-                  <input type="range" min={s.min} max={s.max} value={v[s.key]} onChange={update(s.key)} />
+                  <input type="range" aria-label={s.label} aria-valuetext={`${v[s.key]}%`} min={s.min} max={s.max} value={v[s.key]} onChange={update(s.key)} />
                   <p>{s.desc}</p>
                 </div>
               ))}

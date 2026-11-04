@@ -32,6 +32,7 @@ import {
 } from './auth.js'
 import { validateLead, EMAIL_RE } from '../src/lib/leadForms.js'
 import { TEMPLATES } from '../src/lib/resourceTemplates.js'
+import { resourceTitle } from '../src/data/seoStatic.js'
 import { verifyTurnstile } from './turnstile.js'
 
 const ICONS = ['chart', 'fileText', 'book', 'target', 'monitor', 'play', 'sparkle', 'layers', 'trendingUp', 'users', 'globe', 'briefcase', 'shield', 'cpu', 'bolt', 'download']
@@ -227,7 +228,7 @@ export async function resourcePageMeta(type, slug) {
     const item = await one(`SELECT title, summary, type FROM resources r WHERE r.type = ? AND r.slug = ? AND ${LIVE}`, [type, slug])
     if (!item) return null
     const cat = await one('SELECT label FROM categories WHERE slug = ?', [item.type])
-    return { title: `${item.title} — ${cat?.label || 'Resources'}`, description: item.summary }
+    return { title: resourceTitle(item.title, cat?.label || 'Resources'), description: item.summary }
   }
   const cat = (await categoriesWithCounts()).find((c) => c.slug === type)
   if (!cat) return null

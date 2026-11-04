@@ -29,7 +29,7 @@ export default function PricingCard({ plan, featured = false, cycle = 'monthly',
         </p>
       )}
 
-      <Link to={isCustom ? '/contact' : '/book-a-demo'} className={`btn ${featured ? 'btn-primary' : 'btn-outline'} btn-block`}>
+      <Link to={isCustom ? '/company/contact' : '/book-a-demo'} className={`btn ${featured ? 'btn-primary' : 'btn-outline'} btn-block`}>
         {isCustom ? 'Talk to Sales' : 'Book a Demo'}
       </Link>
 

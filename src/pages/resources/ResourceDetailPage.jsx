@@ -4,6 +4,7 @@ import { DETAIL_TEMPLATES, DefaultDetail } from './templates/details.jsx'
 import { PageSkeleton, useResourceMotion } from './templates/shared.jsx'
 import { useResourceItem } from '../../lib/resourcesApi.js'
 import { useSEO } from '../../lib/useSEO.js'
+import { resourceTitle } from '../../data/seoStatic.js'
 import '../pages.css'
 import './resources.css'
 import './templates/templates.css'
@@ -16,7 +17,7 @@ export default function ResourceDetailPage() {
   useResourceMotion(item ? `${item.id}:${item.updatedAt || ''}` : null)
 
   useSEO({
-    title: item ? `${item.title} — ${data.category.label}` : 'Resources',
+    title: item ? resourceTitle(item.title, data.category.label) : 'Resources',
     description: item?.summary,
     path: `/resources/${slug}/${itemSlug}`,
   })

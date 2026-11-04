@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { fullTitle, staticMeta, DEFAULT_DESCRIPTION } from '../data/seoStatic.js'
+import { fullTitle, clip, staticMeta, DEFAULT_DESCRIPTION } from '../data/seoStatic.js'
 
 // The server writes the same tags into the HTML for crawlers and link
 // previews (server/seo.js); this keeps them right as the visitor navigates.
@@ -31,7 +31,7 @@ function setCanonical(href) {
 export function useSEO({ title, description, path, noindex = false } = {}) {
   useEffect(() => {
     const t = fullTitle(title)
-    const desc = description || DEFAULT_DESCRIPTION
+    const desc = clip(description) || DEFAULT_DESCRIPTION
     const url = `${window.location.origin}${path ?? window.location.pathname}`
     document.title = t
     setMeta('description', desc)

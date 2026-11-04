@@ -15,6 +15,29 @@ html {
   outline-offset: 2px;
 }
 
+/* first stop for keyboard users; stays off screen until it has focus */
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 200;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 600;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* focused by the skip link, not something to interact with */
+main:focus {
+  outline: none;
+}
+
 /* anchor jumps stop below the 76px sticky header instead of under it;
    :where keeps this at zero specificity so components can set their own */
 :where([id]) {

@@ -26,6 +26,12 @@ function useWhenIdle() {
   return ready
 }
 
+// Moves keyboard focus past the menu. Done by hand so the address bar stays clean.
+function skipToContent(e) {
+  e.preventDefault()
+  document.getElementById('main-content')?.focus()
+}
+
 export default function Layout() {
   const { pathname, hash, key } = useLocation()
   const chatReady = useWhenIdle()
@@ -78,8 +84,11 @@ export default function Layout() {
 
   return (
     <>
+      <a href="#main-content" className="skip-link" onClick={skipToContent}>
+        Skip to content
+      </a>
       <Header />
-      <main>
+      <main id="main-content" tabIndex={-1}>
         {/* Shown only when a page is opened directly and its code is still on
             the way; moving between pages keeps the current one up instead. */}
         <Suspense fallback={<div className="route-loading" aria-busy="true" aria-label="Loading" />}>

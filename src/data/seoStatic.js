@@ -8,8 +8,20 @@ export const DEFAULT_TITLE = 'Teemly — Organizational Intelligence Platform'
 export const DEFAULT_DESCRIPTION =
   'Teemly brings how your people, work and technology actually operate into one live view, then turns it into clear reports your leaders can act on.'
 
+// Search results show ~60 characters of a title.
+const TITLE_MAX = 60
+
 export function fullTitle(title) {
-  return title ? `${title} | ${SITE_NAME}` : DEFAULT_TITLE
+  if (!title) return DEFAULT_TITLE
+  const full = `${title} | ${SITE_NAME}`
+  // A long title that already names Teemly doesn't need the suffix too.
+  return full.length > TITLE_MAX && title.includes(SITE_NAME) ? title : full
+}
+
+// "Title — Category", dropping the category when it would make the title too long.
+export function resourceTitle(title, category) {
+  const withCategory = `${title} — ${category}`
+  return fullTitle(withCategory).length > TITLE_MAX ? title : withCategory
 }
 
 // Search results show ~155 characters; cut long intros at a word boundary.

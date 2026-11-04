@@ -60,6 +60,8 @@ export default function Pricing() {
               </div>
               <input
                 type="range"
+                aria-label="Team size"
+                aria-valuetext={`${seats} seats`}
                 min="0"
                 max={seatSteps.length - 1}
                 step="1"
