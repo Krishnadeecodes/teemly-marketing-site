@@ -20,8 +20,8 @@ export default function Partners() {
           </span>
           <h3>Interested in partnering?</h3>
           <p>Tell us what you have in mind and who you are — resellers, implementation partners and integration partners are all worth a conversation.</p>
-          <a href="mailto:hello@teemly.app" className="btn btn-primary">
-            Email hello@teemly.app
+          <a href="mailto:info@teemly.co" className="btn btn-primary">
+            Email info@teemly.co
           </a>
         </div>
       </section>

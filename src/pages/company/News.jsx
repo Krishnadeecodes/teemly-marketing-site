@@ -20,8 +20,8 @@ export default function News() {
           </span>
           <h3>Media inquiry?</h3>
           <p>Reach out directly and we'll get back to you.</p>
-          <a href="mailto:hello@teemly.app" className="btn btn-primary">
-            Email hello@teemly.app
+          <a href="mailto:info@teemly.co" className="btn btn-primary">
+            Email info@teemly.co
           </a>
         </div>
       </section>

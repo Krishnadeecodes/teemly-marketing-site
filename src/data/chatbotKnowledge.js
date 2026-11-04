@@ -139,7 +139,7 @@ export const intents = [
     label: 'How do I contact the team?',
     keywords: ['contact', 'talk to', 'speak', 'human', 'person', 'sales', 'email', 'reach', 'phone', 'call you', 'representative', 'get in touch'],
     text:
-      'You can reach a real person through the contact form or by email at hello@teemly.app. We reply within one business day.',
+      'You can reach a real person through the contact form or by email at info@teemly.co. We reply within one business day.',
     links: [
       { label: 'Contact us', to: '/company/contact' },
       { label: 'Book a demo', to: '/book-a-demo' },

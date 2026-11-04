@@ -20,8 +20,8 @@ export default function Careers() {
           </span>
           <h3>Want to reach out anyway?</h3>
           <p>If you think there's a fit even without a posted role, get in touch through Contact and tell us why.</p>
-          <a href="mailto:hello@teemly.app" className="btn btn-primary">
-            Email hello@teemly.app
+          <a href="mailto:info@teemly.co" className="btn btn-primary">
+            Email info@teemly.co
           </a>
         </div>
       </section>
